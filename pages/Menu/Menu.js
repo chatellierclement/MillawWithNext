@@ -45,6 +45,9 @@ export default class Menu extends React.Component {
                 <li className="nav-item">                    
                     <Link className="nav-link text-white" href="/admin/permanence">Permanence</Link>
                 </li>
+                <li className="nav-item">                    
+                    <Link className="nav-link text-white" href="/admin/barreau">Barreau</Link>
+                </li>
             </ul>          
         </div>
         </>
