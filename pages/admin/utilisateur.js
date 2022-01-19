@@ -233,18 +233,39 @@ export default class Utilisateur extends React.Component {
             </form>
           </Modal>
 
-          <Button variant="primary" onClick={this.eventClick} >
-              Add
-          </Button>
+          <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
+            <div className="container-fluid px-0">
+              <div className="row align-items-center">
+                <div className="col">
+                  <h1 className="h2 mb-0">Utilisateurs</h1>
+                </div>
 
-          <DataTable
-            title="Utilisateurs"
-            columns={this.state.columns}
-            data={this.state.users}
-            defaultSortFieldId={1}
-            pagination
-            language='fr'
-          />
+                <div className="col-auto d-flex align-items-center my-2 my-sm-0">
+                  <a href="#" onClick={this.eventClick} className="btn btn-lg btn-outline-dark px-3 me-2 me-md-3">
+                    <span className="ps-1">
+                      Ajouter
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>  
+
+          <div className="row g-0">
+            <div className="container-fluid px-0">
+              <div className="row">
+                <DataTable
+                  title="Utilisateurs"
+                  columns={this.state.columns}
+                  data={this.state.users}
+                  defaultSortFieldId={1}
+                  pagination
+                  language='fr'
+                />
+              </div>
+            </div>
+          </div>
+          
       </>
     );    
   }  
