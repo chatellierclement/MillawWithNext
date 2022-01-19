@@ -8,7 +8,20 @@ import Select from 'react-select'
 export default class Utilisateur extends React.Component {
     render() {
         return (
-            <p></p>
+            <>
+            <Button variant="primary" onClick={this.eventClick} >
+              Add
+            </Button>
+
+            <DataTable
+                title="Permanences"
+                columns={this.state.columns}
+                data={this.state.permanences}
+                defaultSortFieldId={1}
+                pagination
+                language='fr'
+            />
+          </>
         )
     }
 }
