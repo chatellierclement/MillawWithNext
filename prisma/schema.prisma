@@ -16,3 +16,9 @@ model Event {
   description String
   date String
 }
+
+model User {
+  id    Int     @id @default(autoincrement())
+  firstName  String  
+  lastName String
+}

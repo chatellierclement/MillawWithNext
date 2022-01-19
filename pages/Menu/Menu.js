@@ -37,7 +37,10 @@ export default class Menu extends React.Component {
 
             <ul className="nav flex-column mb-0">
                 <li className="nav-item activeLi">
-                    <Link className="nav-link text-white" href="/Calendar/calendar">Calendrier</Link>
+                    <Link className="nav-link text-white" href="/Calendar/calendar">Planning</Link>
+                </li>
+                <li className="nav-item">                    
+                    <Link className="nav-link text-white" href="/admin/utilisateur">Utilisateur</Link>
                 </li>
             </ul>          
         </div>

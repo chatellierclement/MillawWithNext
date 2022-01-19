@@ -99,25 +99,20 @@ export default class Calendar extends React.Component {
   eventDrop = (info) => {
     let $this = this
 
-    if (!window.confirm("Are you sure about this change?")) {
-      info.revert();
-    } else {     
-      let event = $this.state.events.find(item => item.id == info.event._def.publicId)
+    let event = $this.state.events.find(item => item.id == info.event._def.publicId)
 
-      event.date = moment(info.event.start).format('YYYY-MM-DD')   
-      
-      axios.put('/api/event', event) 
-        .then(function (response) {
-          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          let findIndex = $this.state.events.findIndex(item => item.id == response.data.id)
-          $this.state.events[findIndex] = response.data
-          $this.setState({ events: [...$this.state.events] });
-        }) 
-        .catch(function (error) { 
-          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-        }) 
-       
-    }
+    event.date = moment(info.event.start).format('YYYY-MM-DD')   
+    
+    axios.put('/api/event', event) 
+      .then(function (response) {
+        NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
+        let findIndex = $this.state.events.findIndex(item => item.id == response.data.id)
+        $this.state.events[findIndex] = response.data
+        $this.setState({ events: [...$this.state.events] });
+      }) 
+      .catch(function (error) { 
+        NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
+      }) 
   };
 
   //Pour savoir quel bouton du FORM
