@@ -5,7 +5,10 @@ export default class App extends React.Component {
   render() {      
     return (         
         <>  
-          Bienvenue
+          <div className="col">
+            <h1 className="h2 mb-0">Bienvenue</h1>
+          </div>
+          
         </>
     );
   }

@@ -32,27 +32,20 @@ export default class Menu extends React.Component {
             <div className="navbar-collapse">
                 <ul className="navbar-nav mb-2">
                     <li className="nav-item">
-                        <Link  href="/Calendar/calendar"><a className="test">Planning</a></Link>
+                        <Link  href="/Calendar/calendar"><a className="nav-link">Planning</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/utilisateur"><a>Utilisateur</a></Link>
+                        <Link href="/admin/utilisateur"><a className="nav-link">Utilisateur</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/permanence"><a>Permanence</a></Link>
+                        <Link href="/admin/permanence"><a className="nav-link">Permanence</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/barreau"><a>Barreau</a></Link>
+                        <Link href="/admin/barreau"><a className="nav-link">Barreau</a></Link>
                     </li>
                 </ul>
             </div>
         </div>
-        
-        <style>
-            {`.test {
-                color:red;
-            }
-        `}
-        </style>
         </>
     );
   }
