@@ -4,7 +4,9 @@ import prisma from '../../prisma/lib/prisma'
 export default async function user(req, res) {
   switch (req.method) {
     case "GET":
-      let userFind = await prisma.user.findMany()
+      let userFind = await prisma.user.findMany({
+        include: { role: true }
+      })
       res.status(200).json(userFind)
       break;
     case "POST":
@@ -18,7 +20,8 @@ export default async function user(req, res) {
         where: {
           id: req.body.id,
         },
-        data: req.body         
+        data: req.body ,
+        include: { role: true }       
       })
       res.status(200).json(userPatch)    
       break;
