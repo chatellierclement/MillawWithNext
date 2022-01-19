@@ -8,11 +8,20 @@ import 'react-notifications/lib/notifications.css';
 import '../styles/app.css';
 import '../styles/calendar.css';
 import { Button } from "react-bootstrap";
+import { useRouter } from 'next/router';
 import Menu from "./Menu/Menu"
+import Login from "./login"
 
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {  
   
+  const router = useRouter();
+  const noLayout = ['/login']
+
+  if(noLayout.indexOf(router.route) > -1) {
+    return <Login />
+  } 
+
   const handleClick = () => {
     document.getElementById("sidebar").classList.toggle("active");
     document.getElementById("content").classList.toggle("active");
