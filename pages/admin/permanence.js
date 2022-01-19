@@ -24,8 +24,8 @@ export default class Permanence extends React.Component {
         },
         {
           id: 2,
-          name: "lastName",
-          selector: (row) => row.lastName,
+          name: "name",
+          selector: (row) => row.name,
           sortable: true,
           reorder: true
         },
@@ -51,7 +51,7 @@ export default class Permanence extends React.Component {
     //Binding des evenements
     this.changeObjEventModal = this.changeObjEventModal.bind(this);
 
-    //Initialisation des Users
+    //Initialisation des permanences
     axios.get('/api/permanence') 
       .then(function (response) { 
         this.setState({ permanences: response.data });
@@ -73,7 +73,7 @@ export default class Permanence extends React.Component {
     if (!arg) { this.state.modal = null }
   }
 
-  //Clic sur un button Edit/add du User
+  //Clic sur un button Edit/add d'une permanence
   eventClick = (row = null) => {      
 
     if (row.id) {
@@ -82,15 +82,15 @@ export default class Permanence extends React.Component {
       }
 
       //Hydratation de l'objet Event dans formulaire de la Modal
-      let user = this.state.users.find(item => item.id == row.id)
-      this.state.modal = { ...this.state.modal, item: user }
+      let permanence = this.state.permanences.find(item => item.id == row.id)
+      this.state.modal = { ...this.state.modal, item: permanence }
 
     } else {
       this.state.modal = {
         item : { id : null },
         title : "Nouvelle permanence"
       }
-    }      
+    }       
 
     this.openCloseModal(true)
   };
@@ -102,7 +102,7 @@ export default class Permanence extends React.Component {
     
     //Mise a jour
     if (this.state.modal.item.id) { 
-      axios.put('/api/user', this.state.modal.item) 
+      axios.put('/api/permanence', this.state.modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "La permanence est enregistré avec succès.", 3000)
           let findIndex = $this.state.permanences.findIndex(item => item.id == response.data.id)
@@ -115,10 +115,8 @@ export default class Permanence extends React.Component {
       
     } else {
       //Ajout
-      //TODO : changer les champs
       const newUser = {
-        lastName: this.state.modal.item.lastName,
-        firstName: this.state.modal.item.firstName,
+        name: this.state.modal.item.name,
       };      
 
       axios.post('/api/permanence', newUser) 
@@ -165,20 +163,13 @@ export default class Permanence extends React.Component {
                       className="form-control"
                       defaultValue={this.state.modal ? this.state.modal.item.id : ""} 
                 />
-                <span>lastName :</span>
+                <span>Name :</span>
                 <input type='text' 
-                      name="lastName" 
+                      name="name" 
                       className="form-control" 
                       onChange={this.changeObjEventModal} 
-                      defaultValue={this.state.modal ? this.state.modal.item.lastName : ""} 
-                />
-                <span>firstName</span> 
-                <input type='text' 
-                      name="firstName" 
-                      className="form-control" 
-                      onChange={this.changeObjEventModal} 
-                      defaultValue={this.state.modal ? this.state.modal.item.firstName : ""} 
-                />                          
+                      defaultValue={this.state.modal ? this.state.modal.item.name : ""} 
+                />                        
               </Modal.Body>              
               <Modal.Footer>
                 <Button variant="primary" type="submit" onClick={this.handleSubmit} >

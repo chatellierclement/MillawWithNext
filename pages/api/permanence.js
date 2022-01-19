@@ -4,9 +4,7 @@ import prisma from '../../prisma/lib/prisma'
 export default async function permanence(req, res) {
   switch (req.method) {
     case "GET":
-      let permanenceFind = await prisma.permanence.findMany({
-        include: { role: true }
-      })
+      let permanenceFind = await prisma.permanence.findMany()
       res.status(200).json(permanenceFind)
       break;
     case "POST":
@@ -20,8 +18,7 @@ export default async function permanence(req, res) {
         where: {
           id: req.body.id,
         },
-        data: req.body ,
-        include: { role: true }       
+        data: req.body,      
       })
       res.status(200).json(permanencePatch)    
       break;
