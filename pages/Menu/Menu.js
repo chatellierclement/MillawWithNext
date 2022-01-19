@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import { NavLink } from "react-bootstrap";
 
 export default class Menu extends React.Component { 
 
@@ -23,8 +23,30 @@ export default class Menu extends React.Component {
   
   render() {      
     return (         
-        <>  
-        <div className="vertical-nav" id="sidebar">
+        <> 
+        <div className="navbar navbar-vertical navbar-expand-lg navbar-light" id="sidebar">
+            <a className="navbar-brand mx-auto d-none d-lg-block my-0 my-lg-4">
+                LOGO
+            </a>
+            <div className="navbar-collapse">
+                <ul className="navbar-nav mb-2">
+                    <li className="nav-item">
+                        <NavLink href="/Calendar/calendar">Planning</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink href="/admin/utilisateur">Utilisateur</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink href="/admin/permanence">Permanence</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink href="/admin/barreau">Barreau</NavLink>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        {/* <div className="vertical-nav" id="sidebar">
             <div className="py-4 px-3 mb-4 media">
                 <div className="d-flex align-items-center">
                     <div className="media-body">
@@ -49,7 +71,7 @@ export default class Menu extends React.Component {
                     <Link className="nav-link text-white" href="/admin/barreau">Barreau</Link>
                 </li>
             </ul>          
-        </div>
+        </div> */}
         </>
     );
   }
