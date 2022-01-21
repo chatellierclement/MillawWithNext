@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react' 
 import dayGridPlugin from '@fullcalendar/daygrid' 
 import interactionPlugin from "@fullcalendar/interaction" 
@@ -8,131 +8,115 @@ import moment from 'moment';
 import axios from 'axios';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-export default class Calendar extends React.Component { 
+export default function Calendar() {   
   
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-      role: "admin",
-      events: [],
-      editable_boolean: false,
-      modal: null,
-      datePicker: null,      
-      submit1: "save",
-      submit2: "delete",
-    }    
+  const [show, setShow] = useState(false);  
+  const [role, setRole] = useState("admin");
+  const [events, setEvents] = useState([]);
+  const [editable_boolean, setEditableBoolean] = useState(true);
+  const [modal, setModal] = useState(null);  
+  const [datePicker, setDatePicker] = useState(null);
+
+  useEffect(() => {
+    
+    //Gestion des roles utilisateurs
+    let type = role === "admin" ? true : false  
+    setEditableBoolean(type)
 
     //Initialisation des Events
     axios.get('/api/event') 
     .then(function (response) { 
-      this.setState({ events: response.data });
+      setEvents(response.data);
     }) 
     .catch(function (error) { 
       console.log(error); 
-    }) 
-    
-
-    //Gestion des roles utilisateurs
-    this.state.editable_boolean = this.state.role === "admin" ? true : false
-
-    //Binding des evenements
-    this.changeObjEventModal = this.changeObjEventModal.bind(this);
-    this.openCloseModal = this.openCloseModal.bind(this);
-    this.dayClick = this.dayClick.bind(this);
-    this.eventClick = this.eventClick.bind(this);
-    this.eventDrop = this.eventDrop.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.changeDatePicker = this.changeDatePicker.bind(this);
-  }
+    })   
+  }, [])
 
   //Binding de l'objet Event de la modal
-  changeObjEventModal = (event) => {
-    this.state.modal.item[event.target.name] = event.target.value
+  function changeObjEventModal(event) {
+    let { item } = modal
+    item = { ...item, [event.target.name] : event.target.value }
+    
+    let m = { ...modal, item}
+    setModal(m)
   }
 
   //Ouverture/Fermeture de la modal
-  openCloseModal = (arg = false) => {
-    this.setState({ show: arg });
+  function openCloseModal(arg = false) {
+    setShow(arg);
     
-    if (!arg) { this.state.modal = null }
+    if (!arg) { setModal(null) }
   }
 
   //Clic sur le jour du calendrier
-  dayClick = (arg) => { 
+  function dayClick(arg) { 
 
-    if (!this.state.editable_boolean) { return false }
+    if (!editable_boolean) { return false }
 
-    this.state.modal = {
-      ...this.state.modal, 
+    let m = {
+      ...modal, 
       item: { date: arg.dateStr },
-      title: "Ajout d'un évènement"
+      title_modal: "Ajout d'un évènement"
     }
-    this.setState({ datePicker: new Date(arg.date) });    
 
-    this.openCloseModal(true)
-  };
+    setModal(m)
+
+    setDatePicker(new Date(arg.date));    
+
+    openCloseModal(true)
+  }
 
   //Clic sur un Event du calendrier
-  eventClick = (info) => { 
-    if (this.state.role === "admin") {
-      this.state.modal = {
-        title : "Modification de l'évènement"
-      }
-    } else {
-      this.state.modal = {
-        title : "Evènement"
-      }
-    }
+  function eventClick(info) { 
+    let m = { title_modal: "Evènement" } 
 
+    if (editable_boolean) {
+      m = { title_modal: "Modification de l'évènement" } 
+    }     
+    
     //Hydratation de l'objet Event dans formulaire de la Modal
-    let event = this.state.events.find(item => item.id == info.event._def.publicId)
-    this.state.modal = { ...this.state.modal, item: event }
+    let event = events.find(item => item.id == info.event._def.publicId)
+    m = { ...m, item: event }
 
+    setModal(m)
+    
     //Cas particulier de la date qui doit etre setter
-    this.setState({ datePicker: new Date(this.state.modal.item.date) });
+    setDatePicker(new Date(m.item.date));
 
-    this.openCloseModal(true)
-  };
+    openCloseModal(true)
+  }
 
   //Drag drop event
-  eventDrop = (info) => {
-    let $this = this
+  function eventDrop(info) {
 
-    let event = $this.state.events.find(item => item.id == info.event._def.publicId)
+    let event = events.find(item => item.id == info.event._def.publicId)
 
     event.date = moment(info.event.start).format('YYYY-MM-DD')   
     
     axios.put('/api/event', event) 
       .then(function (response) {
         NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-        let findIndex = $this.state.events.findIndex(item => item.id == response.data.id)
-        $this.state.events[findIndex] = response.data
-        $this.setState({ events: [...$this.state.events] });
+        let findIndex = events.findIndex(item => item.id == response.data.id)
+        events[findIndex] = response.data
+        setEvents([...events]);
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
       }) 
-  };
-
-  //Pour savoir quel bouton du FORM
-  changeHandler = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  }
 
   //Ajout/Mise/Suppression a jour d'un Event
-  handleSubmit = (type) => {
-    
-    let $this = this
-    
+  function handleSubmit(type) {
+
     if (type === "delete") {
       //Suppression
-      axios.delete('/api/event', { data : this.state.modal.item }) 
+      axios.delete('/api/event', { data : modal.item }) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement a été supprimé avec succès.", 3000)
-          let findIndex = $this.state.events.findIndex(item => item.id == response.data.id)
-          $this.state.events.splice(findIndex,1)
-          $this.setState({ events: [...$this.state.events] });
+          let findIndex = events.findIndex(item => item.id == response.data.id)
+          events.splice(findIndex,1)
+          setEvents([...events]);
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -140,14 +124,14 @@ export default class Calendar extends React.Component {
 
     } else {
       //Mise a jour
-      if (this.state.modal.item.id) {         
+      if (modal.item.id) {         
             
-        axios.put('/api/event', this.state.modal.item) 
+        axios.put('/api/event', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          let findIndex = $this.state.events.findIndex(item => item.id == response.data.id)
-          $this.state.events[findIndex] = response.data
-          $this.setState({ events: [...$this.state.events] });
+          let findIndex = events.findIndex(item => item.id == response.data.id)
+          events[findIndex] = response.data
+          setEvents([...events]);
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -156,15 +140,15 @@ export default class Calendar extends React.Component {
       } else {
         //Ajout
         const newEvent = {
-          title: this.state.modal.item.title,
-          description: this.state.modal.item.description,
-          date: this.state.modal.item.date
+          title: modal.item.title,
+          description: modal.item.description,
+          date: modal.item.date
         };      
 
         axios.post('/api/event', newEvent) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          $this.setState({ events: [...$this.state.events, response.data] });
+          setEvents([...events, response.data]);
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -173,95 +157,93 @@ export default class Calendar extends React.Component {
       }       
     }
 
-    this.openCloseModal(false) 
+    openCloseModal(false) 
     
-  };
+  }
 
   //Formattage du datePicker pour l'objet Event Modal
   //Mise a jour de l'objet Modal 
-  changeDatePicker = (date) => {  
-    this.state.modal.item.date = moment(date).format('YYYY-MM-DD hh:mm')
-    this.setState({ datePicker: date })
-    this.setState({ modal: this.state.modal })
+  function changeDatePicker(date) {  
+    modal.item.date = moment(date).format('YYYY-MM-DD hh:mm')
+    setDatePicker(date)
+    setModal(modal)
   }
+      
+  return (
+    <>
+        <NotificationContainer/>
 
-  render() {      
-    return (
-      <>
-          <NotificationContainer/>
-
-          <Modal show={this.state.show} onHide={this.openCloseModal}>
-            <form onSubmit={e => e.preventDefault()}>
-              <Modal.Header closeButton>  
-                <Modal.Title>{this.state.modal ? this.state.modal.title : ""}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>              
-                <input type='hidden' 
-                      className="form-control"
-                      defaultValue={this.state.modal ? this.state.modal.item.id : ""} 
-                      disabled={this.state.role === 'admin' ? '' : 'disabled'} />
-                <span>Date : </span>
-                <DatePicker                    
+        <Modal show={show} onHide={openCloseModal}>
+          <form onSubmit={e => e.preventDefault()}>
+            <Modal.Header closeButton>  
+              <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>              
+              <input type='hidden' 
                     className="form-control"
-                    disabled={this.state.role === 'admin' ? '' : 'disabled'} 
-                    selected={ this.state.datePicker }
-                    onChange={ this.changeDatePicker }
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={5}
-                    timeCaption="time"
-                    dateFormat="dd/MM/Y HH:mm"
-                />
-                <span>Evenement :</span>
-                <input type='text' 
-                      name="title" 
-                      className="form-control" 
-                      onChange={this.changeObjEventModal} 
-                      defaultValue={this.state.modal ? this.state.modal.item.title : ""} 
-                      disabled={this.state.role === 'admin' ? '' : 'disabled'}/>
-                <span>Description</span> 
-                <input type='text' 
-                      name="description" 
-                      className="form-control" 
-                      onChange={this.changeObjEventModal} 
-                      defaultValue={this.state.modal ? this.state.modal.item.description : ""} 
-                      disabled={this.state.role === 'admin' ? '' : 'disabled'}/>
-                               
-              </Modal.Body>              
-              <Modal.Footer className={ this.state.editable_boolean === true ? '' : 'hidden' }>
-                <Button variant="primary" type="submit" value={this.state.submit1} onClick={() => this.handleSubmit("save")} >
-                  Save
-                </Button>
-                <Button variant="danger" type="submit" value={this.state.submit2} onClick={() => this.handleSubmit("delete")} >
-                  Delete
-                </Button>
-              </Modal.Footer>
-            </form>
-          </Modal>
+                    defaultValue={modal ? modal.item.id : ""} 
+                    disabled={role === 'admin' ? '' : 'disabled'} />
+              <span>Date : </span>
+              <DatePicker                    
+                  className="form-control"
+                  disabled={role === 'admin' ? '' : 'disabled'} 
+                  selected={datePicker}
+                  onChange={changeDatePicker}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={5}
+                  timeCaption="time"
+                  dateFormat="dd/MM/Y HH:mm"
+              />
+              <span>Evenement :</span>
+              <input type='text' 
+                    name="title" 
+                    className="form-control" 
+                    onChange={(e) => changeObjEventModal(e)}
+                    defaultValue={modal ? modal.item.title : ""} 
+                    disabled={role === 'admin' ? '' : 'disabled'}/>
+              <span>Description</span> 
+              <input type='text' 
+                    name="description" 
+                    className="form-control" 
+                    onChange={(e) => changeObjEventModal(e)}
+                    defaultValue={modal ? modal.item.description : ""} 
+                    disabled={role === 'admin' ? '' : 'disabled'}/>
+                              
+            </Modal.Body>              
+            <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
+              <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
+                Save
+              </Button>
+              <Button variant="danger" type="submit" value="delete" onClick={() => handleSubmit("delete")} >
+                Delete
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Modal>
 
-          <FullCalendar
-            locale= 'fr'
-            plugins={[ dayGridPlugin, interactionPlugin ]}
-            dateClick={this.dayClick}
-            eventClick={this.eventClick} 
-            initialView='dayGridMonth'      
-            headerToolbar={{
-              left: "prev,today,next",
-              center: "title",
-              right: "dayGridMonth,dayGrid"
-            }}
-            buttonText={{
-              today:    "Courant",
-              month:    "Mois",
-              week:     "Semaine",
-              day:      "Jour",
-              dayGrid:  "Aujourd'hui"
-            }}
-            editable={this.state.editable_boolean}
-            eventDrop={this.eventDrop}
-            events={this.state.events}
-          />
-      </>
-    );    
-  }  
+        <FullCalendar
+          locale= 'fr'
+          plugins={[ dayGridPlugin, interactionPlugin ]}
+          dateClick={dayClick}
+          eventClick={eventClick} 
+          initialView='dayGridMonth'      
+          headerToolbar={{
+            left: "prev,today,next",
+            center: "title",
+            right: "dayGridMonth,dayGrid"
+          }}
+          buttonText={{
+            today:    "Courant",
+            month:    "Mois",
+            week:     "Semaine",
+            day:      "Jour",
+            dayGrid:  "Aujourd'hui"
+          }}
+          editable={editable_boolean}
+          eventDrop={eventDrop}
+          events={events}
+        />
+    </>
+  );
 }
