@@ -32,16 +32,16 @@ export default class Menu extends React.Component {
             <div className="navbar-collapse">
                 <ul className="navbar-nav mb-2">
                     <li className="nav-item">
-                        <Link  href="/Calendar/calendar"><a className="nav-link">Planning</a></Link>
+                        <Link  href="/app/Calendar/calendar"><a className="nav-link">Planning</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/utilisateur"><a className="nav-link">Utilisateur</a></Link>
+                        <Link href="/app/admin/utilisateur"><a className="nav-link">Utilisateur</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/permanence"><a className="nav-link">Permanence</a></Link>
+                        <Link href="/app/admin/permanence"><a className="nav-link">Permanence</a></Link>
                     </li>
                     <li className="nav-item">                    
-                        <Link href="/admin/barreau"><a className="nav-link">Barreau</a></Link>
+                        <Link href="/app/admin/barreau"><a className="nav-link">Barreau</a></Link>
                     </li>
                 </ul>
             </div>
