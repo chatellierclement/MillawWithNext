@@ -3,13 +3,11 @@ import DataTable from "react-data-table-component";
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-import Select from 'react-select'
 
 export default function Permanence() {  
   
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
-  const [options, setOptions] = useState([]);
   const [permanences, setPermanences] = useState([]);
   const columns = 
     [
@@ -145,7 +143,6 @@ export default function Permanence() {
         NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
       })
   }
-
        
   return (
     <>

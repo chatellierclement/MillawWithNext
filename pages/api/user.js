@@ -5,13 +5,14 @@ export default async function user(req, res) {
   switch (req.method) {
     case "GET":
       let userFind = await prisma.user.findMany({
-        include: { role: true }
+        include: { role: true, bar: true }
       })
       res.status(200).json(userFind)
       break;
     case "POST":
       let userCreate = await prisma.user.create({ 
-        data: req.body         
+        data: req.body,
+        include: { role: true, bar: true }             
       })
       res.status(200).json(userCreate)
       break;    
@@ -21,7 +22,7 @@ export default async function user(req, res) {
           id: req.body.id,
         },
         data: req.body ,
-        include: { role: true }       
+        include: { role: true, bar: true }       
       })
       res.status(200).json(userPatch)    
       break;
