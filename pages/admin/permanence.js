@@ -1,113 +1,112 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Select from 'react-select'
 
-export default class Permanence extends React.Component {  
-
-  constructor(props) {
-    super(props);
-    this.state = {       
-      show: false,
-      modal: null,
-      options: [],
-      permanences: [],
-      columns: [
-        {
-          id: 1,
-          name: "id",
-          selector: (row) => row.id,
-          sortable: true,
-          reorder: true
-        },
-        {
-          id: 2,
-          name: "name",
-          selector: (row) => row.name,
-          sortable: true,
-          reorder: true
-        },
-        {
-          button: true,
-          cell: (row) => (            
-            <div className="openbtn text-center">
-              <button type="button" onClick={() => this.eventClick(row)} className="btn btn-primary">Edit</button>         
-            </div>            
-          )
-        },
-        {
-          button: true,
-          cell: (row) => (            
-            <div className="openbtn text-center">
-              <button type="button" onClick={() => this.deletePermanence(row)} className="btn btn-danger">Delete</button>         
-            </div>            
-          )
-        }
-      ]
-    }
-
-    //Binding des evenements
-    this.changeObjEventModal = this.changeObjEventModal.bind(this);
-
+export default function Permanence() {  
+  
+  const [show, setShow] = useState(false);
+  const [modal, setModal] = useState(null);
+  const [options, setOptions] = useState([]);
+  const [permanences, setPermanences] = useState([]);
+  const columns = 
+    [
+      {
+        id: 1,
+        name: "id",
+        selector: (row) => row.id,
+        sortable: true,
+        reorder: true
+      },
+      {
+        id: 2,
+        name: "name",
+        selector: (row) => row.name,
+        sortable: true,
+        reorder: true
+      },
+      {
+        button: true,
+        cell: (row) => (            
+          <div className="openbtn text-center">
+            <button type="button" onClick={() => eventClick(row)} className="btn btn-primary">Edit</button>         
+          </div>            
+        )
+      },
+      {
+        button: true,
+        cell: (row) => (            
+          <div className="openbtn text-center">
+            <button type="button" onClick={() => deletePermanence(row)} className="btn btn-danger">Delete</button>         
+          </div>            
+        )
+      }
+    ];
+  
+    
+  useEffect(() => {  
     //Initialisation des permanences
     axios.get('/api/permanence') 
       .then(function (response) { 
-        this.setState({ permanences: response.data });
+        setPermanences(response.data);
       }) 
       .catch(function (error) { 
         console.log(error); 
-      })     
-  }   
+      })  
+  }, [])  
 
-  //Binding de l'objet User de la modal
-  changeObjEventModal = (event) => {
-    this.state.modal.item[event.target.name] = event.target.value
+  //Binding de l'objet Event de la modal
+  function changeObjEventModal(event) {
+    let { item } = modal
+    item = { ...item, [event.target.name] : event.target.value }
+    
+    let m = { ...modal, item}
+    setModal(m)
   }
   
   //Ouverture/Fermeture de la modal
-  openCloseModal = (arg = false) => {
-    this.setState({ show: arg });
+  function openCloseModal(arg = false) {
+    setShow(arg);
     
-    if (!arg) { this.state.modal = null }
+    if (!arg) { setModal(null) }
   }
 
   //Clic sur un button Edit/add d'une permanence
-  eventClick = (row = null) => {      
+  function eventClick(row = null) {      
+
+    let m = {
+      item : {},
+      title : "Nouvelle permanence"
+    }  
 
     if (row.id) {
-      this.state.modal = {
+      m = {
         title : "Modification de la permanence"
       }
 
       //Hydratation de l'objet Event dans formulaire de la Modal
-      let permanence = this.state.permanences.find(item => item.id == row.id)
-      this.state.modal = { ...this.state.modal, item: permanence }
+      let permanence = permanences.find(item => item.id == row.id)
+      m = { ...m, item: permanence }      
+    } 
+    
+    setModal(m)
 
-    } else {
-      this.state.modal = {
-        item : { id : null },
-        title : "Nouvelle permanence"
-      }
-    }       
-
-    this.openCloseModal(true)
-  };
+    openCloseModal(true)
+  }
 
   //Mise a jour d'un User
-  handleSubmit = (type) => {
-    
-    let $this = this
-    
+  function handleSubmit(type) {
+
     //Mise a jour
-    if (this.state.modal.item.id) { 
-      axios.put('/api/permanence', this.state.modal.item) 
+    if (modal.item.id) { 
+      axios.put('/api/permanence', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "La permanence est enregistré avec succès.", 3000)
-          let findIndex = $this.state.permanences.findIndex(item => item.id == response.data.id)
-          $this.state.permanences[findIndex] = response.data
-          $this.setState({ permanences: [...$this.state.permanences] });
+          let findIndex = permanences.findIndex(item => item.id == response.data.id)
+          permanences[findIndex] = response.data
+          setPermanences([...permanences]);
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -115,83 +114,81 @@ export default class Permanence extends React.Component {
       
     } else {
       //Ajout
-      const newUser = {
-        name: this.state.modal.item.name,
+      const p = {
+        name: modal.item.name,
       };      
 
-      axios.post('/api/permanence', newUser) 
+      axios.post('/api/permanence', p) 
       .then(function (response) {
         NotificationManager.success("success", "La permanence est enregistré avec succès.", 3000)
-        $this.setState({ permanences: [...$this.state.permanences, response.data] });
+        setPermanences([...permanences, response.data]);
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
       })    
     }
 
-    this.openCloseModal(false)
+    openCloseModal(false)
     
-  };
+  }
 
-  deletePermanence = (row) => {
-    
-    let $this = this
+  function deletePermanence(row) {
+
     axios.delete('/api/permanence', { data : row })
       .then(function (response) {
         NotificationManager.success("success", "La permanence a été supprimé avec succès.", 3000)
-        let findIndex = $this.state.permanences.findIndex(item => item.id == response.data.id)
-        $this.state.permanences.splice(findIndex,1)
-        $this.setState({ permanences: [...$this.state.permanences] });
+        let findIndex = permanences.findIndex(item => item.id == response.data.id)
+        permanences.splice(findIndex,1)
+        setPermanences([...permanences]);
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
       })
   }
 
-  render() {      
-    return (
-      <>
-          <NotificationContainer/>
+       
+  return (
+    <>
+        <NotificationContainer/>
 
-          <Modal show={this.state.show} onHide={this.openCloseModal}>
-            <form onSubmit={e => e.preventDefault()}>
-              <Modal.Header closeButton>  
-                <Modal.Title>{this.state.modal ? this.state.modal.title : ""}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>              
-                <input type='hidden' 
-                      className="form-control"
-                      defaultValue={this.state.modal ? this.state.modal.item.id : ""} 
-                />
-                <span>Name :</span>
-                <input type='text' 
-                      name="name" 
-                      className="form-control" 
-                      onChange={this.changeObjEventModal} 
-                      defaultValue={this.state.modal ? this.state.modal.item.name : ""} 
-                />                        
-              </Modal.Body>              
-              <Modal.Footer>
-                <Button variant="primary" type="submit" onClick={this.handleSubmit} >
-                  Save
-                </Button>
-              </Modal.Footer>
-            </form>
-          </Modal>
+        <Modal show={show} onHide={openCloseModal}>
+          <form onSubmit={e => e.preventDefault()}>
+            <Modal.Header closeButton>  
+              <Modal.Title>{modal ? modal.title : ""}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>              
+              <input type='hidden' 
+                    className="form-control"
+                    defaultValue={modal ? modal.item.id : ""} 
+              />
+              <span>Name :</span>
+              <input type='text' 
+                    name="name" 
+                    className="form-control" 
+                    onChange={changeObjEventModal} 
+                    defaultValue={modal ? modal.item.name : ""} 
+              />                        
+            </Modal.Body>              
+            <Modal.Footer>
+              <Button variant="primary" type="submit" onClick={handleSubmit} >
+                Save
+              </Button>
+            </Modal.Footer>
+          </form>
+        </Modal>
 
-          <Button variant="primary" onClick={this.eventClick} >
-              Add
-          </Button>
+        <Button variant="primary" onClick={eventClick} >
+            Add
+        </Button>
 
-          <DataTable
-            title="Permanences"
-            columns={this.state.columns}
-            data={this.state.permanences}
-            defaultSortFieldId={1}
-            pagination
-            language='fr'
-          />
-      </>
-    );    
-  }  
+        <DataTable
+          title="Permanences"
+          columns={columns}
+          data={permanences}
+          defaultSortFieldId={1}
+          pagination
+          language='fr'
+        />
+    </>
+  )    
 }
