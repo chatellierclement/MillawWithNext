@@ -295,9 +295,11 @@ console.log(m)
 
               <div className="col-auto d-flex align-items-center my-2 my-sm-0">
                 <a href="#" onClick={eventClick} className="btn btn-lg btn-outline-dark px-3 me-2 me-md-3">
-                  <span className="ps-1">
-                    Ajouter
-                  </span>
+                  <span className="ps-1">Ajouter</span>
+                  <svg className="ms-4" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                    <rect data-name="Icons/Tabler/Add background" width="14" height="14" fill="none"></rect>
+                    <path d="M6.329,13.414l-.006-.091V7.677H.677A.677.677,0,0,1,.585,6.329l.092-.006H6.323V.677A.677.677,0,0,1,7.671.585l.006.092V6.323h5.646a.677.677,0,0,1,.091,1.348l-.091.006H7.677v5.646a.677.677,0,0,1-1.348.091Z" fill="#1e1e1e"></path>
+                  </svg>
                 </a>
               </div>
             </div>
