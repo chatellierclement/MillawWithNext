@@ -9,7 +9,7 @@ import '../styles/app.css';
 import '../styles/calendar.css';
 import { Button } from "react-bootstrap";
 import { useRouter } from 'next/router';
-import Menu from "./Menu/Menu"
+import Menu from "./app/Menu/Menu"
 import Login from "./login"
 
 
