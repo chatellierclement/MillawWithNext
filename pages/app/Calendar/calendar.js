@@ -222,28 +222,45 @@ export default function Calendar() {
           </form>
         </Modal>
 
-        <FullCalendar
-          locale= 'fr'
-          plugins={[ dayGridPlugin, interactionPlugin ]}
-          dateClick={dayClick}
-          eventClick={eventClick} 
-          initialView='dayGridMonth'      
-          headerToolbar={{
-            left: "prev,today,next",
-            center: "title",
-            right: "dayGridMonth,dayGrid"
-          }}
-          buttonText={{
-            today:    "Courant",
-            month:    "Mois",
-            week:     "Semaine",
-            day:      "Jour",
-            dayGrid:  "Aujourd'hui"
-          }}
-          editable={editable_boolean}
-          eventDrop={eventDrop}
-          events={events}
-        />
+        <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
+          <div className="container-fluid px-0">
+            <div className="row align-items-center">
+              <div className="col">
+                <h1 className="h2 mb-0">Mon planning</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3 p-xxl-5">
+          <div className="container-fluid px-0 pb-4">
+            <div className="bg-white border-top border-4 border-yellow-400 p-3">
+            <FullCalendar
+                locale= 'fr'
+                plugins={[ dayGridPlugin, interactionPlugin ]}
+                dateClick={dayClick}
+                eventClick={eventClick} 
+                initialView='dayGridMonth'      
+                headerToolbar={{
+                  left: "prev,today,next",
+                  center: "title",
+                  right: "dayGridMonth,dayGrid"
+                }}
+                buttonText={{
+                  today:    "Aujoud'hui",
+                  month:    "Mois",
+                  week:     "Semaine",
+                  day:      "Jour",
+                  dayGrid:  "Jour"
+                }}
+                editable={editable_boolean}
+                eventDrop={eventDrop}
+                events={events}
+              />
+            </div>
+             
+          </div>
+        </div>
     </>
   );
 }
