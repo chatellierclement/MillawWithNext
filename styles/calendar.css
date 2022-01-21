@@ -2,6 +2,10 @@
   display: none;
 }
 
+.fc-toolbar {
+  text-transform: capitalize;
+}
+
 .modal-header, .modal-footer {
   background: #ecf0f1;
 }

@@ -237,6 +237,7 @@ export default function Calendar() {
             <div className="bg-white border-top border-4 border-yellow-400 p-3">
             <FullCalendar
                 locale= 'fr'
+                firstDay="1"
                 plugins={[ dayGridPlugin, interactionPlugin ]}
                 dateClick={dayClick}
                 eventClick={eventClick} 
@@ -250,7 +251,6 @@ export default function Calendar() {
                   today:    "Aujoud'hui",
                   month:    "Mois",
                   week:     "Semaine",
-                  day:      "Jour",
                   dayGrid:  "Jour"
                 }}
                 editable={editable_boolean}
@@ -258,7 +258,6 @@ export default function Calendar() {
                 events={events}
               />
             </div>
-             
           </div>
         </div>
     </>

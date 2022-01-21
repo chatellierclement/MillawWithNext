@@ -198,7 +198,6 @@ export default function Permanence() {
           <div className="container-fluid px-0">
             <div className="row">
               <DataTable
-                title="Permanences"
                 columns={columns}
                 data={permanences}
                 defaultSortFieldId={1}
