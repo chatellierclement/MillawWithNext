@@ -1,6 +1,7 @@
 import React from "react";
-import Link from 'next/link'
+import Link from 'next/link';
 import { NavLink } from "react-bootstrap";
+import Image from 'next/image';
 
 export default class Menu extends React.Component { 
 
@@ -27,7 +28,12 @@ export default class Menu extends React.Component {
         <> 
         <div className="navbar navbar-vertical navbar-expand-lg navbar-light" id="sidebar">
             <a className="navbar-brand mx-auto d-none d-lg-block my-0 my-lg-4">
-                LOGO
+            <Image
+                src="/logo.png"
+                alt="logo millaw"
+                width={450}
+                height={100}
+            />
             </a>
             <div className="navbar-collapse">
                 <ul className="navbar-nav mb-2">
