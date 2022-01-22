@@ -33,19 +33,17 @@ export default function Permanence() {
                                     <ul className="sidebar-nav">
                                         <li>
                                             <a href="#0" className="active">
-                                                <svg className="me-2" data-name="icons/tabler/user" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                                    <rect data-name="Icons/Tabler/User background" width="16" height="16" fill="none"></rect>
-                                                    <path d="M11.334,16H.667a.665.665,0,0,1-.661-.568L0,15.343v-1.75A4.179,4.179,0,0,1,4.029,9.44l.193,0H7.778A4.186,4.186,0,0,1,12,13.4l0,.191v1.75a.661.661,0,0,1-.576.651ZM4.222,10.749a2.869,2.869,0,0,0-2.884,2.683l-.005.162v1.094h9.334V13.594A2.857,2.857,0,0,0,8.1,10.767l-.162-.013-.164,0ZM6,8.314A4.2,4.2,0,0,1,1.778,4.157a4.223,4.223,0,0,1,8.445,0A4.2,4.2,0,0,1,6,8.314Zm0-7A2.87,2.87,0,0,0,3.111,4.157a2.889,2.889,0,0,0,5.778,0A2.87,2.87,0,0,0,6,1.313Z" transform="translate(2)" fill="#1e1e1e"></path>
+                                                <svg className="me-2 feather feather-user" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                    <circle cx="12" cy="7" r="4"></circle>
                                                 </svg>
+
                                                 <span className="ps-1">Informations</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#0">
-                                                <svg className="me-2" data-name="icons/tabler/user" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                                    <rect data-name="Icons/Tabler/User background" width="16" height="16" fill="none"></rect>
-                                                    <path d="M11.334,16H.667a.665.665,0,0,1-.661-.568L0,15.343v-1.75A4.179,4.179,0,0,1,4.029,9.44l.193,0H7.778A4.186,4.186,0,0,1,12,13.4l0,.191v1.75a.661.661,0,0,1-.576.651ZM4.222,10.749a2.869,2.869,0,0,0-2.884,2.683l-.005.162v1.094h9.334V13.594A2.857,2.857,0,0,0,8.1,10.767l-.162-.013-.164,0ZM6,8.314A4.2,4.2,0,0,1,1.778,4.157a4.223,4.223,0,0,1,8.445,0A4.2,4.2,0,0,1,6,8.314Zm0-7A2.87,2.87,0,0,0,3.111,4.157a2.889,2.889,0,0,0,5.778,0A2.87,2.87,0,0,0,6,1.313Z" transform="translate(2)" fill="#1e1e1e"></path>
-                                                </svg>
+                                            <svg className="me-2 feather feather-lock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                                 <span className="ps-1">Sécurité</span>
                                             </a>
                                         </li>
@@ -63,12 +61,12 @@ export default function Permanence() {
                                     <form className="px-3 form-style-two">
                                         <div className="row">
                                             <div className="col-sm-6 mb-md-4 pb-3">
-                                                <label htmlFor="FullName" className="form-label form-label-lg">Nom</label>
-                                                <input type="text" className="form-control form-control-xl" id="FullName" placeholder="Full name" value="DERAME"></input>
+                                                <label htmlFor="LastName" className="form-label form-label-lg">Nom</label>
+                                                <input type="text" className="form-control form-control-xl" id="LastName" placeholder="Nom" value="DERAME"></input>
                                             </div>
                                             <div className="col-sm-6 mb-md-4 pb-3">
-                                                <label htmlFor="FullName" className="form-label form-label-lg">Prénom</label>
-                                                <input type="text" className="form-control form-control-xl" id="FullName" placeholder="Full name" value="Maxime"></input>
+                                                <label htmlFor="FirstName" className="form-label form-label-lg">Prénom</label>
+                                                <input type="text" className="form-control form-control-xl" id="FirstName" placeholder="Prénom" value="Maxime"></input>
                                             </div>
                                             
                                         </div>
