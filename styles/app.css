@@ -192,6 +192,15 @@
     font-size: .875rem;
 }
 
+.navbar-vertical.navbar-expand-lg .navbar-vertical-footer .nav-link {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: #6c757d;
+    font-family: Montserrat,sans-serif;
+    font-size: .875rem;
+}
+
 .navbar-light {
     background-color: #fff;
 }
