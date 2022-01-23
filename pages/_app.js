@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-notifications/lib/notifications.css';
 import '../styles/app.css';
 import '../styles/calendar.css';
-import { Button } from "react-bootstrap";
 import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
@@ -29,7 +27,6 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-    <div className="bg-gray-100">
       <Menu />
           
           <div className="main-content" id="content">
@@ -46,7 +43,6 @@ function MyApp({ Component, pageProps }) {
                             </g>
                           </svg>
                         </a>
-                        {/* <Button variant="danger" onClick={handleClick}>Menu</Button> */}
                       </div>
                       <div className="col-auto d-flex flex-wrap align-items-center icon-blue-hover ps-0">
                         <div className="dropdown grid-option">
@@ -65,13 +61,7 @@ function MyApp({ Component, pageProps }) {
               </div>
 
               <Component {...pageProps} />
-
-              
-              {/* <div className="container container_custom">
-                
-              </div> */}
           </div>
-      </div>
     </>
   )
 }
