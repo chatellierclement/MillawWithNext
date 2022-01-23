@@ -1,20 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default class App extends React.Component {   
-  
-  render() {      
-    return (         
-        <> 
-          <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
-            <div className="container-fluid px-0">
-              <div className="row align-items-center">
-                <div className="col">
-                  <h1 className="h2 mb-0">Bienvenue</h1>
+export default function Index() {
+
+  return (
+    <>
+      <div className="container">
+        <div className="col-xs-12 col-sm-6 col-md-2 widget_custom">
+            <div className="x_panel">
+                <div>Nombres de permanences</div>
+                <hr />
+                <div className="text-center">
+                  <b>10</b>
                 </div>
-              </div>
             </div>
-          </div>      
-        </>
-    );
-  }
+        </div>
+
+        <div className="col-xs-12 col-sm-6 col-md-2 widget_custom">
+            <div className="x_panel">
+                <div>Nombres de permanences</div>
+                <hr />
+                <div className="text-center">
+                  <b>10</b>
+                </div>
+            </div>
+        </div>
+
+        <div className="col-xs-12 col-sm-6 col-md-2 widget_custom">
+            <div className="x_panel">
+                <div>Nombres de permanences</div>
+                <hr />
+                <div className="text-center">
+                  <b>10</b>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <style>
+        {`
+          .widget_custom .x_panel {
+              border-radius: 3%;
+              border-top: 7px solid blue;
+              box-shadow: 6px 6px 2px 1px #dfe6e9;
+              padding: 1em 0.5em;
+          }
+        `}
+      </style>
+    </>
+  );
 }
