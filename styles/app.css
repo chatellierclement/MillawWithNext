@@ -7,6 +7,15 @@
     background-color: #f8f9fa!important;
 }
 
+.btn-dark-100 {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.rounded-circle {
+    border-radius: 50%!important;
+}
+
 .rounded-12 {
     border-radius: 0.75rem!important;
 }
