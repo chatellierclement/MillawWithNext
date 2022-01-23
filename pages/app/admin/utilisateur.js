@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Select from 'react-select'
-import "gridjs/dist/theme/mermaid.css";
+//import "gridjs/dist/theme/mermaid.css";
 
 export default function Utilisateur() {
 
