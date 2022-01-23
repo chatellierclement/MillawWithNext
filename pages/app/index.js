@@ -4,9 +4,20 @@ export default function Index() {
 
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-4 widget_custom">
+      <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
+          <div className="container-fluid px-0">
+            <div className="row align-items-center">
+              <div className="col">
+                <h1 className="h2 mb-0">Accueil</h1>
+              </div>
+            </div>
+          </div>
+        </div>  
+
+        <div className="p-3 p-xxl-5">
+          <div className="container-fluid px-0">
+            <div className="row">
+            <div className="col-4 widget_custom">
               <div className="x_panel">
                   <div>Nombres de permanences</div>
                   <hr />
@@ -35,9 +46,9 @@ export default function Index() {
                   </div>
               </div>
           </div>
-        </div>
-      </div>
-
+            </div>
+            </div>
+          </div>
       <style>
         {`
           .widget_custom .x_panel {
