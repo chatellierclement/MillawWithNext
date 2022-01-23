@@ -46,7 +46,10 @@ export default function Utilisateur() {
       name: "Rôle",
       selector: (row) => row.role.libelle,
       sortable: true,
-      reorder: true
+      reorder: true,
+      cell: (row) => ( 
+        <span className={row.role.libelle == "Admin" ? "badge badge-pill badge-warning" : "badge badge-pill badge-info"}>{row.role.libelle}</span>
+      )
     },
     {
       button: true,

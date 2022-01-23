@@ -242,6 +242,22 @@ a {
     text-decoration: none;
 }
 
+.badge-info {
+    color: #fff;
+    background-color: #17a2b8;
+}
+
+.badge-warning {
+    color: #212529;
+    background-color: #ffc107;
+}
+
+.badge-pill {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem;
+}
+
 .btn-darner {
     background-color: #0984e3;
     color: white;
