@@ -188,7 +188,7 @@ export default function Permanence() {
               </div>
 
               <div className="col-auto d-flex align-items-center my-2 my-sm-0">
-                <a href="#" onClick={eventClick} className="btn btn-lg btn-outline-dark px-3 me-2 me-md-3">
+                <a href="#" onClick={eventClick} className="btn btn-lg btn-darner px-3 me-2 me-md-3">
                   <span className="ps-1">Ajouter</span>
                   <svg className="ms-4" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <rect data-name="Icons/Tabler/Add background" width="14" height="14" fill="none"></rect>

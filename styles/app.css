@@ -247,6 +247,11 @@ a {
     color: white;
 }
 
+.btn-darner:hover {
+    background-color: #74b9ff;
+    color: white;
+}
+
 .row {
     -ms-flex-negative: 0;
     flex-shrink: 0;
