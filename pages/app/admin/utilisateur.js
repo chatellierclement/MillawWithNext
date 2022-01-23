@@ -16,7 +16,7 @@ export default function Utilisateur() {
   const [defaultValueSelectRole, setDefaultValueSelectRole] = useState(null);
   const [defaultValueSelectBarreau, setDefaultValueSelectBarreau] = useState(null);
   const paginationComponentOptions = {
-    rowsPerPageText: "Ligne par page :",
+    rowsPerPageText: "Lignes par page :",
     rangeSeparatorText: 'sur'
   };
   const columns = [
