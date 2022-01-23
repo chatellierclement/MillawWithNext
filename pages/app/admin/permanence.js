@@ -17,7 +17,7 @@ export default function Permanence() {
     [
       {
         id: 2,
-        name: "name",
+        name: "Nom",
         selector: (row) => row.name,
         sortable: true,
         reorder: true

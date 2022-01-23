@@ -22,35 +22,28 @@ export default function Utilisateur() {
   const columns = [
     {
       id: 2,
-      name: "lastName",
+      name: "Nom",
       selector: (row) => row.lastName,
       sortable: true,
       reorder: true
     },
     {
       id: 3,
-      name: "firstName",
+      name: "Prénom",
       selector: (row) => row.firstName,
       sortable: true,
       reorder: true
     },
     {
       id: 4,
-      name: "email",
+      name: "Email",
       selector: (row) => row.email,
       sortable: true,
       reorder: true
     },
     {
-      id: 5,
-      name: "barreau",
-      selector: (row) => row.bar.name,
-      sortable: true,
-      reorder: true
-    },
-    {
       id: 6,
-      name: "role",
+      name: "Rôle",
       selector: (row) => row.role.libelle,
       sortable: true,
       reorder: true
