@@ -52,7 +52,7 @@ export default function Layout({
 //     }
 //   }, [router.query]);
 
-  const siteTitle = "Outline – Team knowledge base & wiki";
+  const siteTitle = "Millaw - Un espace de travail pour votre barreau";
   const resolvedTitle = pageTitle || (typeof title === "string" ? title : "");
   const fullTitle = `${resolvedTitle ? resolvedTitle + " – " : ""}${siteTitle}`;
 
