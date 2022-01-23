@@ -84,17 +84,7 @@ export default function Layout({
           rel="stylesheet"
           href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css"
         />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title="Changelog RSS"
-          href="/rss.xml"
-        />
-        <meta
-          name="description"
-          property="og:description"
-          content="A modern team knowledge base for your internal documentation, product specs, support answers, meeting notes, onboarding, &amp; more…"
-        />
+    
         <meta name="theme-color" content="#FFFFFF" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="referrer" content="origin" />
@@ -111,10 +101,6 @@ export default function Layout({
           property="og:image"
           content="/images/screenshot.png"
         />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:domain" content="getoutline.com" />
-        <meta name="twitter:title" content={resolvedTitle || siteTitle} />
-        <meta name="twitter:image" content="/images/screenshot.png" />
       </Head>
       <header>
         <div className="container">
