@@ -15,14 +15,11 @@ export default function Utilisateur() {
   const [optionsBar, setOptionsBar] = useState([]);
   const [defaultValueSelectRole, setDefaultValueSelectRole] = useState(null);
   const [defaultValueSelectBarreau, setDefaultValueSelectBarreau] = useState(null);
+  const paginationComponentOptions = {
+    rowsPerPageText: "Ligne par page",
+    rangeSeparatorText: 'sur'
+  };
   const columns = [
-    {
-      id: 1,
-      name: "id",
-      selector: (row) => row.id,
-      sortable: true,
-      reorder: true
-    },
     {
       id: 2,
       name: "lastName",
@@ -85,6 +82,8 @@ export default function Utilisateur() {
       )
     }
   ];
+
+
 
   useEffect(() => {  
     //Initialisation des User
@@ -344,8 +343,8 @@ console.log(m)
                   data={users}
                   defaultSortFieldId={1}
                   pagination
-                  language='fr'
                   noDataComponent="Il n'y a aucun utilisateur"
+                  paginationComponentOptions={paginationComponentOptions}
                 />
               </div>
               

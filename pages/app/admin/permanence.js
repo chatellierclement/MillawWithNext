@@ -9,15 +9,12 @@ export default function Permanence() {
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
+  const paginationComponentOptions = {
+    rowsPerPageText: "Ligne par page",
+    rangeSeparatorText: 'sur'
+  };
   const columns = 
     [
-      {
-        id: 1,
-        name: "id",
-        selector: (row) => row.id,
-        sortable: true,
-        reorder: true
-      },
       {
         id: 2,
         name: "name",
@@ -231,8 +228,8 @@ export default function Permanence() {
                   data={permanences}
                   defaultSortFieldId={1}
                   pagination
-                  language='fr'
                   noDataComponent="Il n'y a aucune permanence"
+                  paginationComponentOptions={paginationComponentOptions}
                 />
               </div>
             </div>
