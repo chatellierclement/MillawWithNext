@@ -9,16 +9,22 @@ import '../styles/calendar.css';
 import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
+import Index from '.';
 
 
 function MyApp({ Component, pageProps }) {  
   
   const router = useRouter();
-  const noLayout = ['/login']
+  const loginRoot = ['/login'];
+  const marketingRoot = ['/'];
 
-  if(noLayout.indexOf(router.route) > -1) {
+  if(loginRoot.indexOf(router.route) > -1) {
     return <Login />
-  } 
+  }
+
+  if(marketingRoot.indexOf(router.route) > -1) {
+    return <Index />
+  }
 
   const handleClick = () => {
     document.getElementById("sidebar").classList.toggle("active");
