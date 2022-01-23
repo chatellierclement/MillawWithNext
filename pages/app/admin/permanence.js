@@ -194,16 +194,38 @@ export default function Permanence() {
           </div>
         </div>  
 
-        <div className="row g-0">
+        <div className="p-3 p-xxl-5">
           <div className="container-fluid px-0">
             <div className="row">
-              <DataTable
-                columns={columns}
-                data={permanences}
-                defaultSortFieldId={1}
-                pagination
-                language='fr'
-              />
+
+              <div className="border-bottom border-gray-200 border-3 pb-4 pt-3 mb-4 mb-xl-5">
+                <form>
+                  <div className="align-items-center">
+                    <div className="col">
+                      <div className="input-group input-group-xl bg-white border border-gray-300 rounded px-3 me-2 me-xl-4">
+                        <button type="button" className="border-0 bg-transparent p-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" id="Icon" width="14" height="14" viewBox="0 0 14 14">
+                            <rect id="Icons_Tabler_Search_background" data-name="Icons/Tabler/Search background" width="14" height="14" fill="none"/>
+                            <path id="Combined_Shape" data-name="Combined Shape" d="M13.141,13.895l-.06-.052L9.1,9.859A5.569,5.569,0,1,1,9.859,9.1l3.983,3.983a.539.539,0,0,1-.7.813ZM1.077,5.564A4.487,4.487,0,1,0,5.564,1.077,4.492,4.492,0,0,0,1.077,5.564Z" fill="#6c757d"/>
+                          </svg>
+                        </button>
+                        <input type="search" className="form-control border-0" placeholder="Rechercher une permanence"></input>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div className="card rounded-12 shadow-dark-80 border border-gray-50 mb-3 mb-xl-5">
+                <DataTable
+                  columns={columns}
+                  data={permanences}
+                  defaultSortFieldId={1}
+                  pagination
+                  language='fr'
+                  noDataComponent="Il n'y a aucune permanence"
+                />
+              </div>
             </div>
           </div>
         </div>
