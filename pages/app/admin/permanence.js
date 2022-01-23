@@ -10,7 +10,7 @@ export default function Permanence() {
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
   const paginationComponentOptions = {
-    rowsPerPageText: "Ligne par page :",
+    rowsPerPageText: "Lignes par page :",
     rangeSeparatorText: 'sur'
   };
   const columns = 
