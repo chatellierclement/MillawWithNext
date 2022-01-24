@@ -27,14 +27,17 @@ export default class Menu extends React.Component {
     return (         
         <> 
         <div className="navbar navbar-vertical navbar-expand-lg navbar-light" id="sidebar">
-            <a className="navbar-brand mx-auto d-none d-lg-block my-0 my-lg-4">
-            <Image
-                src="/logo.png"
-                alt="logo millaw"
-                width={450}
-                height={100}
-            />
-            </a>
+            <Link href="/app">
+                <a className="navbar-brand mx-auto d-none d-lg-block my-0 my-lg-4">
+                    <Image
+                        src="/logo.png"
+                        alt="logo millaw"
+                        width={450}
+                        height={100}
+                    />
+                </a>
+            </Link>
+            
             <div className="navbar-collapse">
                 <ul className="navbar-nav mb-2">
                     <li className="nav-item">
@@ -75,7 +78,7 @@ export default class Menu extends React.Component {
                             <a className="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                 <span className="ms-2">
-                                    Maxime DERAME
+                                    John Doe
                                 </span> 
                             </a>
                         </Link>
