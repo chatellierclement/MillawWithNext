@@ -17,21 +17,24 @@ export default function Index() {
           <h1 className="title">Un espace de travail pour votre barreau</h1>
 
           <p className="description">
-            ajouter ici une description.
+            Perdu dans les tâches administratives ? 
+            Il est temps d'organiser votre barreau.
           </p>
           
           <p className={true ? "centered" : ""}>
-            {/* <Button href="#">
-              Demander un accès&rarr;
-            </Button> */}
+            <button className="btn btn-primary" type="button">
+              Demander un accès &rarr;
+            </button>
           </p>
           
           <div className="screenshot-wrapper">
-            <Image
-              src="/images/screenshot.png"
-              alt="Millaw screenshot"
-              width={1728}
-              height={1140}
+            <img
+              className="screenshot"
+              src="/hero.png"
+              style={{
+                maxWidth: "1140",
+                maxHeight: "800"
+              }}
             />
           </div>
         </div>
@@ -61,8 +64,8 @@ export default function Index() {
             </div>
             <div className="pure-u-1 pure-u-md-2-5 feature-right">
               <h2>
-                <em>title.</em>
-                An intuitive app
+                <em>Gérer vos permanences</em>
+                Une nouvelle permanence ? Créez la rapidement et vous n'avez plus qu"à générer le planning.
               </h2>
             </div>
           </div>
@@ -72,8 +75,9 @@ export default function Index() {
           <div className="pure-g container reverse">
             <div className="pure-u-1 pure-u-md-2-5 feature-left">
               <h2>
-                <em>Integrated with Slack.</em>
-                app.
+                <em>Générer vos plannings.</em>
+                Gagnez du temps en générant les plannings de vos permanences.
+                Notre algorithme prend en charge divers critères pour qu'aucun avocat ne soit laisé. 
               </h2>
             </div>
             <div className="pure-u-1 pure-u-md-3-5 feature-right">
@@ -89,7 +93,7 @@ export default function Index() {
           </div>
         </section>
 
-        <section className="feature">
+        {/* <section className="feature">
           <div className="pure-g container">
             <div className="pure-u-1 pure-u-md-3-5 feature-left">
               <img
@@ -108,7 +112,7 @@ export default function Index() {
               </h2>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section className="use-cases">
           <Tabs defaultIndex={1}>
@@ -129,18 +133,18 @@ export default function Index() {
               <TabPanel>
                 <div className="pure-g">
                   <div className="pure-u-1 pure-u-md-3-5">
-                    <h3 className="heading">Barreau</h3>
+                    <h3 className="heading">Intégrations</h3>
                     <p className="content">
-                      app.
+                    L'intégration de nouveaux avocats et de nouvelles permanences n'a jamais été aussi facile
                     </p>
-                    <h3 className="heading">Handbook</h3>
+                    <h3 className="heading">Planning</h3>
                     <p className="content">
-                      app
+                      Générer vos plannings pour le mois un par un ou d'un coup. Notre algorithme prend en charge divers critères pour qu'aucun avocat ne soit laisé 
                     </p>
                   </div>
                   <div className="pure-u-1 pure-u-md-2-5">
                     <p className="hero">
-                      app.
+                      Millaw facilite grandement les tâches administratives liés aux permanences des avocats. N'attendez plus et gagnez en éfficacité.
                     </p>
                   </div>
                 </div>
@@ -148,18 +152,14 @@ export default function Index() {
               <TabPanel>
                 <div className="pure-g">
                   <div className="pure-u-1 pure-u-md-3-5">
-                    <h3 className="heading">Scalable support</h3>
+                    <h3 className="heading">Planning</h3>
                     <p className="content">
-                      app.
-                    </p>
-                    <h3 className="heading">Product answers</h3>
-                    <p className="content">
-                      app.
+                      Votre planining et vos désignations sont à porté de main. Ne perdez pas de temps et retrouvez les informations dont vous avez besoin n'importe ou et n'importe quand.
                     </p>
                   </div>
                   <div className="pure-u-1 pure-u-md-2-5">
                     <p className="hero">
-                      app.
+                    Millaw facilite la recherche des informations dont les avocats ont besoin pour répondre. Ils n'ont plus qu'à se concentrer sur leur intervention.
                     </p>
                   </div>
                 </div>
@@ -174,30 +174,20 @@ export default function Index() {
               <Card
                 title={
                   <>
-                      {/* <StarredIcon
-                      size={32}
-                      color="currentColor"
-                      className="pull-icon"
-                    />   */}
-                    &nbsp;Ultra-rapides
+                    &nbsp;Ultra-réactive
                   </>
                 }
-                description="Millaw is rapide, vraiment rapide. We’ve worked hard to ensure millisecond response times – documents load instantly, search is speedy and navigating the UI is snappy."
+                description="Millaw est réactive, vraiment réactive. Nous avons travaillé dur pour garantir des temps de réponse de l'ordre de la milliseconde. Les informations se chargent instantanément, la recherche est rapide et la navigation dans l'interface utilisateur est rapide."
               />
             </div>
             <div className="pure-u-1 pure-u-md-1-3">
               <Card
                 title={
                   <>
-                  {/* <CloudIcon
-                      size={32}
-                      color="currentColor"
-                      className="pull-icon"
-                    />   */}
-                    &nbsp;Collaborative
+                    &nbsp;Mobile
                   </>
                 }
-                description="ould be enjoyable."
+                description="Téléchargez notre application pour iOS et Android pour retrouver votre planning depuis n'importe où"
               />
             </div>
             
@@ -205,11 +195,6 @@ export default function Index() {
                <Card
                 title={
                   <>
-                     {/* <PadlockIcon
-                      size={32}
-                      color="currentColor"
-                      className="pull-icon"
-                    />  */}
                     &nbsp;Security &amp; permissions
                   </>
                 }
@@ -221,13 +206,13 @@ export default function Index() {
           </div>
         </section>
 
-        <p className="description">
-          On the same page as us? Sign up in just a couple of clicks…
-        </p>
-         
         <p className={true ? "centered" : ""}>
-       
-        </p>
+          <h3>Demandez un accès</h3>
+          <p>Millaw est un espace de travail optimisé pour les barreaux ! Intégré, généré et restez organisé.</p>
+            <button className="btn btn-primary" type="button">
+              Demander un accès &rarr;
+            </button>
+          </p>
       </main>
 
       <style jsx>{`
