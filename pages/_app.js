@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
 import Index from '.';
+import useToken from './useToken';
 
 
 function MyApp({ Component, pageProps }) {  
@@ -17,23 +18,38 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const loginRoot = ['/login'];
   const marketingRoot = ['/'];
+  const { token, setToken } = useToken();
 
-  if(loginRoot.indexOf(router.route) > -1) {
-    return <Login />
+  function handleClick() {
+    document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("content").classList.toggle("active");
+  }
+
+  function redirect(url) {
+    router.push(url)
   }
 
   if(marketingRoot.indexOf(router.route) > -1) {
     return <Index />
+  }  
+
+  if(!token) {
+    return <Login setToken={setToken} />
+  } else if (loginRoot.indexOf(router.route) > -1) {
+    redirect("/app")
   }
 
-  const handleClick = () => {
-    document.getElementById("sidebar").classList.toggle("active");
-    document.getElementById("content").classList.toggle("active");
-  };
+  if(loginRoot.indexOf(router.route) > -1 && !token) {
+    return <Login setToken={setToken} />
+  } else {
+    redirect
+  }
 
   return (
     <>
-      <Menu />
+          <div>
+            <Menu />
+          </div>
           
           <div className="main-content" id="content">
               <div className="header border-bottom border-gray-200 header-fixed">

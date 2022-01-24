@@ -1,29 +1,9 @@
 import React from "react";
 import Link from 'next/link';
-import { NavLink } from "react-bootstrap";
 import Image from 'next/image';
 
-export default class Menu extends React.Component { 
-
-  constructor(props) {
-    super(props);
-    this.state = {
-        user: null
-    }    
-
-    //this.state.user = JSON.parse(localStorage.getItem("user"))
-    this.state.user = {
-        lastName : "CHATELLIER",
-        firstName: "Clément",
-        role: {
-        id: 1,
-        libelle: "Dev"
-        }
-    }
-  }    
-  
-  
-  render() {      
+export default function Menu() { 
+        
     return (         
         <> 
         <div className="navbar navbar-vertical navbar-expand-lg navbar-light" id="sidebar">
@@ -88,5 +68,4 @@ export default class Menu extends React.Component {
         </div>
         </>
     );
-  }
 }

@@ -4,9 +4,18 @@ import prisma from '../../prisma/lib/prisma'
 export default async function user(req, res) {
   switch (req.method) {
     case "GET":
-      let userFind = await prisma.user.findMany({
-        include: { role: true, bar: true }
-      })
+      let userFind = null
+      if (req.query.email && req.query.password) {
+        userFind = await prisma.user.findFirst({
+          where: {
+            AND: [{email: req.query.email},{password: req.query.password}]
+          }
+         })       
+      } else {
+        userFind = await prisma.user.findMany({
+          include: { role: true, bar: true }
+        })
+      }
       res.status(200).json(userFind)
       break;
     case "POST":

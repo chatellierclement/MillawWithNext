@@ -171,6 +171,7 @@ export default function Calendar() {
       
   return (
     <>
+      <div>
         <NotificationContainer/>
 
         <Modal show={show} onHide={openCloseModal}>
@@ -260,6 +261,7 @@ export default function Calendar() {
             </div>
           </div>
         </div>
+      </div>
     </>
   );
 }

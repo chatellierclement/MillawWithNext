@@ -164,7 +164,7 @@ export default function HeaderNavigation() {
             <span className="auth">
               <MenuItem
                 className="highlighted"
-                href={`http://localhost:3000/app`}
+                href={`http://localhost:3000/login`}
                 top
               > Se connecter
               </MenuItem>{" "}

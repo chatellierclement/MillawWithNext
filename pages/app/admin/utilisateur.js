@@ -20,28 +20,28 @@ export default function Utilisateur() {
   };
   const columns = [
     {
-      id: 2,
+      id: 1,
       name: "Nom",
       selector: (row) => row.lastName,
       sortable: true,
       reorder: true
     },
     {
-      id: 3,
+      id: 2,
       name: "Prénom",
       selector: (row) => row.firstName,
       sortable: true,
       reorder: true
     },
     {
-      id: 4,
+      id: 3,
       name: "Email",
       selector: (row) => row.email,
       sortable: true,
       reorder: true
     },
     {
-      id: 6,
+      id: 4,
       name: "Rôle",
       selector: (row) => row.role.libelle,
       sortable: true,
@@ -130,9 +130,8 @@ export default function Utilisateur() {
     item = { ...item, [action.name] : value.value }
     
     let m = { ...modal, item }
-console.log(m)
+    
     setModal(m)    
-
   }
 
   //Ouverture/Fermeture de la modal
@@ -160,7 +159,6 @@ console.log(m)
       let user = users.find(item => item.id == row.id)
       m = { ...m, item: user }   
       
-      console.log(m)
       //Hydratation de la valeur par défaut du Select (le Role du User en Edit)
       let valueRole = optionsRole.filter(option => { return m && m.item.role.id === option.value })
       setDefaultValueSelectRole(valueRole[0])
@@ -183,6 +181,7 @@ console.log(m)
     delete modal.item.role
     delete modal.item.bar
     
+    console.log(modal)
     //Mise a jour
     if (modal.item.id) { 
       axios.put('/api/user', modal.item) 
@@ -202,7 +201,7 @@ console.log(m)
       const u = {
         lastName: modal.item.lastName,
         firstName: modal.item.firstName,
-        email: modal.item.firstName,
+        email: modal.item.email,
         password: 'test',
         bar_id: modal.item.bar_id,
         role_id: modal.item.role_id
@@ -265,7 +264,7 @@ console.log(m)
               />  
               <span>email</span> 
               <input type='email' 
-                    name="firstName" 
+                    name="email" 
                     className="form-control" 
                     onChange={changeObjEventModal} 
                     defaultValue={modal ? modal.item.email : ""} 

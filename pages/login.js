@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
-export default function Login() {
+export default function Login({ setToken }) {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,8 +13,21 @@ export default function Login() {
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    axios.get('/api/user', { params: { email: email, password: password } }) 
+      .then(function (response) {        
+        if (response.data) {
+          console.log(response.data)
+          setToken('123')
+          location.href = "/app"
+        }        
+      }) 
+      .catch(function (error) { 
+        console.log(error); 
+      })      
+    
   }
 
   return (
@@ -40,4 +56,8 @@ export default function Login() {
       </Form>
     </div>
   );
+}
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
 }
