@@ -33,16 +33,8 @@ function MyApp({ Component, pageProps }) {
     return <Index />
   }  
 
-  if(!token) {
-    return <Login setToken={setToken} />
-  } else if (loginRoot.indexOf(router.route) > -1) {
-    redirect("/app")
-  }
-
-  if(loginRoot.indexOf(router.route) > -1 && !token) {
-    return <Login setToken={setToken} />
-  } else {
-    redirect
+  if (loginRoot.indexOf(router.route) > -1) {
+      return <Login setToken={setToken} />
   }
 
   return (

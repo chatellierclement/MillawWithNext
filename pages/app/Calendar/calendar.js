@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import { Modal, Button } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
+import Select from 'react-select'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 export default function Calendar() {   
@@ -16,6 +17,8 @@ export default function Calendar() {
   const [editable_boolean, setEditableBoolean] = useState(true);
   const [modal, setModal] = useState(null);  
   const [datePicker, setDatePicker] = useState(null);
+  const [optionsUser, setOptionsUser] = useState([]);
+  const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
 
   useEffect(() => {
     
@@ -24,13 +27,25 @@ export default function Calendar() {
     setEditableBoolean(type)
 
     //Initialisation des Events
-    axios.get('/api/event') 
+    axios.get('/api/event', { params: { user_id: 1 } })
     .then(function (response) { 
       setEvents(response.data);
     }) 
     .catch(function (error) { 
       console.log(error); 
-    })   
+    }) 
+    
+    //Initialisation des User
+    axios.get('/api/user') 
+      .then(function (response) { 
+        let data_select = response.data.map(item => {
+          return { value: item.id, label: item.lastName + " " + item.firstName  }
+        })
+        setOptionsUser(data_select);
+      }) 
+      .catch(function (error) { 
+        console.log(error); 
+      }) 
   }, [])
 
   //Binding de l'objet Event de la modal
@@ -40,6 +55,16 @@ export default function Calendar() {
     
     let m = { ...modal, item}
     setModal(m)
+  }
+
+  //Binding de l'objet User de la modal - Special pour le SELECT
+  function changeObjEventModal_Select(value, action) {
+    let { item } = modal
+    item = { ...item, [action.name] : value.value }
+    
+    let m = { ...modal, item }
+    
+    setModal(m)    
   }
 
   //Ouverture/Fermeture de la modal
@@ -78,6 +103,11 @@ export default function Calendar() {
     //Hydratation de l'objet Event dans formulaire de la Modal
     let event = events.find(item => item.id == info.event._def.publicId)
     m = { ...m, item: event }
+
+    //Hydratation de la valeur par défaut du Select
+    console.log(m) 
+    let valueUser = optionsUser.filter(option => { return m && m.item.user.id === option.value })      
+    setDefaultValueSelectUser(valueUser[0])
 
     setModal(m)
     
@@ -123,6 +153,10 @@ export default function Calendar() {
         })
 
     } else {
+
+      //TODO : Pb de relation
+      delete modal.item.user
+
       //Mise a jour
       if (modal.item.id) {         
             
@@ -210,7 +244,12 @@ export default function Calendar() {
                     onChange={(e) => changeObjEventModal(e)}
                     defaultValue={modal ? modal.item.description : ""} 
                     disabled={role === 'admin' ? '' : 'disabled'}/>
-                              
+              <span>Utilisateur</span>
+              <Select name="user_id" 
+                options={optionsUser} 
+                onChange={changeObjEventModal_Select} 
+                defaultValue={defaultValueSelectUser} 
+              />                              
             </Modal.Body>              
             <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
               <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
