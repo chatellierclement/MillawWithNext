@@ -26,14 +26,7 @@ export default function Calendar() {
     let type = role === "admin" ? true : false  
     setEditableBoolean(type)
 
-    //Initialisation des Events
-    axios.get('/api/event', { params: { user_id: 1 } })
-    .then(function (response) { 
-      setEvents(response.data);
-    }) 
-    .catch(function (error) { 
-      console.log(error); 
-    }) 
+    getEvents()
     
     //Initialisation des User
     axios.get('/api/user') 
@@ -47,6 +40,17 @@ export default function Calendar() {
         console.log(error); 
       }) 
   }, [])
+
+  //Initialisation des Events
+  async function getEvents() {
+    await axios.get('/api/event', { params: { user_id: 1 } })
+    .then(function (response) { 
+      setEvents(response.data);
+    }) 
+    .catch(function (error) { 
+      console.log(error); 
+    }) 
+  }
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
@@ -105,7 +109,6 @@ export default function Calendar() {
     m = { ...m, item: event }
 
     //Hydratation de la valeur par défaut du Select
-    console.log(m) 
     let valueUser = optionsUser.filter(option => { return m && m.item.user.id === option.value })      
     setDefaultValueSelectUser(valueUser[0])
 
@@ -127,9 +130,7 @@ export default function Calendar() {
     axios.put('/api/event', event) 
       .then(function (response) {
         NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-        let findIndex = events.findIndex(item => item.id == response.data.id)
-        events[findIndex] = response.data
-        setEvents([...events]);
+        getEvents()
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -144,9 +145,7 @@ export default function Calendar() {
       axios.delete('/api/event', { data : modal.item }) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement a été supprimé avec succès.", 3000)
-          let findIndex = events.findIndex(item => item.id == response.data.id)
-          events.splice(findIndex,1)
-          setEvents([...events]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -163,9 +162,7 @@ export default function Calendar() {
         axios.put('/api/event', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          let findIndex = events.findIndex(item => item.id == response.data.id)
-          events[findIndex] = response.data
-          setEvents([...events]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -173,7 +170,6 @@ export default function Calendar() {
 
       } else {
         //Ajout
-        console.log(modal)
         const newEvent = {
           title: modal.item.title,
           description: modal.item.description,
@@ -184,7 +180,7 @@ export default function Calendar() {
         axios.post('/api/event', newEvent) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          setEvents([...events, response.data]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
