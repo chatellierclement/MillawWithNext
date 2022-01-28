@@ -173,10 +173,12 @@ export default function Calendar() {
 
       } else {
         //Ajout
+        console.log(modal)
         const newEvent = {
           title: modal.item.title,
           description: modal.item.description,
-          date: modal.item.date
+          date: modal.item.date,          
+          user_id: modal.item.user_id
         };      
 
         axios.post('/api/event', newEvent) 
