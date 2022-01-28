@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import { Modal, Button } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
+import Select from 'react-select'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 export default function Calendar() {   
@@ -16,6 +17,8 @@ export default function Calendar() {
   const [editable_boolean, setEditableBoolean] = useState(true);
   const [modal, setModal] = useState(null);  
   const [datePicker, setDatePicker] = useState(null);
+  const [optionsUser, setOptionsUser] = useState([]);
+  const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
 
   useEffect(() => {
     
@@ -23,15 +26,31 @@ export default function Calendar() {
     let type = role === "admin" ? true : false  
     setEditableBoolean(type)
 
-    //Initialisation des Events
-    axios.get('/api/event') 
+    getEvents()
+    
+    //Initialisation des User
+    axios.get('/api/user') 
+      .then(function (response) { 
+        let data_select = response.data.map(item => {
+          return { value: item.id, label: item.lastName + " " + item.firstName  }
+        })
+        setOptionsUser(data_select);
+      }) 
+      .catch(function (error) { 
+        console.log(error); 
+      }) 
+  }, [])
+
+  //Initialisation des Events
+  async function getEvents() {
+    await axios.get('/api/event', { params: { user_id: 1 } })
     .then(function (response) { 
       setEvents(response.data);
     }) 
     .catch(function (error) { 
       console.log(error); 
-    })   
-  }, [])
+    }) 
+  }
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
@@ -40,6 +59,16 @@ export default function Calendar() {
     
     let m = { ...modal, item}
     setModal(m)
+  }
+
+  //Binding de l'objet User de la modal - Special pour le SELECT
+  function changeObjEventModal_Select(value, action) {
+    let { item } = modal
+    item = { ...item, [action.name] : value.value }
+    
+    let m = { ...modal, item }
+    
+    setModal(m)    
   }
 
   //Ouverture/Fermeture de la modal
@@ -79,6 +108,10 @@ export default function Calendar() {
     let event = events.find(item => item.id == info.event._def.publicId)
     m = { ...m, item: event }
 
+    //Hydratation de la valeur par défaut du Select
+    let valueUser = optionsUser.filter(option => { return m && m.item.user.id === option.value })      
+    setDefaultValueSelectUser(valueUser[0])
+
     setModal(m)
     
     //Cas particulier de la date qui doit etre setter
@@ -94,12 +127,13 @@ export default function Calendar() {
 
     event.date = moment(info.event.start).format('YYYY-MM-DD')   
     
+    //TODO : Pb de relation
+    delete event.user
+
     axios.put('/api/event', event) 
       .then(function (response) {
         NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-        let findIndex = events.findIndex(item => item.id == response.data.id)
-        events[findIndex] = response.data
-        setEvents([...events]);
+        getEvents()
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -114,24 +148,24 @@ export default function Calendar() {
       axios.delete('/api/event', { data : modal.item }) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement a été supprimé avec succès.", 3000)
-          let findIndex = events.findIndex(item => item.id == response.data.id)
-          events.splice(findIndex,1)
-          setEvents([...events]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
         })
 
     } else {
+
+      //TODO : Pb de relation
+      delete modal.item.user
+
       //Mise a jour
       if (modal.item.id) {         
             
         axios.put('/api/event', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          let findIndex = events.findIndex(item => item.id == response.data.id)
-          events[findIndex] = response.data
-          setEvents([...events]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -142,13 +176,14 @@ export default function Calendar() {
         const newEvent = {
           title: modal.item.title,
           description: modal.item.description,
-          date: modal.item.date
+          date: modal.item.date,          
+          user_id: modal.item.user_id
         };      
 
         axios.post('/api/event', newEvent) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          setEvents([...events, response.data]);
+          getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -210,7 +245,12 @@ export default function Calendar() {
                     onChange={(e) => changeObjEventModal(e)}
                     defaultValue={modal ? modal.item.description : ""} 
                     disabled={role === 'admin' ? '' : 'disabled'}/>
-                              
+              <span>Utilisateur</span>
+              <Select name="user_id" 
+                options={optionsUser} 
+                onChange={changeObjEventModal_Select} 
+                defaultValue={defaultValueSelectUser} 
+              />                              
             </Modal.Body>              
             <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
               <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >

@@ -4,7 +4,12 @@ import prisma from '../../prisma/lib/prisma'
 export default async function event(req, res) {
   switch (req.method) {
     case "GET":
-      let eventFind = await prisma.event.findMany()
+      let eventFind = await prisma.event.findMany({
+        include: { user: true },
+        where: {
+          AND: [{user_id: +req.query.user_id}]
+        }
+      })
       res.status(200).json(eventFind)
       break;
     case "POST":

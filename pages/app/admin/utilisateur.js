@@ -181,7 +181,6 @@ export default function Utilisateur() {
     delete modal.item.role
     delete modal.item.bar
     
-    console.log(modal)
     //Mise a jour
     if (modal.item.id) { 
       axios.put('/api/user', modal.item) 
