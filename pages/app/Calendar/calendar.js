@@ -127,6 +127,9 @@ export default function Calendar() {
 
     event.date = moment(info.event.start).format('YYYY-MM-DD')   
     
+    //TODO : Pb de relation
+    delete event.user
+
     axios.put('/api/event', event) 
       .then(function (response) {
         NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
