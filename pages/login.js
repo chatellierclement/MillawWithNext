@@ -33,7 +33,7 @@ export default function Login({ setToken }) {
     <>
       <div className="position-absolute top-0 start-0 p-4 p-md-5">
         <a href="#" className="ps-lg-3">
-          {/* <img src="/logo-white.svg" alt="Millaw" /> */}
+           {/* <img src="/logo-white.svg" alt="Millaw" />  */}
         </a>
       </div>
       <div className="row g-0 align-items-center">
@@ -83,7 +83,6 @@ export default function Login({ setToken }) {
                 </Form.Group>
                 <div className="d-grid">
                   <Button
-                    block
                     size="xl"
                     type="submit"
                     disabled={!validateForm()}
@@ -134,14 +133,17 @@ export default function Login({ setToken }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()}>
+        <Button size="lg" type="submit" disabled={!validateForm()}>
           Login
         </Button>
       </Form>
     </div> */}
 
-      <style jsx>
+      {/* <style jsx>
         {`
+          html, body {
+            height: 100%;
+          }
           .bg-gray-100 {
             background-color: #f8f9fa!important;
           }
@@ -150,6 +152,10 @@ export default function Login({ setToken }) {
             width: 100%;
             -o-object-fit: cover;
             object-fit: cover;
+          }
+
+          .position-absolute {
+            position: absolute!important;
           }
 
           .login-form {
@@ -168,7 +174,7 @@ export default function Login({ setToken }) {
             margin-left: calc(var(--bs-gutter-x)/ -2);
           }
         `}
-      </style>
+      </style> */}
     </>
   );
 }

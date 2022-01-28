@@ -195,10 +195,10 @@ export default function Index() {
                <Card
                 title={
                   <>
-                    &nbsp;Security &amp; permissions
+                    &nbsp;Commission &amp; d'office
                   </>
                 }
-                description=" and more…"
+                description="Créez et retrouver facilement vos commissions d'offfice. Générez egalement les documents associés (cerfa, courrier)"
               /> 
             </div>
            
@@ -216,6 +216,7 @@ export default function Index() {
       </main>
 
       <style jsx>{`
+
           .centered {
             text-align: center;
           }
@@ -395,7 +396,7 @@ export default function Index() {
           }
         }
       `}</style>
-      <style jsx global>
+      <style jsx>
         {`
         body{
           background-color: white !important;

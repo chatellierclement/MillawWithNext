@@ -31,19 +31,25 @@ function MyApp({ Component, pageProps }) {
 
   if(marketingRoot.indexOf(router.route) > -1) {
     return <Index />
-  }  
-
-  if(!token) {
-    return <Login setToken={setToken} />
-  } else if (loginRoot.indexOf(router.route) > -1) {
-    redirect("/app")
   }
-
+  
   if(loginRoot.indexOf(router.route) > -1 && !token) {
-    return <Login setToken={setToken} />
-  } else {
-    redirect
+    return <Login />
   }
+
+
+
+  // if(!token) {
+  //   return <Login setToken={setToken} />
+  // } else if (loginRoot.indexOf(router.route) > -1) {
+  //   redirect("/app")
+  // }
+
+  // if(loginRoot.indexOf(router.route) > -1 && !token) {
+  //   return <Login setToken={setToken} />
+  // } else {
+  //   redirect
+  // }
 
   return (
     <>
