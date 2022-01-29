@@ -178,7 +178,7 @@ export default function Calendar() {
           description: modal.item.description,
           date: modal.item.date,          
           user_id: modal.item.user_id
-        };      
+        };  
 
         axios.post('/api/event', newEvent) 
         .then(function (response) {

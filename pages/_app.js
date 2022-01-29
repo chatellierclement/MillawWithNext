@@ -6,12 +6,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-notifications/lib/notifications.css';
 import '../styles/app.css';
 import '../styles/calendar.css';
+import { useEffect } from 'react'
 import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
 import Index from '.';
 import useToken from './useToken';
-import { useEffect } from 'react';
 
 
 function MyApp({ Component, pageProps }) {  
@@ -24,10 +24,6 @@ function MyApp({ Component, pageProps }) {
   function handleClick() {
     document.getElementById("sidebar").classList.toggle("active");
     document.getElementById("content").classList.toggle("active");
-  }
-
-  function redirect(url) {
-    router.push(url)
   }
 
   if(marketingRoot.indexOf(router.route) > -1) {
