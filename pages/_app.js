@@ -33,8 +33,8 @@ function MyApp({ Component, pageProps }) {
     return <Index />
   }
   
-  if(loginRoot.indexOf(router.route) > -1 && !token) {
-    return <Login />
+  if(loginRoot.indexOf(router.route) > -1) {
+    return <Login setToken={setToken} />
   }
 
 

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import useToken from '../useToken';
 
 export default function Index() {
+
+  const { token, setToken } = useToken();
 
   return (
     <>
@@ -8,7 +11,9 @@ export default function Index() {
           <div className="container-fluid px-0">
             <div className="row align-items-center">
               <div className="col">
-                <h1 className="h2 mb-0">Bonjour Maître Doe</h1>
+              {token &&
+                <h1 className="h2 mb-0">Bonjour {token.firstName} {token.lastName}</h1>
+              } 
               </div>
             </div>
           </div>

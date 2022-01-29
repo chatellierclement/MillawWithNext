@@ -19,8 +19,7 @@ export default function Login({ setToken }) {
       .get("/api/user", { params: { email: email, password: password } })
       .then(function (response) {
         if (response.data) {
-          console.log(response.data);
-          setToken("123");
+          setToken(response.data)
           location.href = "/app";
         }
       })
@@ -37,15 +36,15 @@ export default function Login({ setToken }) {
         </a>
       </div>
       <div className="row g-0 align-items-center">
-        <div className="col-lg-7">
+        {/* <div className="col-lg-7">
         <img
               className="cover-fit"
               src="/signin-cover.png"
               alt="Sign in Cover"
             />
         
-        </div>
-        <div className="col-lg-5 px-md-3 px-xl-5">
+        </div>*/}
+        <div className="login-center col-lg-5 px-md-3 px-xl-5">
           <div className="px-3 py-4 p-md-5 p-xxl-5 mx-xxl-4">
             <div className="login-form py-2 py-md-0 mx-auto mx-lg-0">
               <h2 className="h1 mb-3">Connexion</h2>
@@ -139,42 +138,13 @@ export default function Login({ setToken }) {
       </Form>
     </div> */}
 
-      {/* <style jsx>
+      <style jsx>
         {`
-          html, body {
-            height: 100%;
-          }
-          .bg-gray-100 {
-            background-color: #f8f9fa!important;
-          }
-          .cover-fit {
-            height: 100vh;
-            width: 100%;
-            -o-object-fit: cover;
-            object-fit: cover;
-          }
-
-          .position-absolute {
-            position: absolute!important;
-          }
-
-          .login-form {
-            max-width: 32.9375rem;
-          }
-
-          .row {
-            --bs-gutter-x: 1.5rem;
-            --bs-gutter-y: 0;
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            margin-top: calc(var(--bs-gutter-y) * -1);
-            margin-right: calc(var(--bs-gutter-x)/ -2);
-            margin-left: calc(var(--bs-gutter-x)/ -2);
-          }
+        .login-center {
+          margin: auto
+        }        
         `}
-      </style> */}
+      </style> 
     </>
   );
 }

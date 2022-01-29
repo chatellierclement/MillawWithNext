@@ -254,10 +254,10 @@ export default function Calendar() {
             </Modal.Body>              
             <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
               <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
-                Save
+                Enregistrer
               </Button>
               <Button variant="danger" type="submit" value="delete" onClick={() => handleSubmit("delete")} >
-                Delete
+                Supprimer
               </Button>
             </Modal.Footer>
           </form>

@@ -78,17 +78,19 @@ export default function Utilisateur() {
     }
   ];
 
-
+  //Initialisation des Events
+  async function getUsers() {
+    await axios.get('/api/user') 
+    .then(function (response) { 
+      setUsers(response.data);
+    }) 
+    .catch(function (error) { 
+      console.log(error); 
+    }) 
+  }
 
   useEffect(() => {  
-    //Initialisation des User
-    axios.get('/api/user') 
-      .then(function (response) { 
-        setUsers(response.data);
-      }) 
-      .catch(function (error) { 
-        console.log(error); 
-      }) 
+    getUsers()
       
     //Initialisation des Roles
     axios.get('/api/role') 
@@ -186,10 +188,7 @@ export default function Utilisateur() {
       axios.put('/api/user', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "L'utilisateur est enregistré avec succès.", 3000)
-          let findIndex = users.findIndex(item => item.id == response.data.id)
-          console.log(response.data)
-          users[findIndex] = response.data
-          setUsers([...users]);
+          getUsers()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -209,7 +208,7 @@ export default function Utilisateur() {
       axios.post('/api/user', u) 
       .then(function (response) {
         NotificationManager.success("success", "L'utilisateur est enregistré avec succès.", 3000)
-        setUsers([...users, response.data]);
+        getUsers()
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -224,9 +223,7 @@ export default function Utilisateur() {
     axios.delete('/api/user', { data : row })
       .then(function (response) {
         NotificationManager.success("success", "L'utilisateur a été supprimé avec succès.", 3000)
-        let findIndex = users.findIndex(item => item.id == response.data.id)
-        users.splice(findIndex,1)
-        setUsers([...users]);
+        getUsers()
       }) 
       .catch(function (error) { 
         NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
@@ -283,7 +280,7 @@ export default function Utilisateur() {
             </Modal.Body>              
             <Modal.Footer>
               <Button variant="primary" type="submit" onClick={handleSubmit} >
-                Save
+                Enregistrer
               </Button>
             </Modal.Footer>
           </form>

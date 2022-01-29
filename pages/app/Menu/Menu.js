@@ -1,9 +1,12 @@
 import React from "react";
 import Link from 'next/link';
 import Image from 'next/image';
+import useToken from '../../useToken';
 
-export default function Menu() { 
-        
+export default function Menu() {     
+    
+    const { token, setToken } = useToken();
+
     return (         
         <> 
         <div className="navbar navbar-vertical navbar-expand-lg navbar-light" id="sidebar">
@@ -86,9 +89,11 @@ export default function Menu() {
                         <Link href="/app/user/profile">
                             <a className="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                <span className="ms-2">
-                                    John Doe
-                                </span> 
+                                {token &&
+                                    <span className="ms-2">                               
+                                        {token.firstName} {token.lastName}
+                                    </span> 
+                                }                                
                             </a>
                         </Link>
                     </div>

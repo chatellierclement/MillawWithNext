@@ -20,8 +20,7 @@ export default async function user(req, res) {
       break;
     case "POST":
       let userCreate = await prisma.user.create({ 
-        data: req.body,
-        include: { role: true, bar: true }             
+        data: req.body          
       })
       res.status(200).json(userCreate)
       break;    
@@ -30,8 +29,7 @@ export default async function user(req, res) {
         where: {
           id: req.body.id,
         },
-        data: req.body ,
-        include: { role: true, bar: true }       
+        data: req.body    
       })
       res.status(200).json(userPatch)    
       break;
