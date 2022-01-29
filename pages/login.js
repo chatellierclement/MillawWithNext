@@ -15,8 +15,7 @@ export default function Login({ setToken }) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    axios
-      .get("/api/user", { params: { email: email, password: password } })
+    axios.get("/api/user", { params: { email: email, password: password } })
       .then(function (response) {
         if (response.data) {
           setToken(response.data)

@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-notifications/lib/notifications.css';
 import '../styles/app.css';
 import '../styles/calendar.css';
+import { useEffect } from 'react'
 import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
@@ -25,32 +26,14 @@ function MyApp({ Component, pageProps }) {
     document.getElementById("content").classList.toggle("active");
   }
 
-  function redirect(url) {
-    router.push(url)
-  }
-
   if(marketingRoot.indexOf(router.route) > -1) {
     return <Index />
   }
   
   if(loginRoot.indexOf(router.route) > -1) {
     return <Login setToken={setToken} />
-  }
-
-
-
-  // if(!token) {
-  //   return <Login setToken={setToken} />
-  // } else if (loginRoot.indexOf(router.route) > -1) {
-  //   redirect("/app")
-  // }
-
-  // if(loginRoot.indexOf(router.route) > -1 && !token) {
-  //   return <Login setToken={setToken} />
-  // } else {
-  //   redirect
-  // }
-
+  } 
+  
   return (
     <>
           <div>
