@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Select from 'react-select'
 
-export default function Utilisateur() {
+export default function Users() {
 
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
