@@ -286,7 +286,7 @@ export default function Calendar() {
                 headerToolbar={{
                   left: "prev,today,next",
                   center: "title",
-                  right: "dayGridMonth,dayGrid"
+                  right: "dayGridMonth,dayGridWeek,dayGrid"
                 }}
                 buttonText={{
                   today:    "Aujoud'hui",
@@ -296,7 +296,15 @@ export default function Calendar() {
                 }}
                 editable={editable_boolean}
                 eventDrop={eventDrop}
-                events={events}
+                events={[
+                  { title: 'Garde à vue Jour', date: '2022-01-05' },
+                  { title: 'Garde à vue Jour', date: '2022-01-06' },
+                  { title: 'Garde à vue Jour', date: '2022-01-07' },
+                  { title: 'TPE', date: '2022-01-15' },
+                  { title: 'TPE', date: '2022-01-16' },
+                ]}
+              
+              
               />
             </div>
           </div>

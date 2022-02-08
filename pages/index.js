@@ -18,7 +18,7 @@ export default function Index() {
 
           <p className="description">
             Perdu dans les tâches administratives ? 
-            Il est temps d'organiser votre barreau.
+            Il est temps d&apos;organiser votre barreau.
           </p>
           
           <p className={true ? "centered" : ""}>
@@ -237,8 +237,8 @@ export default function Index() {
           margin-bottom: 0;
           border-radius: 12px;
           max-width: 100vw;
-          margin-left: 6em;
-          margin-right: 6em;
+          margin-left: 3em;
+          margin-right: 3em;
         }
         `}
       </style>
