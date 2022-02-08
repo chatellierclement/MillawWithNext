@@ -1,9 +1,20 @@
+import React, { useState } from 'react'
 import Image from 'next/image'
+import { Modal, Button } from 'react-bootstrap'
 
-export default function Documents() {
+export default function Documents() {    
+    const [show, setShow] = useState(false); 
 
-    function eventClick(row = null) {    
+    //Ouverture/Fermeture de la modal
+    function openCloseModal(arg = false) {
+        setShow(arg);
+    }
 
+    function eventClick() {   
+    }
+
+    function openDocument() {    
+        openCloseModal(true)
     }
 
     return (
@@ -34,7 +45,7 @@ export default function Documents() {
                     <h5 className="font-weight-semibold text-black-600 mb-lg-4 pb-1">Ajoutés récemments</h5>
                     <div className="row">
                         <div className="col-6 col-md-4 col-lg-6 col-xl-4 has-xxl-5 mb-3 mb-lg-4">
-                            <figure className="p-2 rounded-6 shadow-dark-80 bg-white mb-0 h-100 border border-gray-200">
+                            <figure onClick={openDocument} className="p-2 rounded-6 shadow-dark-80 bg-white mb-0 h-100 border border-gray-200">
                                 <figcaption className="text-center">
                                     <Image src="/pdf.svg" alt="PDF" height={40} width={33} />
                                     <h6 className="font-weight-semibold open-sans-font mt-3">CERFA 3654</h6>
@@ -97,6 +108,28 @@ export default function Documents() {
                 </div>
             </div>
         </div>
+
+        <Modal show={show} onHide={openCloseModal} className="modal_pdf">
+            <Modal.Header closeButton>  
+                <Modal.Title>PDF</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>              
+                 <iframe src="/documents/doc.pdf"></iframe>                      
+            </Modal.Body>    
+        </Modal>
+
+        <style>
+            {`
+               .modal_pdf .modal-dialog {
+                    max-width: 90vh !important;
+               } 
+
+               iframe {
+                   height: 75vh;
+                   width: 100%;
+               }
+            `}
+        </style>
         </>
     )
 }
