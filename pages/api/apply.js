@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import prisma from '../../prisma/lib/prisma'
 
-export default async function typeapply(req, res) {
+export default async function apply(req, res) {
   switch (req.method) {
     case "GET":
       let applyFind = await prisma.apply.findMany()
