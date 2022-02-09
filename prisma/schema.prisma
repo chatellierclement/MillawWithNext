@@ -46,14 +46,17 @@ model Permanence {
   Event             Event[]
   Permanence        Permanence?    @relation("PermanenceToPermanence", fields: [permanenceId], references: [id])
   permanenceId      Int?
+  Apply             Apply[]
 }
 
 model Apply {
-  id         Int     @id @default(autoincrement())
-  date       String
-  isAccepted Boolean
-  user       User    @relation(fields: [user_id], references: [id])
-  user_id    Int
+  id            Int        @id @default(autoincrement())
+  date          String
+  permanence    Permanence @relation(fields: [permanence_id], references: [id])
+  permanence_id Int
+  isAccepted    Boolean
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
 }
 
 model User {
