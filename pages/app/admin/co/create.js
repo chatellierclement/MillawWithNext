@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import Link from 'next/link';
 import IdentityStep from '../../../../components/StepForm/IdentityStep'
 import PermanenceStep from '../../../../components/StepForm/PermanenceStep'
@@ -83,7 +84,6 @@ export default function CreateCO() {
                                             <IdentityStep />
                                             <div className="pt-xl-2 text-end">
                                                 <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 1 SUR 3</span>
-                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
                                                 <button type="button" onClick={next} className="btn btn-xl btn-primary">Suivant</button>
                                             </div>
                                         </>
@@ -94,8 +94,7 @@ export default function CreateCO() {
                                             <PermanenceStep />
                                             <div className="pt-xl-2 text-end">
                                                 <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 2 SUR 3</span>
-                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
-                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary">Précedent</button>
+                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary me-2 me-md-4">Précedent</button>
                                                 <button type="button" onClick={next} className="btn btn-xl btn-primary">Suivant</button>
                                             </div>
                                         </>
@@ -106,9 +105,8 @@ export default function CreateCO() {
                                             <LawyerStep />
                                             <div className="pt-xl-2 text-end">
                                                 <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 3 SUR 3</span>
-                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
-                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary">Précedent</button>
-                                                <button type="button" onClick={handleSubmit} className="btn btn-xl btn-primary">Enregistrer</button>
+                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary me-2 me-md-4">Précedent</button>
+                                                <button type="button" onClick={handleSubmit} className="btn btn-xl btn-success">Enregistrer</button>
                                             </div>
                                         </>
                                         )}
