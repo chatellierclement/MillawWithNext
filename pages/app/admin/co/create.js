@@ -1,6 +1,21 @@
 import Link from 'next/link';
+import IdentityStep from '../../../../components/StepForm/IdentityStep'
+import PermanenceStep from '../../../../components/StepForm/PermanenceStep'
+import LawyerStep from '../../../../components/StepForm/LawyerStep'
 
 export default function CreateCO() {
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const next = () => setCurrentPage((prev) => prev + 1);
+    const prev = () => setCurrentPage((prev) => prev - 1);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(value);
+    };
+    
+
     return (
         <>
         <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
@@ -63,36 +78,40 @@ export default function CreateCO() {
                             <div className="card-body pb-0 px-3 pt-3">
                                 <div className="pb-3 p-xl-5">
                                     <form>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Nom</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Prénom</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Age</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Ville</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Code postal</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
-                                        <div className="mb-4 mb-xl-5">
-                                            <label className="form-label form-label-lg" htmlFor="ProjectName">Adresse</label>
-                                            <input type="text" placeholder="My project..." id="ProjectName" className="form-control form-control-xl" />
-                                        </div>
+                                        {currentPage === 1 && (
+                                        <>
+                                            <IdentityStep />
+                                            <div className="pt-xl-2 text-end">
+                                                <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 1 SUR 3</span>
+                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
+                                                <button type="button" onClick={next} className="btn btn-xl btn-primary">Suivant</button>
+                                            </div>
+                                        </>
+                                        )}
 
-                                        <div className="pt-xl-2 text-end">
-                                            <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 1 SUR 3</span>
-                                            <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
-                                            <button type="button" className="btn btn-xl btn-primary">Suivant</button>
-                                        </div>
+                                        {currentPage === 2 && (
+                                        <>
+                                            <PermanenceStep />
+                                            <div className="pt-xl-2 text-end">
+                                                <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 2 SUR 3</span>
+                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
+                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary">Précedent</button>
+                                                <button type="button" onClick={next} className="btn btn-xl btn-primary">Suivant</button>
+                                            </div>
+                                        </>
+                                        )}
+
+                                        {currentPage === 3 && (
+                                        <>
+                                            <LawyerStep />
+                                            <div className="pt-xl-2 text-end">
+                                                <span className="text-muted font-weight-semibold me-md-4 pe-sm-3 d-block d-sm-inline-block pb-2 pb-sm-0">ETAPE 3 SUR 3</span>
+                                                <a href="#0" className="btn btn-xl btn-outline-dark text-gray-700 border-gray-700 me-2 me-md-4">Annuler</a>
+                                                <button type="button" onClick={prev} className="btn btn-xl btn-primary">Précedent</button>
+                                                <button type="button" onClick={handleSubmit} className="btn btn-xl btn-primary">Enregistrer</button>
+                                            </div>
+                                        </>
+                                        )}
                                     </form>
                                 </div>
                             </div>
