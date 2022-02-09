@@ -24,6 +24,10 @@ export default function Documents() {
         setSelectedFile(event)
     }
 
+    function eventDeleteDoc() {
+        setSelectedFile(null)
+    }
+
     async function eventClick() {         
 
         const data = new FormData() 
@@ -163,10 +167,18 @@ export default function Documents() {
                 <Modal.Title>Ajout document</Modal.Title>
             </Modal.Header>
             <Modal.Body>              
-                <FileUploader handleChange={onChangeHandler} name="file" types={fileTypes} hoverTitle="Déplacer ici !" label="Déposer ou déplacer un fichier ici !"  />                   
+                <FileUploader handleChange={onChangeHandler} name="file" types={fileTypes} label="Déposer ou déplacer un fichier ici !"  />    
+                <p>
+                    <span>{selectedFile ? `Fichier : ${selectedFile.name}` : "Aucun fichier déposé"}</span>
+                    {selectedFile &&
+                        <Button variant="danger" className="float-right" type="button" onClick={() => eventDeleteDoc()} >
+                            Supprimer
+                        </Button>
+                    } 
+                </p>                               
             </Modal.Body> 
             <Modal.Footer>
-              <Button variant="primary" type="button" onClick={() => eventClick()} >
+              <Button variant="primary" type="button" disabled={selectedFile ? "" : "disabled"} onClick={() => eventClick()} >
                 Enregistrer
               </Button>
             </Modal.Footer>   

@@ -61,4 +61,5 @@ model Document {
   id    Int     @id @default(autoincrement())
   name  String
   url String
+  dateCreated  DateTime   @default(now())
 }
