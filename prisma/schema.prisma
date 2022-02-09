@@ -11,55 +11,92 @@ datasource db {
 }
 
 model Event {
-  id    Int     @id @default(autoincrement())
-  title  String  
-  description String
-  date String
-  user User @relation(fields: [user_id], references: [id])
-  user_id Int
+  id            Int        @id @default(autoincrement())
+  date          String
+  permanence    Permanence @relation(fields: [permanence_id], references: [id])
+  permanence_id Int
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
 }
 
 model Role {
-  id    Int     @id @default(autoincrement())
-  libelle  String 
-  user User[]
+  id      Int    @id @default(autoincrement())
+  libelle String
+  user    User[]
 }
 
 model Bar {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
   user User[]
 }
 
 model TypePermanence {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id         Int          @id @default(autoincrement())
+  name       String
   permanence Permanence[]
 }
 
 model Permanence {
-  id    Int     @id @default(autoincrement())
-  name  String
-  typePermanence TypePermanence @relation(fields: typePermanence_id, references: [id])
+  id                Int                @id @default(autoincrement())
+  name              String
+  typePermanence    TypePermanence     @relation(fields: typePermanence_id, references: [id])
   typePermanence_id Int
+  permanence        Permanence[]       @relation("PermanenceToPermanence")
+  Event             Event[]
+  Permanence        Permanence?        @relation("PermanenceToPermanence", fields: [permanenceId], references: [id])
+  permanenceId      Int?
+  Apply             Apply[]
+  CommissionOffice  CommissionOffice[]
+}
+
+model Apply {
+  id            Int        @id @default(autoincrement())
+  date          String
+  permanence    Permanence @relation(fields: [permanence_id], references: [id])
+  permanence_id Int
+  isAccepted    Boolean
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  firstName  String  
-  lastName String
-  email String
-  password  String
-  bar Bar @relation(fields: bar_id, references: [id])
-  bar_id Int
-  role Role @relation(fields: [role_id], references: [id])
-  role_id Int
-  event Event[]
+  id               Int                @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String
+  password         String
+  bar              Bar                @relation(fields: bar_id, references: [id])
+  bar_id           Int
+  role             Role               @relation(fields: [role_id], references: [id])
+  role_id          Int
+  event            Event[]
+  apply            Apply[]
+  CommissionOffice CommissionOffice[]
+  Document         Document[]
 }
 
 model Document {
-  id    Int     @id @default(autoincrement())
-  name  String
-  url String
-  dateCreated  DateTime   @default(now())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   Int
+  name      String
+  url       String
+}
+
+model CommissionOffice {
+  id            Int        @id @default(autoincrement())
+  date          DateTime
+  Sexe          String
+  FirstName     String
+  LastName      String
+  BirthdayDate  DateTime
+  City          String
+  PostalCode    String
+  Address       String
+  permanance    Permanence @relation(fields: [permanence_id], references: [id])
+  permanence_id Int
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
 }
