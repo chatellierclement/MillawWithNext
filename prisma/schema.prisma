@@ -31,9 +31,17 @@ model Bar {
   user User[]
 }
 
+model TypePermanence {
+  id    Int     @id @default(autoincrement())
+  name  String
+  permanence Permanence[]
+}
+
 model Permanence {
   id    Int     @id @default(autoincrement())
   name  String
+  typePermanence TypePermanence @relation(fields: typePermanence_id, references: [id])
+  typePermanence_id Int
 }
 
 model User {

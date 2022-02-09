@@ -107,6 +107,18 @@ export default function Permanence() {
     }
   }
 
+
+
+  function typePermanenceEventClick() {
+    let m = {
+      item: {},
+      title: "Nouveau type de permanence"
+    }
+
+    setModal(m);
+    openCloseModal(true);
+  }
+
   //Clic sur un button Edit/add d'une permanence
   function eventClick(row = null) {
     let m = {
@@ -127,6 +139,10 @@ export default function Permanence() {
     setModal(m);
 
     openCloseModal(true);
+  }
+
+  function addTypePermanence() {
+    
   }
 
   //Mise a jour d'un User
@@ -248,7 +264,7 @@ export default function Permanence() {
             <div className="col-auto d-flex align-items-center my-2 my-sm-0">
               <a
                 href="#"
-                onClick={eventClick}
+                onClick={typePermanenceEventClick}
                 className="btn btn-lg btn-darner px-3 me-2 me-md-3"
               >
                 <span className="ps-1">Ajouter une categorie</span>
