@@ -65,3 +65,9 @@ model User {
   event Event[]
   apply Apply[]
 }
+
+model Document {
+  id    Int     @id @default(autoincrement())
+  name  String
+  url String
+}

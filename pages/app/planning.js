@@ -296,13 +296,7 @@ export default function Calendar() {
                 }}
                 editable={editable_boolean}
                 eventDrop={eventDrop}
-                events={[
-                  { title: 'Garde à vue Jour', date: '2022-01-05' },
-                  { title: 'Garde à vue Jour', date: '2022-01-06' },
-                  { title: 'Garde à vue Jour', date: '2022-01-07' },
-                  { title: 'TPE', date: '2022-01-15' },
-                  { title: 'TPE', date: '2022-01-16' },
-                ]}
+                events={events}
               
               
               />
