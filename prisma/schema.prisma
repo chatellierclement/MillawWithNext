@@ -38,15 +38,16 @@ model TypePermanence {
 }
 
 model Permanence {
-  id                Int            @id @default(autoincrement())
+  id                Int                @id @default(autoincrement())
   name              String
-  typePermanence    TypePermanence @relation(fields: typePermanence_id, references: [id])
+  typePermanence    TypePermanence     @relation(fields: typePermanence_id, references: [id])
   typePermanence_id Int
-  permanence        Permanence[]   @relation("PermanenceToPermanence")
+  permanence        Permanence[]       @relation("PermanenceToPermanence")
   Event             Event[]
-  Permanence        Permanence?    @relation("PermanenceToPermanence", fields: [permanenceId], references: [id])
+  Permanence        Permanence?        @relation("PermanenceToPermanence", fields: [permanenceId], references: [id])
   permanenceId      Int?
   Apply             Apply[]
+  CommissionOffice  CommissionOffice[]
 }
 
 model Apply {
@@ -60,21 +61,38 @@ model Apply {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String
-  password  String
-  bar       Bar     @relation(fields: bar_id, references: [id])
-  bar_id    Int
-  role      Role    @relation(fields: [role_id], references: [id])
-  role_id   Int
-  event     Event[]
-  apply     Apply[]
+  id               Int                @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String
+  password         String
+  bar              Bar                @relation(fields: bar_id, references: [id])
+  bar_id           Int
+  role             Role               @relation(fields: [role_id], references: [id])
+  role_id          Int
+  event            Event[]
+  apply            Apply[]
+  CommissionOffice CommissionOffice[]
 }
 
 model Document {
   id   Int    @id @default(autoincrement())
   name String
   url  String
+}
+
+model CommissionOffice {
+  id            Int        @id @default(autoincrement())
+  date          DateTime
+  Sexe          String
+  FirstName     String
+  LastName      String
+  BirthdayDate  DateTime
+  City          String
+  PostalCode    String
+  Address       String
+  Permanance    Permanence @relation(fields: [permanence_id], references: [id])
+  permanence_id Int
+  User          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
 }
