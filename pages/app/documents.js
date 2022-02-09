@@ -36,7 +36,8 @@ export default function Documents() {
         .then(function (response) {
             let newDoc = {
                 name: 'test',
-                url: "documents/" + response.data.filename
+                url: "documents/" + response.data.filename,
+                user_id: 1
             }
 
             axios.post('/api/document', newDoc) 
