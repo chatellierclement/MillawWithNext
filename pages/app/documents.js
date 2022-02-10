@@ -65,6 +65,7 @@ export default function Documents() {
             NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
           })  
           
+        setSelectedFile(null)
         openCloseModalAddDocument(false)
     }
 
