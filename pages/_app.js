@@ -26,25 +26,21 @@ function MyApp({ Component, pageProps }) {
     document.getElementById("content").classList.toggle("active");
   }
 
+  useEffect(() => {
+    if(!token) {
+      router.push("/login")
+    } else {
+      router.push("/app")
+    }  
+  }, [])
+  
   if(marketingRoot.indexOf(router.route) > -1) {
     return <Index />
   }
   
   if(loginRoot.indexOf(router.route) > -1) {
     return <Login setToken={setToken} />
-  }
-
-  // if(!token) {
-  //   return <Login setToken={setToken} />
-  // } else if (loginRoot.indexOf(router.route) > -1) {
-  //   redirect("/app")
-  // }
-
-  // if(loginRoot.indexOf(router.route) > -1 && !token) {
-  //   return <Login setToken={setToken} />
-  // } else {
-  //   redirect
-  // }
+  } 
 
   return (
     <>
