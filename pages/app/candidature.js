@@ -42,14 +42,14 @@ export default function Candidature() {
   }, [])
 
   //Initialisation des Events
-  /*async*/ function getCandidatures() {
-    /*await axios.get('/api/event', { params: { user_id: 1 } })
+  async function getCandidatures() {
+    axios.get('/api/apply', { params: { user_id: 1 } })
     .then(function (response) { 
       setEvents(response.data);
     }) 
     .catch(function (error) { 
       console.log(error); 
-    }) */
+    })
   }
 
   //Binding de l'objet Event de la modal
