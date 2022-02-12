@@ -16,7 +16,14 @@ import useToken from './useToken';
 
 
 function MyApp({ Component, pageProps }) {  
-  
+
+  const acces_data = [
+    { path: "/app/admin/users", roles: ["ADMIN"] },        
+    { path: "/app/admin/co/all", roles: ["ADMIN"] },    
+    { path: "/app/admin/co/create", roles: ["ADMIN"] },
+    { path: "/app/admin/permanence", roles: ["ADMIN"] }
+  ]
+
   const router = useRouter();
   const loginRoot = ['/login'];
   const marketingRoot = ['/'];
@@ -30,11 +37,20 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if(!token) {
       router.push("/login")
-    } else {
-      if(loginRoot.indexOf(router.route) > -1) {
+    } else {      
+
+      //Gestion des accès en fonction du role
+      const role = "AVOCAT"
+      let acces_bool = false
+      acces_data.forEach(a => {
+        if (a.path === window.location.pathname && a.roles.includes(role)) {
+          acces_bool = true
+        }
+      })
+
+      if(loginRoot.indexOf(router.route) > -1 || acces_bool === false) {
         router.push("/app")
       } 
-      router.push("/" + window.location.pathname)
     }  
   }, [])
   
