@@ -31,7 +31,10 @@ function MyApp({ Component, pageProps }) {
     if(!token) {
       router.push("/login")
     } else {
-      router.push("/app")
+      if(loginRoot.indexOf(router.route) > -1) {
+        router.push("/app")
+      } 
+      router.push("/" + window.location.pathname)
     }  
   }, [])
   
