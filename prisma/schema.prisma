@@ -29,7 +29,7 @@ model Bar {
   id   Int    @id @default(autoincrement())
   name String
   user User[]
-  API  API[]
+  api  Api?
 }
 
 model TypePermanence {
@@ -38,11 +38,11 @@ model TypePermanence {
   permanence Permanence[]
 }
 
-model API {
+model Api {
   id     Int    @id @default(autoincrement())
   token  String
   bar    Bar    @relation(fields: bar_id, references: [id])
-  bar_id Int
+  bar_id Int    @unique
 }
 
 model Permanence {
