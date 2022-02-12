@@ -11,6 +11,8 @@ export default function Permanence() {
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
+  const [typePermanences, setTypePermanences] = useState([]);
+  const [id, setId] = useState(null);
   const paginationComponentOptions = {
     rowsPerPageText: "Lignes par page :",
     rangeSeparatorText: "sur",
@@ -77,18 +79,28 @@ export default function Permanence() {
     },
   ];
 
-
   useEffect(() => {
-    //Initialisation des permanences
     axios
-      .get("/api/permanence")
+      .get("/api/typePermanence")
       .then(function (response) {
-        setPermanences(response.data);
+        setTypePermanences(response.data);
+
+        if(id != 0) {
+          getPermanences();
+        }
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [permanences]);
+
+  function getPermanences() {
+    axios
+    .get("/api/permanence", { params: { typePermanence_id: id } })
+    .then(function (response) {
+      setPermanences(response.data);
+    })
+  }
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
@@ -300,12 +312,23 @@ export default function Permanence() {
           <div className="row">
             <div className="border-bottom border-gray-200 border-3 pb-4 pt-3 mb-4 mb-xl-5">
               <ul className="nav nav-segment nav-pills mb-7" role="tablist">
-                <li className="nav-item">
-                  <a className="nav-link active" data-bs-toggle="pill" href="#Inprogress" role="tab" aria-selected="true">Permanences Pénales (2)</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" data-bs-toggle="pill" href="#Incoming" role="tab" aria-selected="false">CDAD (1)</a>
-                </li>
+              {typePermanences.map((typePermanence, index) => (
+                  <>
+                    <li onClick={() => setId(typePermanence.id)} className="nav-item">
+                      
+                        <a
+                          className="nav-link active"
+                          data-bs-toggle="pill"
+                          role="tab"
+                          href="#"
+                          aria-selected="true"
+                        >
+                          {typePermanence.name} (2)
+                        </a>
+                      
+                    </li>
+                  </>
+                ))}
               </ul>
             </div>
           </div>
