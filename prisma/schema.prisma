@@ -29,12 +29,20 @@ model Bar {
   id   Int    @id @default(autoincrement())
   name String
   user User[]
+  API  API[]
 }
 
 model TypePermanence {
   id         Int          @id @default(autoincrement())
   name       String
   permanence Permanence[]
+}
+
+model API {
+  id     Int    @id @default(autoincrement())
+  token  String
+  bar    Bar    @relation(fields: bar_id, references: [id])
+  bar_id Int
 }
 
 model Permanence {
