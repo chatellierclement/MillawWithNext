@@ -17,7 +17,11 @@ import useToken from './useToken';
 
 function MyApp({ Component, pageProps }) {  
 
-  const acces_data = [
+  const acces_data = [    
+    { path: "/app", roles: ["ADMIN", "AVOCAT"] },   
+    { path: "/app/planning", roles: ["ADMIN", "AVOCAT"] },   
+    { path: "/app/candidature", roles: ["ADMIN", "AVOCAT"] }, 
+    { path: "/app/documents", roles: ["ADMIN", "AVOCAT"] }, 
     { path: "/app/admin/users", roles: ["ADMIN"] },        
     { path: "/app/admin/co/all", roles: ["ADMIN"] },    
     { path: "/app/admin/co/create", roles: ["ADMIN"] },
@@ -52,7 +56,7 @@ function MyApp({ Component, pageProps }) {
         router.push("/app")
       } 
     }  
-  }, [])
+  }, [router.route])
   
   if(marketingRoot.indexOf(router.route) > -1) {
     return <Index />
