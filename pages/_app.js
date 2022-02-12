@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }) {
 
   const acces_data = [    
     { path: "/app", roles: ["ADMIN", "AVOCAT"] },   
+    { path: "/app/user/profile", roles: ["ADMIN", "AVOCAT"] }, 
     { path: "/app/planning", roles: ["ADMIN", "AVOCAT"] },   
     { path: "/app/candidature", roles: ["ADMIN", "AVOCAT"] }, 
     { path: "/app/documents", roles: ["ADMIN", "AVOCAT"] }, 
@@ -44,7 +45,8 @@ function MyApp({ Component, pageProps }) {
     } else {      
 
       //Gestion des accès en fonction du role
-      const role = "AVOCAT"
+      //TODO: axios vers user pour get le role
+      const role = "ADMIN"
       let acces_bool = false
       acces_data.forEach(a => {
         if (a.path === window.location.pathname && a.roles.includes(role)) {
