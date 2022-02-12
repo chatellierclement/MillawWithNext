@@ -4,7 +4,14 @@ import prisma from '../../prisma/lib/prisma'
 export default async function bar(req, res) {
   switch (req.method) {
     case "GET":
-      let barreauFind = await prisma.bar.findMany()
+      let barreauFind = null;
+      if (req.query.id) {
+        barFind = await prisma.bar.findFirst({
+          where: { id: +req.query.id }
+        })
+      } else {
+        barreauFind = await prisma.bar.findMany()
+      }
       res.status(200).json(barreauFind)
       break;
     case "POST":
