@@ -6,7 +6,7 @@ export default async function bar(req, res) {
     case "GET":
       let barreauFind = null;
       if (req.query.id) {
-        barFind = await prisma.bar.findFirst({
+        barreauFind = await prisma.bar.findFirst({
           where: { id: +req.query.id }
         })
       } else {
