@@ -78,7 +78,7 @@ export default function Users() {
     }
   ];
 
-  //Initialisation des Events
+  //Initialisation des Utilisateurs
   async function getUsers() {
     await axios.get('/api/user') 
     .then(function (response) { 
