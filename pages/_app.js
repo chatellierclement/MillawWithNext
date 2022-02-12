@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Menu from "./app/Menu/Menu"
 import Login from "./login"
 import Index from '.';
+import Link from 'next/link';
 import useToken from './useToken';
 
 
@@ -75,7 +76,7 @@ function MyApp({ Component, pageProps }) {
                         </div>
 
                         <div className="dropdown grid-option">
-                          <a href="/app/admin/barreau" className="text-dark ms-4 ms-xxl-5 mb-0 notification-icon" data-bs-toggle="dropdown" aria-expanded="false" id="notification"> 
+                          <Link href="/app/admin/barreau" className="text-dark ms-4 ms-xxl-5 mb-0 notification-icon" data-bs-toggle="dropdown" aria-expanded="false" id="notification"> 
                             <svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="28" height="28" x="0px" y="0px" viewBox="0 0 463 463">
                               <path d="M423,219.5V211h16.5c4.142,0,7.5-3.358,7.5-7.5V179h8.5c4.142,0,7.5-3.358,7.5-7.5v-24c0-2.691-1.442-5.177-3.779-6.512
                                 l-224-128c-2.306-1.317-5.137-1.317-7.442,0l-224,128C1.442,142.323,0,144.808,0,147.5v24c0,4.142,3.358,7.5,7.5,7.5H16v24.5
@@ -92,7 +93,7 @@ function MyApp({ Component, pageProps }) {
                                 c0,0.276-0.224,0.5-0.5,0.5h-32c-0.276,0-0.5-0.224-0.5-0.5V211H88z M63,235h17v137H63V235z M448,436H15v-17h433V436z M432,404H31
                                 v-17h401V404z M383,372V235h17v137H383z"/>
                             </svg>
-                          </a>
+                          </Link>
                         </div>
 
                         <div className="dropdown grid-option">
