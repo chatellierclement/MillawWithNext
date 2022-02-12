@@ -26,7 +26,8 @@ function MyApp({ Component, pageProps }) {
     { path: "/app/admin/users", roles: ["ADMIN"] },        
     { path: "/app/admin/co/all", roles: ["ADMIN"] },    
     { path: "/app/admin/co/create", roles: ["ADMIN"] },
-    { path: "/app/admin/permanence", roles: ["ADMIN"] }
+    { path: "/app/admin/permanence", roles: ["ADMIN"] },
+    {path : "/app/admin/barreau", roles: ["ADMIN"]}
   ]
 
   const router = useRouter();
