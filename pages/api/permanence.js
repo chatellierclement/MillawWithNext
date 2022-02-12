@@ -4,7 +4,14 @@ import prisma from '../../prisma/lib/prisma'
 export default async function permanence(req, res) {
   switch (req.method) {
     case "GET":
-      let permanenceFind = await prisma.permanence.findMany()
+      let permanenceFind = null
+      if (req.query.typePermanence_id) {
+        permanenceFind = await prisma.permanence.findMany({
+          where: { typePermanence_id: +req.query.typePermanence_id }
+        })
+      } else {
+        permanenceFind = await prisma.permanence.findMany()
+      }
       res.status(200).json(permanenceFind)
       break;
     case "POST":
