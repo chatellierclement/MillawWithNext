@@ -244,21 +244,21 @@ export default function Users() {
                     className="form-control"
                     defaultValue={modal ? modal.item.id : ""} 
               />
-              <span>lastName :</span>
+              <span>Nom</span>
               <input type='text' 
                     name="lastName" 
                     className="form-control" 
                     onChange={changeObjEventModal} 
                     defaultValue={modal ? modal.item.lastName : ""} 
               />
-              <span>firstName</span> 
+              <span>Prénom</span> 
               <input type='text' 
                     name="firstName" 
                     className="form-control" 
                     onChange={changeObjEventModal} 
                     defaultValue={modal ? modal.item.firstName : ""} 
               />  
-              <span>email</span> 
+              <span>Email</span> 
               <input type='email' 
                     name="email" 
                     className="form-control" 
