@@ -4,7 +4,14 @@ import prisma from '../../prisma/lib/prisma'
 export default async function commissionOffice(req, res) {
   switch (req.method) {
     case "GET":
-      let commissionOfficeFind = await prisma.commissionOffice.findMany()
+      let commissionOfficeFind = null
+      if (req.query.id) {
+        commissionOfficeFind = await prisma.commissionOffice.findFirst({
+          where: { id: +req.query.id }
+        })
+      } else {
+        commissionOfficeFind = await prisma.commissionOffice.findMany()
+      }
       res.status(200).json(commissionOfficeFind)
       break;
     case "POST":
