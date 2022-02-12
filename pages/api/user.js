@@ -11,6 +11,10 @@ export default async function user(req, res) {
             AND: [{email: req.query.email},{password: req.query.password}]
           }
          })       
+      } else if (req.query.id) {
+        userFind = await prisma.user.findFirst({
+          where: { id: +req.query.id }
+        })
       } else {
         userFind = await prisma.user.findMany({
           include: { role: true, bar: true }
