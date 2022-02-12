@@ -42,10 +42,7 @@ model Permanence {
   name              String
   typePermanence    TypePermanence     @relation(fields: typePermanence_id, references: [id])
   typePermanence_id Int
-  permanence        Permanence[]       @relation("PermanenceToPermanence")
   Event             Event[]
-  Permanence        Permanence?        @relation("PermanenceToPermanence", fields: [permanenceId], references: [id])
-  permanenceId      Int?
   Apply             Apply[]
   CommissionOffice  CommissionOffice[]
 }

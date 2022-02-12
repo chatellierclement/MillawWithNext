@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import prisma from '../../prisma/lib/prisma'
 
-export default async function typetypePermanence(req, res) {
+export default async function typePermanence(req, res) {
   switch (req.method) {
     case "GET":
       let typePermanenceFind = await prisma.typePermanence.findMany()

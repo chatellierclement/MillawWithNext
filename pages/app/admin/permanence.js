@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
@@ -77,6 +77,7 @@ export default function Permanence() {
     },
   ];
 
+
   useEffect(() => {
     //Initialisation des permanences
     axios
@@ -112,7 +113,7 @@ export default function Permanence() {
   function typePermanenceEventClick() {
     let m = {
       item: {},
-      title: "Nouveau type de permanence"
+      title: "Nouvelle categorie"
     }
 
     setModal(m);
@@ -357,8 +358,14 @@ export default function Permanence() {
                   <h5 className="card-header-title mb-0 ps-md-2 font-weight-semibold">
                     Planning
                   </h5>
+
                   <div className="dropdown export-dropdown ms-auto pe-md-2">
-                    <a
+                  <div className="w-56 text-right fixed top-16">
+                 
+
+    </div>
+
+                    {/* <a
                       href="#"
                       role="button"
                       id="Sources"
@@ -443,7 +450,7 @@ export default function Permanence() {
                           <span className="ms-2">Custom</span>
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
                 <div className="table-responsive mb-0">
