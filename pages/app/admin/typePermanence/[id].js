@@ -312,7 +312,7 @@ export default function TypePermanenceItem () {
                     <li className="nav-item">
                       <Link href={`/app/admin/typePermanence/${typePermanence.id}`}>
                         <a
-                          className="nav-link active"
+                          className={typePermanence.id == id ? "nav-link active" : "nav-link"}
                           data-bs-toggle="pill"
                           role="tab"
                           aria-selected="true"
@@ -452,22 +452,3 @@ export default function TypePermanenceItem () {
     </>
   );
 };
-
-// export async function getStaticPaths() {
-//   return {
-//     paths: [{ params: { id: 'sth' } }, { params: { id: 'sth-else' } }],
-//     fallback: true,
-//   };
-// }
-
-// export async function getStaticProps(params) {
-
-//   const results = await axios.get("/api/permanence", { params: { typePermanence_id: params.id } }).then(res => res.json());
-  
-//   return {
-//     props: {
-//       permanences: results
-//     }
-//   }
-// }
-
