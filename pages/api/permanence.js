@@ -36,7 +36,7 @@ export default async function permanence(req, res) {
     case "DELETE": 
       let permanenceDelete = await prisma.permanence.delete({ 
         where: {
-          id: req.body.id,
+          id: +req.body.idPermanence,
         }     
       })
       res.status(200).json(permanenceDelete)    
