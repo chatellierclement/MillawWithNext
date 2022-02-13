@@ -11,12 +11,13 @@ datasource db {
 }
 
 model Event {
-  id            Int        @id @default(autoincrement())
-  planning_id   String
+  id            Int         @id @default(autoincrement())
+  planning_id   String?
   date          DateTime
-  permanence    Permanence @relation(fields: [permanence_id], references: [id])
-  permanence_id Int
-  user          User       @relation(fields: [user_id], references: [id])
+  permanence    Permanence? @relation(fields: [permanence_id], references: [id])
+  permanence_id Int?
+  isDayOff      Boolean?
+  user          User        @relation(fields: [user_id], references: [id])
   user_id       Int
 }
 
