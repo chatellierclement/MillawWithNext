@@ -13,7 +13,6 @@ import Login from "./login";
 import Index from ".";
 import Link from "next/link";
 import useToken from "./useToken";
-import { matchPath } from "react-router-dom";
 
 function MyApp({ Component, pageProps }) {
   const acces_data = [
