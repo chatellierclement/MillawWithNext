@@ -8,9 +8,12 @@ import moment from 'moment';
 import axios from 'axios';
 import Select from 'react-select'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import useToken from "../../pages/useToken";
 
-export default function Calendar() {   
-  
+export default function Calendar() {  
+
+  const { token, setToken } = useToken();
+  const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);  
   const [role, setRole] = useState("admin");
   const [events, setEvents] = useState([]);
@@ -20,36 +23,44 @@ export default function Calendar() {
   const [optionsUser, setOptionsUser] = useState([]);
   const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
 
+  function getUser() {
+    axios
+      .get("/api/user", { params: { id: token.id } })
+      .then(function (response) {
+        setUser(response.data);
+        getEvents()
+      });
+  }
+
   useEffect(() => {
-    
+    getUser()
+
     //Gestion des roles utilisateurs
     let type = role === "admin" ? true : false  
     setEditableBoolean(type)
 
-    getEvents()
+
     
     //Initialisation des User
-    axios.get('/api/user') 
-      .then(function (response) { 
-        let data_select = response.data.map(item => {
-          return { value: item.id, label: item.lastName + " " + item.firstName  }
-        })
-        setOptionsUser(data_select);
-      }) 
-      .catch(function (error) { 
-        console.log(error); 
-      }) 
-  }, [])
+    // axios.get('/api/user') 
+    //   .then(function (response) { 
+    //     let data_select = response.data.map(item => {
+    //       return { value: item.id, label: item.lastName + " " + item.firstName  }
+    //     })
+    //     setOptionsUser(data_select);
+    //   }) 
+    //   .catch(function (error) { 
+    //     console.log(error); 
+    //   }) 
+  }, [token])
 
   //Initialisation des Events
-  async function getEvents() {
-    await axios.get('/api/event', { params: { user_id: 1 } })
-    .then(function (response) { 
-      setEvents(response.data);
-    }) 
-    .catch(function (error) { 
-      console.log(error); 
-    }) 
+  function getEvents() {
+      axios.get('/api/event', { params: { user_id: token.id } })
+      .then(function (response) { 
+        setEvents(response.data);
+      });
+    
   }
 
   //Binding de l'objet Event de la modal
@@ -101,7 +112,7 @@ export default function Calendar() {
     let m = { title_modal: "Evènement" } 
 
     if (editable_boolean) {
-      m = { title_modal: "Modification de l'évènement" } 
+      m = { title_modal: "Que voulez vous faire ?" } 
     }     
     
     //Hydratation de l'objet Event dans formulaire de la Modal
@@ -209,7 +220,7 @@ export default function Calendar() {
       <div>
         <NotificationContainer/>
 
-        <Modal show={show} onHide={openCloseModal}>
+        {/* <Modal show={show} onHide={openCloseModal}>
           <form onSubmit={e => e.preventDefault()}>
             <Modal.Header closeButton>  
               <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
@@ -260,6 +271,34 @@ export default function Calendar() {
                 Supprimer
               </Button>
             </Modal.Footer>
+          </form>
+        </Modal> */}
+
+<Modal show={show} onHide={openCloseModal}>
+          <form onSubmit={e => e.preventDefault()}>
+            <Modal.Header closeButton>  
+              <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>  
+              <div className='row'>
+                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
+                  Télécharger ma désignation
+                </Button>
+              </div>           
+              
+              <div className='row'>
+                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
+                  Donner cette désignation
+                </Button>
+              </div>      
+
+              <div className='row'>
+                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
+                  Echanger cette désignation
+                </Button>
+              </div>
+              
+            </Modal.Body>              
           </form>
         </Modal>
 

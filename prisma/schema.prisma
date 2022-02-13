@@ -19,6 +19,23 @@ model Event {
   isDayOff      Boolean?
   user          User        @relation(fields: [user_id], references: [id])
   user_id       Int
+  Exchange      Exchange[]
+}
+
+model Exchange {
+  id                 Int       @id @default(autoincrement())
+  createdAt          DateTime
+  userSender         User      @relation(name: "SenderEvent", fields: [user_id_sender], references: [id])
+  event              Event     @relation(fields: [eventId], references: [id])
+  user_id_sender     Int
+  updatedAt          DateTime
+  userRecipient      User      @relation(name: "RecipientEvent", fields: [user_id_recipient], references: [id])
+  user_id_recipient  Int
+  isAccepted         Boolean?
+  exchangeReference  Int?      @unique
+  echange            Exchange? @relation("ExchangeReference", fields: [exchangeReference], references: [id])
+  exchangeReferenced Exchange? @relation("ExchangeReference")
+  eventId            Int
 }
 
 model Role {
@@ -81,6 +98,8 @@ model User {
   apply            Apply[]
   CommissionOffice CommissionOffice[]
   Document         Document[]
+  sentEvents       Exchange[]         @relation("SenderEvent")
+  receiveEvents    Exchange[]         @relation("RecipientEvent")
 }
 
 model Document {
