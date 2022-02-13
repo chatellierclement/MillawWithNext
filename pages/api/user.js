@@ -15,7 +15,11 @@ export default async function user(req, res) {
         userFind = await prisma.user.findFirst({
           where: { id: +req.query.id }
         })
-      } else {
+      } else if (req.query.role_id) {
+        userFind = await prisma.user.findMany({
+          where: { role_id: +req.query.role_id }
+        })
+      }  else {
         userFind = await prisma.user.findMany({
           include: { role: true, bar: true }
         })
