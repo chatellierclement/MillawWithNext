@@ -45,8 +45,8 @@ function MyApp({ Component, pageProps }) {
     } else {
       //Gestion des accès en fonction du role
       //TODO: axios vers user pour get le role
-      const role = "ADMIN";
-      let acces_bool = true;
+      const role = "AVOCAT";
+      let acces_bool = false;
       let url_path = window.location.pathname.split("/")
       acces_data.forEach((a) => {
 
