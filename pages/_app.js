@@ -6,13 +6,14 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-notifications/lib/notifications.css";
 import "../styles/app.css";
 import "../styles/calendar.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Menu from "./app/Menu/Menu";
 import Login from "./login";
 import Index from ".";
 import Link from "next/link";
 import useToken from "./useToken";
+import axios from "axios";
 
 function MyApp({ Component, pageProps }) {
   const acces_data = [
@@ -32,11 +33,24 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const loginRoot = ["/login"];
   const marketingRoot = ["/"];
-  const { token, setToken } = useToken();
+  const { token, setToken } = useToken();  
+  const [user, setUser] = useState(null);
 
   function handleClick() {
     document.getElementById("sidebar").classList.toggle("active");
     document.getElementById("content").classList.toggle("active");
+  }
+
+  async function getUserById() {
+    await axios.get("/api/user", { params: { id : token.id } })
+      .then(function (response) {
+        if (response.data) {
+          setUser(response.data)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
@@ -44,8 +58,8 @@ function MyApp({ Component, pageProps }) {
       router.push("/login");
     } else {
       //Gestion des accès en fonction du role
-      //TODO: axios vers user pour get le role
-      const role = "AVOCAT";
+      getUserById()
+
       let acces_bool = false;
       let url_path = window.location.pathname.split("/")
       acces_data.forEach((a) => {
@@ -58,7 +72,7 @@ function MyApp({ Component, pageProps }) {
           }
         })
         
-        if (acces_path.join(',') === url_path.join(",") && a.roles.includes(role)) {
+        if (user && acces_path.join(',') === url_path.join(",") && a.roles.includes(user.role.libelle)) {
           acces_bool = true;
         }
       });
@@ -80,7 +94,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <div>
-        <Menu />
+        <Menu user={user}/>
       </div>
 
       <div className="main-content" id="content">
