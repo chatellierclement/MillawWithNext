@@ -48,15 +48,17 @@ function MyApp({ Component, pageProps }) {
       //TODO: axios vers user pour get le role
       const role = "ADMIN";
       let acces_bool = true;
+      let url_path = window.location.pathname.split("/")
       acces_data.forEach((a) => {
-        if (
-          matchPath(window.location.pathname, a.path) &&
-          a.roles.includes(role)
-        ) {
-          acces_bool = true;
-        }
 
-        if (a.path === window.location.pathname && a.roles.includes(role)) {
+        let acces_path = a.path.split("/")
+        acces_path.forEach((p, index) => {
+          if (p.search(":") > -1) {
+            acces_path.splice(index, 1)
+          }
+        })
+        
+        if (acces_path.join(',') === url_path.join(",") && a.roles.includes(role)) {
           acces_bool = true;
         }
       });
