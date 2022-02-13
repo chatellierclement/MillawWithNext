@@ -8,17 +8,19 @@ import moment from 'moment';
 import axios from 'axios';
 import Select from 'react-select'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import useToken from "../../pages/useToken";
 
 export default function Candidature() {   
-  
+  const { token, setToken } = useToken();
+  const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);  
   const [role, setRole] = useState("admin");
   const [events, setEvents] = useState([]);
   const [editable_boolean, setEditableBoolean] = useState(true);
   const [modal, setModal] = useState(null);  
   const [datePicker, setDatePicker] = useState(null);
-  const [optionsUser, setOptionsUser] = useState([]);
-  const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
+  const [optionsPermanences, setOptionsPermanences] = useState([]);
+  const [defaultValueSelectPermanence, setDefaultValueSelectPermanence] = useState(null);
 
   useEffect(() => {
     
@@ -28,17 +30,14 @@ export default function Candidature() {
 
     getCandidatures()
     
-    //Initialisation des User
-    axios.get('/api/user') 
+    //Initialisation des permanences
+    axios.get('/api/permanence') 
       .then(function (response) { 
         let data_select = response.data.map(item => {
-          return { value: item.id, label: item.lastName + " " + item.firstName  }
+          return { value: item.id, label: item.name }
         })
-        setOptionsUser(data_select);
-      }) 
-      .catch(function (error) { 
-        console.log(error); 
-      }) 
+        setOptionsPermanences(data_select);
+      });
   }, [])
 
   //Initialisation des Events
@@ -86,7 +85,7 @@ export default function Candidature() {
     let m = {
       ...modal, 
       item: { date: arg.dateStr },
-      title_modal: "Ajout d'un évènement"
+      title_modal: "Candidater à une permanence"
     }
 
     setModal(m)
@@ -109,8 +108,8 @@ export default function Candidature() {
     m = { ...m, item: event }
 
     //Hydratation de la valeur par défaut du Select
-    let valueUser = optionsUser.filter(option => { return m && m.item.user.id === option.value })      
-    setDefaultValueSelectUser(valueUser[0])
+    let valuePermanence = optionsPermanences.filter(option => { return m && m.item.permanence.id === option.value })      
+    setDefaultValueSelectPermanence(valuePermanence[0])
 
     setModal(m)
     
@@ -145,7 +144,7 @@ export default function Candidature() {
 
     if (type === "delete") {
       //Suppression
-      axios.delete('/api/event', { data : modal.item }) 
+      axios.delete('/api/apply', { data : modal.item }) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement a été supprimé avec succès.", 3000)
           getCandidatures()
@@ -157,12 +156,12 @@ export default function Candidature() {
     } else {
 
       //TODO : Pb de relation
-      delete modal.item.user
+      delete modal.item.apply
 
       //Mise a jour
       if (modal.item.id) {         
             
-        axios.put('/api/event', modal.item) 
+        axios.put('/api/apply', modal.item) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
           getCandidatures()
@@ -173,14 +172,13 @@ export default function Candidature() {
 
       } else {
         //Ajout
-        const newEvent = {
-          title: modal.item.title,
-          description: modal.item.description,
+        const newApply = {
+          permanence_id: +modal.item.permanence_id,
           date: modal.item.date,          
-          user_id: modal.item.user_id
+          user_id: +token.id
         };  
 
-        axios.post('/api/event', newEvent) 
+        axios.post('/api/apply', newApply) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
           getCandidatures()
@@ -215,49 +213,33 @@ export default function Candidature() {
               <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
             </Modal.Header>
             <Modal.Body>              
-              <input type='hidden' 
-                    className="form-control"
-                    defaultValue={modal ? modal.item.id : ""} 
-                    disabled={role === 'admin' ? '' : 'disabled'} />
-              <span>Date : </span>
+              
+              <label>Date de votre candidature</label>
               <DatePicker                    
                   className="form-control"
-                  disabled={role === 'admin' ? '' : 'disabled'} 
+                  disabled={'disabled'} 
                   selected={datePicker}
                   onChange={changeDatePicker}
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={5}
                   timeCaption="time"
-                  dateFormat="dd/MM/Y HH:mm"
+                  dateFormat="dd/MM/Y"
               />
-              <span>Evenement :</span>
-              <input type='text' 
-                    name="title" 
-                    className="form-control" 
-                    onChange={(e) => changeObjEventModal(e)}
-                    defaultValue={modal ? modal.item.title : ""} 
-                    disabled={role === 'admin' ? '' : 'disabled'}/>
-              <span>Description</span> 
-              <input type='text' 
-                    name="description" 
-                    className="form-control" 
-                    onChange={(e) => changeObjEventModal(e)}
-                    defaultValue={modal ? modal.item.description : ""} 
-                    disabled={role === 'admin' ? '' : 'disabled'}/>
-              <span>Utilisateur</span>
-              <Select name="user_id" 
-                options={optionsUser} 
+              
+              <span>Permanence</span>
+              <Select name="permanence_id" 
+                options={optionsPermanences} 
                 onChange={changeObjEventModal_Select} 
-                defaultValue={defaultValueSelectUser} 
+                defaultValue={defaultValueSelectPermanence} 
               />                              
             </Modal.Body>              
             <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
               <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
-                Enregistrer
+                Candidater
               </Button>
               <Button variant="danger" type="submit" value="delete" onClick={() => handleSubmit("delete")} >
-                Supprimer
+                Annuler sa candidature
               </Button>
             </Modal.Footer>
           </form>

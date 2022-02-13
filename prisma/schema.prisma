@@ -79,7 +79,7 @@ model Apply {
   date          DateTime
   permanence    Permanence @relation(fields: [permanence_id], references: [id])
   permanence_id Int
-  isAccepted    Boolean
+  isAccepted    Boolean?
   user          User       @relation(fields: [user_id], references: [id])
   user_id       Int
 }
