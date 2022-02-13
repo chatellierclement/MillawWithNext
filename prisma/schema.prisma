@@ -57,7 +57,7 @@ model Permanence {
 
 model Apply {
   id            Int        @id @default(autoincrement())
-  date          String
+  date          DateTime
   permanence    Permanence @relation(fields: [permanence_id], references: [id])
   permanence_id Int
   isAccepted    Boolean
