@@ -54,6 +54,7 @@ function MyApp({ Component, pageProps }) {
         acces_path.forEach((p, index) => {
           if (p.search(":") > -1) {
             acces_path.splice(index, 1)
+            url_path.splice(index, 1)
           }
         })
         
