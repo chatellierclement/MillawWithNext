@@ -14,7 +14,6 @@ export default function Menu() {
       .get("/api/typePermanence")
       .then(function (response) {
         setTypePermanences(response.data);
-        console.log(typePermanences[0]["name"])
       })
   }, [token]);
 
@@ -178,7 +177,8 @@ export default function Menu() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href={`/app/admin/typePermanence/${JSON.parse(JSON.stringify(typePermanences[0])).id}`}>
+              
+              {/* <Link href={`/app/admin/typePermanence/${JSON.parse(JSON.stringify(typePermanences[0])).id}`}>
                 <a className="nav-link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +201,7 @@ export default function Menu() {
                   </svg>
                   <span className="ms-2">Permanences</span>
                 </a>
-              </Link>
+              </Link> */}
             </li>
           </ul>
 
