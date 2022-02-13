@@ -5,7 +5,11 @@ export default async function permanence(req, res) {
   switch (req.method) {
     case "GET":
       let permanenceFind = null
-      if (req.query.typePermanence_id) {
+      if (req.query.id) {
+        permanenceFind = await prisma.permanence.findFirst({
+          where: { id: +req.query.id }
+        })
+      } else if (req.query.typePermanence_id) {
         permanenceFind = await prisma.permanence.findMany({
           where: { typePermanence_id: +req.query.typePermanence_id }
         })
