@@ -12,7 +12,7 @@ datasource db {
 
 model Event {
   id            Int        @id @default(autoincrement())
-  date          String
+  date          DateTime
   permanence    Permanence @relation(fields: [permanence_id], references: [id])
   permanence_id Int
   user          User       @relation(fields: [user_id], references: [id])
