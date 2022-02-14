@@ -108,7 +108,7 @@ useEffect(() => {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.isAccepted}
+                                {exchange.isAccepted ? "Accepté" : "Refusé"}
                               </span>
                             </td>
                           </tr>
