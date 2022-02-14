@@ -14,7 +14,8 @@ export default function Calendar() {
 
   const { token, setToken } = useToken();
   const [user, setUser] = useState(null);
-  const [show, setShow] = useState(false);  
+  const [showEvent, setShowEvent] = useState(false);  
+  const [showDay, setShowDay] = useState(false); 
   const [role, setRole] = useState("admin");
   const [events, setEvents] = useState([]);
   const [editable_boolean, setEditableBoolean] = useState(true);
@@ -83,8 +84,14 @@ export default function Calendar() {
   }
 
   //Ouverture/Fermeture de la modal
-  function openCloseModal(arg = false) {
-    setShow(arg);
+  function openCloseModalEvent(arg = false) {
+    setShowEvent(arg);
+    
+    if (!arg) { setModal(null) }
+  }
+
+  function openCloseModalDay(arg = false) {
+    setShowDay(arg);
     
     if (!arg) { setModal(null) }
   }
@@ -92,7 +99,7 @@ export default function Calendar() {
   //Clic sur le jour du calendrier
   function dayClick(arg) { 
 
-    if (!editable_boolean) { return false }
+    //if (!editable_boolean) { return false }
 
     let m = {
       ...modal, 
@@ -102,9 +109,9 @@ export default function Calendar() {
 
     setModal(m)
 
-    setDatePicker(new Date(arg.date));    
+    //setDatePicker(new Date(arg.date));    
 
-    openCloseModal(true)
+    openCloseModalDay(true)
   }
 
   //Clic sur un Event du calendrier
@@ -128,7 +135,7 @@ export default function Calendar() {
     //Cas particulier de la date qui doit etre setter
     setDatePicker(new Date(m.item.date));
 
-    openCloseModal(true)
+    openCloseModalEvent(true)
   }
 
   //Drag drop event
@@ -151,10 +158,30 @@ export default function Calendar() {
       }) 
   }
 
-  //Ajout/Mise/Suppression a jour d'un Event
+  //CRUD
   function handleSubmit(type) {
+    
+    switch (type) {
+      case "conge": 
+        let newEvent = {
+          permanence_id: 1,
+          user_id: 1,
+          idDayOff: true,
+          planning_id: 1,
+          date: modal.item.date
+        }
 
-    if (type === "delete") {
+        /*axios.post('/api/event', newEvent) 
+        .then(function (response) {
+          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
+          getEvents()
+        }) 
+        .catch(function (error) { 
+          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
+        }) */
+        break;
+    }
+    /*if (type === "delete") {
       //Suppression
       axios.delete('/api/event', { data : modal.item }) 
         .then(function (response) {
@@ -201,9 +228,9 @@ export default function Calendar() {
         })      
         
       }       
-    }
+    }*/
 
-    openCloseModal(false) 
+    //openCloseModal(false) 
     
   }
 
@@ -274,7 +301,7 @@ export default function Calendar() {
           </form>
         </Modal> */}
 
-<Modal show={show} onHide={openCloseModal}>
+        <Modal show={showEvent} onHide={openCloseModalEvent}>
           <form onSubmit={e => e.preventDefault()}>
             <Modal.Header closeButton>  
               <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
@@ -282,21 +309,24 @@ export default function Calendar() {
             <Modal.Body>  
               <div className='row'>
                 <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
-                  Télécharger ma désignation
-                </Button>
-              </div>           
-              
-              <div className='row'>
-                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
                   Donner cette désignation
                 </Button>
-              </div>      
+              </div>  
+            </Modal.Body>              
+          </form>
+        </Modal>
 
+        <Modal show={showDay} onHide={openCloseModalDay}>
+          <form onSubmit={e => e.preventDefault()}>
+            <Modal.Header closeButton>  
+              <Modal.Title>Modification</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>  
               <div className='row'>
-                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
-                  Echanger cette désignation
+                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("conge")} >
+                  Se mettre en congés
                 </Button>
-              </div>
+              </div>   
               
             </Modal.Body>              
           </form>
