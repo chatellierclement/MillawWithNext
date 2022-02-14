@@ -19,44 +19,9 @@ export default function Index() {
           </div>
         </div>  
 
-        <div className="row g-0">
-          <div className="col-md-7 col-xxl-9">
-            <div className="row">
-            <div className="col-4 widget_custom">
-              <div className="x_panel">
-                  <div>Nombres de permanences</div>
-                  <hr />
-                  <div className="text-center valeur">
-                    <b>10</b>
-                  </div>
-              </div>
-          </div>
+        <div className="row g-0">     
 
-          <div className="col-4 widget_custom">
-              <div className="x_panel">
-                  <div>Nombres de permanences</div>
-                  <hr />
-                  <div className="text-center valeur">
-                    <b>10</b>
-                  </div>
-              </div>
-          </div>
-
-          <div className="col-4 widget_custom">
-              <div className="x_panel">
-                  <div>Nombres de permanences</div>
-                  <hr />
-                  <div className="text-center valeur">
-                    <b>10</b>
-                  </div>
-              </div>
-          </div>
-            </div>
-          </div>
-          
-
-          <div className="col-md-5 col-xxl-3 bg-gray-100">
-            </div>
+          <div className="col-md-5 col-xxl-3 bg-gray-100"></div>
         </div>
       <style>
         {`
