@@ -16,7 +16,7 @@ export default async function exchange(req, res) {
                 permanence: true,
               },
             },
-            userRecipient: true,
+            userSender: true,
           },
         });
       } else if (req.query.user_id_recipient) {

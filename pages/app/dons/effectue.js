@@ -103,7 +103,7 @@ export default function Dons() {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.userRecipient.firstName} {exchange.userRecipient.lastName}
+                                {exchange.userSender.firstName} {exchange.userSender.lastName}
                               </span>
                             </td>
                             <td>

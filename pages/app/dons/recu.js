@@ -8,7 +8,7 @@ const [exchanges, setExchanges] = useState([])
 const { token, setToken } = useToken();
 
 function getExchanges() {
-    axios.get('/api/exchange', { params: { user_id_receiver: +token.id } })
+    axios.get('/api/exchange', { params: { user_id_recipient: +token.id } })
     .then(function (response) { 
         setExchanges(response.data);
     }) 
@@ -98,12 +98,12 @@ useEffect(() => {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                              {/* {exchange.event.permanence.name} */}
+                                {exchange.event.permanence.name}
                               </span>
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {/* {exchange.userSender.firstName} {exchange.userSender.lastName} */}
+                                {exchange.userSender.firstName} {exchange.userSender.lastName}
                               </span>
                             </td>
                             <td>
