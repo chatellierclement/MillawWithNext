@@ -99,7 +99,7 @@ export default function Calendar() {
   //Clic sur le jour du calendrier
   function dayClick(arg) { 
 
-    /*if (!editable_boolean) { return false }
+    //if (!editable_boolean) { return false }
 
     let m = {
       ...modal, 
@@ -109,9 +109,7 @@ export default function Calendar() {
 
     setModal(m)
 
-    setDatePicker(new Date(arg.date));    
-
-    openCloseModal(true)*/
+    //setDatePicker(new Date(arg.date));    
 
     openCloseModalDay(true)
   }
@@ -165,7 +163,22 @@ export default function Calendar() {
     
     switch (type) {
       case "conge": 
+        let newEvent = {
+          permanence_id: 1,
+          user_id: 1,
+          idDayOff: true,
+          planning_id: 1,
+          date: modal.item.date
+        }
 
+        /*axios.post('/api/event', newEvent) 
+        .then(function (response) {
+          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
+          getEvents()
+        }) 
+        .catch(function (error) { 
+          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
+        }) */
         break;
     }
     /*if (type === "delete") {
