@@ -17,6 +17,46 @@ function getExchanges() {
     })
   }
 
+  function onUpdateEvent() {
+    axios.put('/api/event', { params: { user_id_recipient: +token.id } })
+    .then(function (response) { 
+        NotificationManager.success(
+            "success",
+            "Le don a bien été accepté.",
+            3000
+          );
+    }).catch(function (error) {
+        NotificationManager.error(
+          "warning",
+          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
+          3000
+        );
+      });
+  }
+
+  function onAcceptedOrRefused(isAccepted) {
+    axios.put('/api/exchange', { params: { user_id_recipient: +token.id } })
+    .then(function (response) {
+        setExchanges(response.data);
+
+        if(isAccepted) {
+            onUpdateEvent(eventId, userId);
+        } else {
+            NotificationManager.success(
+                "warning",
+                "Le don a bien été refusé.",
+                3000
+              );
+        }
+    }).catch(function (error) {
+        NotificationManager.error(
+          "warning",
+          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
+          3000
+        );
+      });
+  }
+
 useEffect(() => {
     getExchanges();
 }, [token]);
