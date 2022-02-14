@@ -27,7 +27,7 @@ export default function Exchange() {
   function exchangeEvent(eventId) {
     let exchange = {
       createdAt: new Date(),
-      user_id_send: +token.id,
+      user_id_sender: +token.id,
       updatedAt: new Date(),
       user_id_recipient: +eventId,
       eventId: +id,
@@ -81,7 +81,7 @@ export default function Exchange() {
                   <table className="table card-table table-nowrap overflow-hidden">
                     <thead>
                       <tr>
-                        <th>Avocat disponnible</th>
+                        <th>Avocat disponible</th>
                       </tr>
                     </thead>
                     <tbody className="list">
