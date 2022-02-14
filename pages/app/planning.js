@@ -164,6 +164,7 @@ export default function Calendar() {
     switch (type) {
       case "conge": 
         let newEvent = {
+          title: "Congé",
           permanence_id: null,
           user_id: 1,
           isDayOff: true,
@@ -171,7 +172,6 @@ export default function Calendar() {
           date: moment(modal.item.date, "YYYY-MM-DD 00:00:00")
         }
 
-        console.log(newEvent)
         axios.post('/api/event', newEvent) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)

@@ -12,6 +12,7 @@ datasource db {
 
 model Event {
   id            Int         @id @default(autoincrement())
+  title         String?
   planning_id   String?
   date          DateTime
   permanence    Permanence? @relation(fields: [permanence_id], references: [id])
