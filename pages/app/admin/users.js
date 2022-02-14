@@ -12,8 +12,8 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [optionsRole, setOptionsRole] = useState([]);
   const [optionsBar, setOptionsBar] = useState([]);
-  const [defaultValueSelectRole, setDefaultValueSelectRole] = useState(null);
-  const [defaultValueSelectBarreau, setDefaultValueSelectBarreau] = useState(null);
+  const [defaultValueSelectRole, setDefaultValueSelectRole] = useState(0);
+  const [defaultValueSelectBarreau, setDefaultValueSelectBarreau] = useState(0);
   const paginationComponentOptions = {
     rowsPerPageText: "Lignes par page :",
     rangeSeparatorText: 'sur'
@@ -140,7 +140,11 @@ export default function Users() {
   function openCloseModal(arg = false) {
     setShow(arg);
     
-    if (!arg) { setModal(null) }
+    if (!arg) { 
+      setModal(null) 
+      setDefaultValueSelectRole(null)
+      setDefaultValueSelectBarreau(null)
+    }
   }
   
   //Clic sur un button Edit/add du User
