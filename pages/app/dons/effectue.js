@@ -59,7 +59,7 @@ export default function Dons() {
                       role="tab"
                       aria-selected="true"
                     >
-                      Mes dons réçus
+                      Mes dons reçus
                     </a>
                   </Link>
                 </li>

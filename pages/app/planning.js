@@ -120,28 +120,30 @@ export default function Calendar() {
 
   //Clic sur un Event du calendrier
   function eventClick(info) {
-    let m = { title_modal: "Evènement" };
+    if (info.event._def.title !== "Congé") {
+      let m = { title_modal: "Evènement" };
 
-    if (editable_boolean) {
-      m = { title_modal: "Que voulez vous faire ?" };
-    }
+      if (editable_boolean) {
+        m = { title_modal: "Que voulez vous faire ?" };
+      }
 
-    //Hydratation de l'objet Event dans formulaire de la Modal
-    let event = events.find((item) => item.id == info.event._def.publicId);
-    m = { ...m, item: event };
+      //Hydratation de l'objet Event dans formulaire de la Modal
+      let event = events.find((item) => item.id == info.event._def.publicId);
+      m = { ...m, item: event };
 
-    //Hydratation de la valeur par défaut du Select
-    let valueUser = optionsUser.filter((option) => {
-      return m && m.item.user.id === option.value;
-    });
-    setDefaultValueSelectUser(valueUser[0]);
+      //Hydratation de la valeur par défaut du Select
+      let valueUser = optionsUser.filter((option) => {
+        return m && m.item.user.id === option.value;
+      });
+      setDefaultValueSelectUser(valueUser[0]);
 
-    setModal(m);
+      setModal(m);
 
-    //Cas particulier de la date qui doit etre setter
-    setDatePicker(new Date(m.item.date));
+      //Cas particulier de la date qui doit etre setter
+      setDatePicker(new Date(m.item.date));
 
-    openCloseModalEvent(true);
+      openCloseModalEvent(true);
+    }    
   }
 
   //Drag drop event
