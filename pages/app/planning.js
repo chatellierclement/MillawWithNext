@@ -164,21 +164,24 @@ export default function Calendar() {
     switch (type) {
       case "conge": 
         let newEvent = {
-          permanence_id: 1,
+          permanence_id: null,
           user_id: 1,
-          idDayOff: true,
-          planning_id: 1,
-          date: modal.item.date
+          isDayOff: true,
+          planning_id: null,
+          date: moment(modal.item.date, "YYYY-MM-DD 00:00:00")
         }
 
-        /*axios.post('/api/event', newEvent) 
+        console.log(newEvent)
+        axios.post('/api/event', newEvent) 
         .then(function (response) {
           NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
           getEvents()
         }) 
         .catch(function (error) { 
           NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-        }) */
+        }) 
+
+        openCloseModalDay(false)
         break;
     }
     /*if (type === "delete") {
