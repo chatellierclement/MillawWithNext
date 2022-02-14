@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import FullCalendar from '@fullcalendar/react' 
-import dayGridPlugin from '@fullcalendar/daygrid' 
-import interactionPlugin from "@fullcalendar/interaction" 
-import DatePicker from 'react-datepicker'; 
-import { Modal, Button } from 'react-bootstrap';
-import moment from 'moment';
-import axios from 'axios';
-import Select from 'react-select'
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import React, { useState, useEffect } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import DatePicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
+import moment from "moment";
+import axios from "axios";
+import Select from "react-select";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 import useToken from "../../pages/useToken";
 import Link from "next/link";
 
-export default function Calendar() {  
-
+export default function Calendar() {
   const { token, setToken } = useToken();
   const [user, setUser] = useState(null);
-  const [showEvent, setShowEvent] = useState(false);  
-  const [showDay, setShowDay] = useState(false); 
+  const [showEvent, setShowEvent] = useState(false);
+  const [showDay, setShowDay] = useState(false);
   const [role, setRole] = useState("admin");
   const [events, setEvents] = useState([]);
   const [editable_boolean, setEditableBoolean] = useState(true);
-  const [modal, setModal] = useState(null);  
+  const [modal, setModal] = useState(null);
   const [datePicker, setDatePicker] = useState(null);
   const [optionsUser, setOptionsUser] = useState([]);
   const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
@@ -30,159 +32,178 @@ export default function Calendar() {
       .get("/api/user", { params: { id: token.id } })
       .then(function (response) {
         setUser(response.data);
-        getEvents()
+        getEvents();
       });
   }
 
   useEffect(() => {
-    getUser()
+    getUser();
 
     //Gestion des roles utilisateurs
-    let type = role === "admin" ? true : false  
-    setEditableBoolean(type)
+    let type = role === "admin" ? true : false;
+    setEditableBoolean(type);
 
-
-    
     //Initialisation des User
-    // axios.get('/api/user') 
-    //   .then(function (response) { 
+    // axios.get('/api/user')
+    //   .then(function (response) {
     //     let data_select = response.data.map(item => {
     //       return { value: item.id, label: item.lastName + " " + item.firstName  }
     //     })
     //     setOptionsUser(data_select);
-    //   }) 
-    //   .catch(function (error) { 
-    //     console.log(error); 
-    //   }) 
-  }, [token])
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   })
+  }, [token]);
 
   //Initialisation des Events
   function getEvents() {
-      axios.get('/api/event', { params: { user_id: token.id } })
-      .then(function (response) { 
+    axios
+      .get("/api/event", { params: { user_id: token.id } })
+      .then(function (response) {
         setEvents(response.data);
       });
-    
   }
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
-    let { item } = modal
-    item = { ...item, [event.target.name] : event.target.value }
-    
-    let m = { ...modal, item}
-    setModal(m)
+    let { item } = modal;
+    item = { ...item, [event.target.name]: event.target.value };
+
+    let m = { ...modal, item };
+    setModal(m);
   }
 
   //Binding de l'objet User de la modal - Special pour le SELECT
   function changeObjEventModal_Select(value, action) {
-    let { item } = modal
-    item = { ...item, [action.name] : value.value }
-    
-    let m = { ...modal, item }
-    
-    setModal(m)    
+    let { item } = modal;
+    item = { ...item, [action.name]: value.value };
+
+    let m = { ...modal, item };
+
+    setModal(m);
   }
 
   //Ouverture/Fermeture de la modal
   function openCloseModalEvent(arg = false) {
     setShowEvent(arg);
-    
-    if (!arg) { setModal(null) }
+
+    if (!arg) {
+      setModal(null);
+    }
   }
 
   function openCloseModalDay(arg = false) {
     setShowDay(arg);
-    
-    if (!arg) { setModal(null) }
+
+    if (!arg) {
+      setModal(null);
+    }
   }
 
   //Clic sur le jour du calendrier
-  function dayClick(arg) { 
-
+  function dayClick(arg) {
     //if (!editable_boolean) { return false }
 
     let m = {
-      ...modal, 
+      ...modal,
       item: { date: arg.dateStr },
-      title_modal: "Ajout d'un évènement"
-    }
+      title_modal: "Ajout d'un évènement",
+    };
 
-    setModal(m)
+    setModal(m);
 
-    //setDatePicker(new Date(arg.date));    
+    //setDatePicker(new Date(arg.date));
 
-    openCloseModalDay(true)
+    openCloseModalDay(true);
   }
 
   //Clic sur un Event du calendrier
-  function eventClick(info) { 
-    let m = { title_modal: "Evènement" } 
+  function eventClick(info) {
+    let m = { title_modal: "Evènement" };
 
     if (editable_boolean) {
-      m = { title_modal: "Que voulez vous faire ?" } 
-    }     
-    
+      m = { title_modal: "Que voulez vous faire ?" };
+    }
+
     //Hydratation de l'objet Event dans formulaire de la Modal
-    let event = events.find(item => item.id == info.event._def.publicId)
-    m = { ...m, item: event }
+    let event = events.find((item) => item.id == info.event._def.publicId);
+    m = { ...m, item: event };
 
     //Hydratation de la valeur par défaut du Select
-    let valueUser = optionsUser.filter(option => { return m && m.item.user.id === option.value })      
-    setDefaultValueSelectUser(valueUser[0])
+    let valueUser = optionsUser.filter((option) => {
+      return m && m.item.user.id === option.value;
+    });
+    setDefaultValueSelectUser(valueUser[0]);
 
-    setModal(m)
-    
+    setModal(m);
+
     //Cas particulier de la date qui doit etre setter
     setDatePicker(new Date(m.item.date));
 
-    openCloseModalEvent(true)
+    openCloseModalEvent(true);
   }
 
   //Drag drop event
   function eventDrop(info) {
+    let event = events.find((item) => item.id == info.event._def.publicId);
 
-    let event = events.find(item => item.id == info.event._def.publicId)
+    event.date = moment(info.event.start).format("YYYY-MM-DD");
 
-    event.date = moment(info.event.start).format('YYYY-MM-DD')   
-    
     //TODO : Pb de relation
-    delete event.user
+    delete event.user;
 
-    axios.put('/api/event', event) 
+    axios
+      .put("/api/event", event)
       .then(function (response) {
-        NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-        getEvents()
-      }) 
-      .catch(function (error) { 
-        NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-      }) 
+        NotificationManager.success(
+          "success",
+          "L'évènement est enregistré avec succès.",
+          3000
+        );
+        getEvents();
+      })
+      .catch(function (error) {
+        NotificationManager.error(
+          "warning",
+          "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.",
+          3000
+        );
+      });
   }
 
   //CRUD
   function handleSubmit(type) {
-    
     switch (type) {
-      case "conge": 
+      case "conge":
         let newEvent = {
           title: "Congé",
           permanence_id: null,
           user_id: 1,
           isDayOff: true,
           planning_id: null,
-          date: moment(modal.item.date, "YYYY-MM-DD 00:00:00")
-        }
+          date: moment(modal.item.date, "YYYY-MM-DD 00:00:00"),
+        };
 
-        axios.post('/api/event', newEvent) 
-        .then(function (response) {
-          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          getEvents()
-        }) 
-        .catch(function (error) { 
-          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-        }) 
+        axios
+          .post("/api/event", newEvent)
+          .then(function (response) {
+            NotificationManager.success(
+              "success",
+              "L'évènement est enregistré avec succès.",
+              3000
+            );
+            getEvents();
+          })
+          .catch(function (error) {
+            NotificationManager.error(
+              "warning",
+              "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.",
+              3000
+            );
+          });
 
-        openCloseModalDay(false)
+        openCloseModalDay(false);
         break;
     }
     /*if (type === "delete") {
@@ -234,22 +255,21 @@ export default function Calendar() {
       }       
     }*/
 
-    //openCloseModal(false) 
-    
+    //openCloseModal(false)
   }
 
   //Formattage du datePicker pour l'objet Event Modal
-  //Mise a jour de l'objet Modal 
-  function changeDatePicker(date) {  
-    modal.item.date = moment(date).format('YYYY-MM-DD hh:mm')
-    setDatePicker(date)
-    setModal(modal)
+  //Mise a jour de l'objet Modal
+  function changeDatePicker(date) {
+    modal.item.date = moment(date).format("YYYY-MM-DD hh:mm");
+    setDatePicker(date);
+    setModal(modal);
   }
-      
+
   return (
     <>
       <div>
-        <NotificationContainer/>
+        <NotificationContainer />
 
         {/* <Modal show={show} onHide={openCloseModal}>
           <form onSubmit={e => e.preventDefault()}>
@@ -306,35 +326,45 @@ export default function Calendar() {
         </Modal> */}
 
         <Modal show={showEvent} onHide={openCloseModalEvent}>
-          <form onSubmit={e => e.preventDefault()}>
-            <Modal.Header closeButton>  
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Modal.Header closeButton>
               <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>  
-              <div className='row'>
-                <Link href="/app/exchange">
-                  <a className='btn btn-primary'>
-                    Donner cette désignation
+            <Modal.Body>
+              <div className="row">
+                <Link
+                  href={{
+                    pathname: "/app/exchange",
+                    query: { id: modal ? modal.item.id : 0 },
+                  }}
+                >
+                  <a className="btn btn-primary">
+                    Donner cette désignation{" "}
+                    {modal ? modal.item.permanence_id : ""}
                   </a>
                 </Link>
-              </div>  
-            </Modal.Body>              
+              </div>
+            </Modal.Body>
           </form>
         </Modal>
 
         <Modal show={showDay} onHide={openCloseModalDay}>
-          <form onSubmit={e => e.preventDefault()}>
-            <Modal.Header closeButton>  
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Modal.Header closeButton>
               <Modal.Title>Modification</Modal.Title>
             </Modal.Header>
-            <Modal.Body>  
-              <div className='row'>
-                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("conge")} >
+            <Modal.Body>
+              <div className="row">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  value="save"
+                  onClick={() => handleSubmit("conge")}
+                >
                   Se mettre en congés
                 </Button>
-              </div>   
-              
-            </Modal.Body>              
+              </div>
+            </Modal.Body>
           </form>
         </Modal>
 
@@ -351,29 +381,27 @@ export default function Calendar() {
         <div className="p-3 p-xxl-5">
           <div className="container-fluid px-0 pb-4">
             <div className="bg-white border-top border-4 border-yellow-400 p-3">
-            <FullCalendar
-                locale= 'fr'
+              <FullCalendar
+                locale="fr"
                 firstDay="1"
-                plugins={[ dayGridPlugin, interactionPlugin ]}
+                plugins={[dayGridPlugin, interactionPlugin]}
                 dateClick={dayClick}
-                eventClick={eventClick} 
-                initialView='dayGridMonth'      
+                eventClick={eventClick}
+                initialView="dayGridMonth"
                 headerToolbar={{
                   left: "prev,today,next",
                   center: "title",
-                  right: "dayGridMonth,dayGridWeek,dayGrid"
+                  right: "dayGridMonth,dayGridWeek,dayGrid",
                 }}
                 buttonText={{
-                  today:    "Aujoud'hui",
-                  month:    "Mois",
-                  week:     "Semaine",
-                  dayGrid:  "Jour"
+                  today: "Aujoud'hui",
+                  month: "Mois",
+                  week: "Semaine",
+                  dayGrid: "Jour",
                 }}
                 editable={editable_boolean}
                 eventDrop={eventDrop}
                 events={events}
-              
-              
               />
             </div>
           </div>

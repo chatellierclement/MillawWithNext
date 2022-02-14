@@ -5,9 +5,14 @@ import {
   NotificationManager,
 } from "react-notifications";
 import useToken from "../../pages/useToken";
+import { useRouter } from "next/router";
 
-export default function Exchange(props) {
-  const { event } = props;
+export default function Exchange() {
+  const router = useRouter();
+  const {
+    query: { id },
+  } = router;
+
   const { token, setToken } = useToken();
   const [users, setUsers] = useState(null);
 
@@ -20,12 +25,12 @@ export default function Exchange(props) {
   }
 
   function exchangeEvent(eventId) {
-    exchange = {
-      createdAt: "",
-      user_id_send: token.id,
-      updatedAt: "",
+    let exchange = {
+      createdAt: new Date(),
+      user_id_send: +token.id,
+      updatedAt: new Date(),
       user_id_recipient: +eventId,
-      eventId: event.id,
+      eventId: +id,
     };
 
     axios
@@ -36,7 +41,6 @@ export default function Exchange(props) {
           "Le nouveau token a été généré avec succès.",
           3000
         );
-        getApi();
       })
       .catch(function (error) {
         NotificationManager.error(
@@ -49,7 +53,7 @@ export default function Exchange(props) {
 
   useEffect(() => {
     getUsers();
-  }, [event]);
+  }, [id]);
 
   return (
     <>
@@ -70,7 +74,7 @@ export default function Exchange(props) {
               <div className="card rounded-12 shadow-dark-80 border border-gray-50 mb-3 mb-xl-5">
                 <div className="d-flex align-items-center px-3 px-md-4 py-3">
                   <h5 className="card-header-title mb-0 ps-md-2 font-weight-semibold">
-                    A qui souhaitez vous donner votre permanence ?
+                    A qui souhaitez vous donner la permanence {id ? id : ""} ?
                   </h5>
                 </div>
                 <div className="table-responsive mb-0">
@@ -81,15 +85,19 @@ export default function Exchange(props) {
                       </tr>
                     </thead>
                     <tbody className="list">
-                      {users.map((user, index) => (
-                        <tr onClick={() => exchangeEvent(user.id)} key={index}>
-                          <td>
-                            <span className="ps-2 font-weight-semibold text-gray-700">
-                              {user.firstName} {user.lastName}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
+                      {users &&
+                        users.map((user, index) => (
+                          <tr
+                            onClick={() => exchangeEvent(user.id)}
+                            key={index}
+                          >
+                            <td>
+                              <span className="ps-2 font-weight-semibold text-gray-700">
+                                {user.firstName} {user.lastName}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

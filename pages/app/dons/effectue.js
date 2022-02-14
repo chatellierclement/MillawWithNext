@@ -1,6 +1,26 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import useToken from "../../../pages/useToken";
+import axios from "axios";
 
 export default function Dons() {
+  const [exchanges, setExchanges] = useState([]);
+  const { token, setToken } = useToken();
+
+  function getExchanges() {
+    axios.get('/api/exchange', { params: { user_id_sender: +token.id } })
+    .then(function (response) { 
+        setExchanges(response.data);
+    }) 
+    .catch(function (error) { 
+      console.log(error); 
+    })
+  }
+
+  useEffect(() => {
+    getExchanges();
+  }, [token]);
+
   return (
     <>
       <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
@@ -19,9 +39,9 @@ export default function Dons() {
             <div className="border-bottom border-gray-200 border-3 pb-4 pt-3 mb-4 mb-xl-5">
               <ul className="nav nav-segment nav-pills mb-7" role="tablist">
                 <li className="nav-item">
-                  <Link href="#">
+                  <Link href="/app/dons/effectue">
                     <a
-                      className="nav-link"
+                      className="active nav-link"
                       data-bs-toggle="pill"
                       role="tab"
                       aria-selected="true"
@@ -32,7 +52,7 @@ export default function Dons() {
                 </li>
 
                 <li className="nav-item">
-                  <Link href="#">
+                  <Link href="/app/dons/recu">
                     <a
                       className="nav-link"
                       data-bs-toggle="pill"
@@ -66,7 +86,33 @@ export default function Dons() {
                       </tr>
                     </thead>
                     <tbody className="list">
-                      
+                    {exchanges &&
+                        exchanges.map((exchange, index) => (
+                          <tr
+                            key={index}
+                          >
+                            <td>
+                              <span className="ps-2 font-weight-semibold text-gray-700">
+                                {exchange.createdAt}
+                              </span>
+                            </td>
+                            <td>
+                              <span className="ps-2 font-weight-semibold text-gray-700">
+                                {exchange.permanence_id}
+                              </span>
+                            </td>
+                            <td>
+                              <span className="ps-2 font-weight-semibold text-gray-700">
+                                {exchange.user_id_receiver}
+                              </span>
+                            </td>
+                            <td>
+                              <span className="ps-2 font-weight-semibold text-gray-700">
+                                {exchange.isAccepted}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

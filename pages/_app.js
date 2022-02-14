@@ -24,6 +24,8 @@ function MyApp({ Component, pageProps }) {
     { path: "/app/candidature", roles: ["ADMIN", "AVOCAT"] },
     { path: "/app/documents", roles: ["ADMIN", "AVOCAT"] },
     { path: "/app/dons", roles: ["ADMIN", "AVOCAT"] },
+    { path: "/app/dons/effectue", roles: ["ADMIN", "AVOCAT"] },
+    { path: "/app/dons/recu", roles: ["ADMIN", "AVOCAT"] },
     { path: "/app/admin/users", roles: ["ADMIN"] },
     { path: "/app/admin/co/all", roles: ["ADMIN"] },
     { path: "/app/admin/co/create", roles: ["ADMIN"] },

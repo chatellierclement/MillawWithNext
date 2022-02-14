@@ -4,7 +4,22 @@ import prisma from '../../prisma/lib/prisma'
 export default async function exchange(req, res) {
   switch (req.method) {
     case "GET":
-      let exchangeFind = await prisma.exchange.findMany()
+      let exchangeFind = null;
+      if(req.query.user_id_sender) {
+        exchangeFind = await prisma.exchange.findMany({
+          where: {
+            AND: [{ user_id_sender: +req.query.user_id_sender }],
+          }
+        })
+      } else if (req.query.user_id_recipient) {
+        exchangeFind = await prisma.exchange.findMany({
+          where: {
+            AND: [{ user_id_recipient: +req.query.user_id_recipient }],
+          }
+        })
+      }else {
+        exchangeFind = await prisma.exchange.findMany()
+      }
       res.status(200).json(exchangeFind)
       break;
     case "POST":
