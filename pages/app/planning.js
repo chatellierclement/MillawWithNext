@@ -9,6 +9,7 @@ import axios from 'axios';
 import Select from 'react-select'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import useToken from "../../pages/useToken";
+import Link from "next/link";
 
 export default function Calendar() {  
 
@@ -311,9 +312,11 @@ export default function Calendar() {
             </Modal.Header>
             <Modal.Body>  
               <div className='row'>
-                <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
-                  Donner cette désignation
-                </Button>
+                <Link href="/app/exchange">
+                  <a className='btn btn-primary'>
+                    Donner cette désignation
+                  </a>
+                </Link>
               </div>  
             </Modal.Body>              
           </form>
