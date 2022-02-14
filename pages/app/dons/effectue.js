@@ -46,7 +46,7 @@ export default function Dons() {
                       role="tab"
                       aria-selected="true"
                     >
-                      Mes dons éffectués
+                      Mes dons effectués
                     </a>
                   </Link>
                 </li>
@@ -98,12 +98,12 @@ export default function Dons() {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.permanence_id}
+                                {exchange.event.permanence.name}
                               </span>
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.user_id_receiver}
+                                {exchange.userRecipient.firstName} {exchange.userRecipient.lastName}
                               </span>
                             </td>
                             <td>
