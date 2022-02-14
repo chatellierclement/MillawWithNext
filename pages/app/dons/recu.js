@@ -2,64 +2,108 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useToken from "../../../pages/useToken";
 import axios from "axios";
+import { NotificationManager } from "react-notifications";
+import {useStateIfMounted} from "use-state-if-mounted"
 
 export default function Dons() {
-const [exchanges, setExchanges] = useState([])
-const { token, setToken } = useToken();
+  const [exchanges, setExchanges] = useStateIfMounted([]);
+  const { token, setToken } = useToken();
 
-function getExchanges() {
-    axios.get('/api/exchange', { params: { user_id_recipient: +token.id } })
-    .then(function (response) { 
+  function getExchanges() {
+    axios
+      .get("/api/exchange", { params: { user_id_recipient: +token.id } })
+      .then(function (response) {
         setExchanges(response.data);
-    }) 
-    .catch(function (error) { 
-      console.log(error); 
-    })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
-  function onUpdateEvent() {
-    axios.put('/api/event', { params: { user_id_recipient: +token.id } })
-    .then(function (response) { 
+  function onUpdateEvent(exchange) {
+    delete exchange.event.permanence;
+
+    exchange.event.user_id = exchange.user_id_recipient;
+
+    axios
+      .put("/api/event", exchange.event)
+      .then(function (response) {
+        NotificationManager.success(
+          "success",
+          "Le don a bien été accepté.",
+          3000
+        );
+      })
+      .catch(function (error) {
+        NotificationManager.error(
+          "warning",
+          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
+          3000
+        );
+    });
+
+
+  }
+
+  function onAcceptedOrRefused(_exchange, isAccepted) {
+
+
+    _exchange.isAccepted = isAccepted;
+
+    if(isAccepted) {
+        onUpdateEvent(_exchange);
+
+        delete _exchange.event;
+        delete _exchange.userSender;
+        axios
+      .put("/api/exchange", _exchange)
+      .then(function (response) {
+        getExchanges()
+
+        
+      })
+      .catch(function (error) {
+        NotificationManager.error(
+          "warning",
+          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
+          3000
+        );
+      });
+    } else {
         NotificationManager.success(
             "success",
-            "Le don a bien été accepté.",
+            "Le don a bien été refusé.",
             3000
           );
-    }).catch(function (error) {
-        NotificationManager.error(
-          "warning",
-          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
-          3000
-        );
-      });
+    }
+
+
+
+
+
+    
   }
 
-  function onAcceptedOrRefused(isAccepted) {
-    axios.put('/api/exchange', { params: { user_id_recipient: +token.id } })
-    .then(function (response) {
-        setExchanges(response.data);
+//   useEffect(() => {
+//     let mounted = true;
+//     if (token) {
+//       dispatch({ type: "FETCH_PET" });
+//       getExchanges().then(data => {
+//         if(mounted){
+//           dispatch({ type: "FETCH_PET_SUCCESS", payload: data });
+//         }
+//       });
+//     } else {
+//       dispatch({ type: "RESET" });
+//     }
 
-        if(isAccepted) {
-            onUpdateEvent(eventId, userId);
-        } else {
-            NotificationManager.success(
-                "warning",
-                "Le don a bien été refusé.",
-                3000
-              );
-        }
-    }).catch(function (error) {
-        NotificationManager.error(
-          "warning",
-          "Une erreur est survenue lors du don. Si le problème persiste, veuillez contacter le support.",
-          3000
-        );
-      });
-  }
+//     return () => mounted = false;
 
-useEffect(() => {
+//   }, [token]);
+
+  useEffect(() => {
     getExchanges();
-}, [token]);
+  }, [token]);
 
   return (
     <>
@@ -126,11 +170,9 @@ useEffect(() => {
                       </tr>
                     </thead>
                     <tbody className="list">
-                    {exchanges &&
+                      {exchanges &&
                         exchanges.map((exchange, index) => (
-                          <tr
-                            key={index}
-                          >
+                          <tr key={index}>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
                                 {exchange.createdAt}
@@ -143,12 +185,40 @@ useEffect(() => {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.userSender.firstName} {exchange.userSender.lastName}
+                                {exchange.userSender.firstName}{" "}
+                                {exchange.userSender.lastName}
                               </span>
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.isAccepted ? "Accepté" : "Refusé"}
+                                {exchange.isAccepted == null ? (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        onAcceptedOrRefused(exchange, true)
+                                      }
+                                      className="btn btn-success"
+                                    >
+                                      Accepter
+                                    </button>{" "}
+                                    <button
+                                      onClick={() =>
+                                        onAcceptedOrRefused(exchange, false)
+                                      }
+                                      className="btn btn-danger"
+                                    >
+                                      Refuser
+                                    </button>
+                                  </>
+                                ) : exchange.isAccepted ? (
+                                  <span className="badge bg-success">
+                                    Accepté
+                                  </span>
+                                ) : (
+                                  <span className="badge bg-danger">
+                                    Refusé
+                                  </span>
+                                )}
                               </span>
                             </td>
                           </tr>

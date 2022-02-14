@@ -8,13 +8,14 @@ export default function Dons() {
   const { token, setToken } = useToken();
 
   function getExchanges() {
-    axios.get('/api/exchange', { params: { user_id_sender: +token.id } })
-    .then(function (response) { 
+    axios
+      .get("/api/exchange", { params: { user_id_sender: +token.id } })
+      .then(function (response) {
         setExchanges(response.data);
-    }) 
-    .catch(function (error) { 
-      console.log(error); 
-    })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
@@ -86,11 +87,9 @@ export default function Dons() {
                       </tr>
                     </thead>
                     <tbody className="list">
-                    {exchanges &&
+                      {exchanges &&
                         exchanges.map((exchange, index) => (
-                          <tr
-                            key={index}
-                          >
+                          <tr key={index}>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
                                 {exchange.createdAt}
@@ -103,12 +102,25 @@ export default function Dons() {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.userSender.firstName} {exchange.userSender.lastName}
+                                {exchange.userSender.firstName}{" "}
+                                {exchange.userSender.lastName}
                               </span>
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.isAccepted ? "Accepté" : "Refusé"}
+                                {exchange.isAccepted == null ? (
+                                  <span className="badge bg-dark">
+                                    En attente
+                                  </span>
+                                ) : exchange.isAccepted ? (
+                                  <span className="badge bg-success">
+                                    Accepté
+                                  </span>
+                                ) : (
+                                  <span className="badge bg-danger">
+                                    Refusé
+                                  </span>
+                                )}
                               </span>
                             </td>
                           </tr>

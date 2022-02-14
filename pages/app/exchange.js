@@ -57,6 +57,8 @@ export default function Exchange() {
 
   return (
     <>
+            <NotificationContainer/>
+
       <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
         <div className="container-fluid px-0">
           <div className="row align-items-center">
