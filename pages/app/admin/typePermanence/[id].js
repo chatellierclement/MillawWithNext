@@ -1,22 +1,19 @@
 import React, { Component, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import Link from "next/link";
 import { nanoid } from "nanoid";
 
-export default function TypePermanenceItem () {
+export default function TypePermanenceItem(props) {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = props;
 
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
-  const [typePermanences, setTypePermanences] = useState([]);
   const [permanences, setPermanences] = useState([]);
   const [avocats, setAvocats] = useState([])
 
@@ -88,23 +85,14 @@ export default function TypePermanenceItem () {
   ];
 
   useEffect(() => {
-    axios
-      .get("/api/user", { params: { role_id: 2 } })
-      .then(function (response) {
-        setAvocats(response.data);
-    });
-
+    
     axios
       .get("/api/typePermanence")
       .then(function (response) {
-        setTypePermanences(response.data);
         getPermanences();
       });
-
-      // permanences.forEach(permanence => {
-      //   getPlanning(permanence.id)
-      // });
-  }, [router.query]);
+      
+  }, [id]);
 
   function generatePlanning(idPermanence) {
     
@@ -137,8 +125,7 @@ export default function TypePermanenceItem () {
     axios
     .get("/api/permanence", { params: { typePermanence_id: id } })
     .then(function (response) {
-      setPermanences(response.data);
-      
+      setPermanences(response.data);      
     })
   }
 
@@ -173,11 +160,11 @@ export default function TypePermanenceItem () {
   //Clic sur un button Edit/add d'une permanence
   function eventClick(idPermanence) {
     let m = {
-      item: {},
+      item: null,
       title: "Nouvelle permanence",
     };
 
-    if (idPermanence) {
+    if (typeof idPermanence === "number") {
       m = {
         title: "Modification de la permanence",
       };
@@ -192,8 +179,6 @@ export default function TypePermanenceItem () {
     openCloseModal(true);
   }
 
-  function addTypePermanence() {}
-
   //Mise a jour d'un User
   function handleSubmit(type) {
     //Mise a jour
@@ -206,11 +191,7 @@ export default function TypePermanenceItem () {
             "La permanence est enregistré avec succès.",
             3000
           );
-          let findIndex = permanences.findIndex(
-            (item) => item.id == response.data.id
-          );
-          permanences[findIndex] = response.data;
-          setPermanences([...permanences]);
+          getPermanences()
         })
         .catch(function (error) {
           NotificationManager.error(
@@ -223,8 +204,10 @@ export default function TypePermanenceItem () {
       //Ajout
       const p = {
         name: modal.item.name,
+        typePermanence_id: +id
       };
 
+      console.log(p)
       axios
         .post("/api/permanence", p)
         .then(function (response) {
@@ -233,7 +216,7 @@ export default function TypePermanenceItem () {
             "La permanence est enregistré avec succès.",
             3000
           );
-          setPermanences([...permanences, response.data]);
+          getPermanences()
         })
         .catch(function (error) {
           NotificationManager.error(
@@ -285,88 +268,27 @@ export default function TypePermanenceItem () {
             <input
               type="hidden"
               className="form-control"
-              defaultValue={modal ? modal.item.id : ""}
+              defaultValue={modal && modal.item ? modal.item.id : ""}
             />
-            <span>Name :</span>
+            <span>Nom :</span>
             <input
               type="text"
               name="name"
               className="form-control"
               onChange={changeObjEventModal}
-              defaultValue={modal ? modal.item.name : ""}
+              defaultValue={modal && modal.item ? modal.item.name : ""}
             />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit" onClick={handleSubmit}>
-              Save
+              Enregistrer
             </Button>
           </Modal.Footer>
         </form>
-      </Modal>
-
-      <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
-        <div className="container-fluid px-0">
-          <div className="row align-items-center">
-            <div className="col">
-              <h1 className="h2 mb-0">Permanences</h1>
-            </div>
-
-            <div className="col-auto d-flex align-items-center my-2 my-sm-0">
-              <a
-                href="#"
-                onClick={typePermanenceEventClick}
-                className="btn btn-lg btn-darner px-3 me-2 me-md-3"
-              >
-                <span className="ps-1">Ajouter une categorie</span>
-                <svg
-                  className="ms-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                >
-                  <rect
-                    data-name="Icons/Tabler/Add background"
-                    width="14"
-                    height="14"
-                    fill="none"
-                  ></rect>
-                  <path
-                    d="M6.329,13.414l-.006-.091V7.677H.677A.677.677,0,0,1,.585,6.329l.092-.006H6.323V.677A.677.677,0,0,1,7.671.585l.006.092V6.323h5.646a.677.677,0,0,1,.091,1.348l-.091.006H7.677v5.646a.677.677,0,0,1-1.348.091Z"
-                    fill="#1e1e1e"
-                  ></path>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      </Modal>      
 
       <div className="p-3 p-xxl-5">
-        <div className="container-fluid px-0">
-          <div className="row">
-            <div className="border-bottom border-gray-200 border-3 pb-4 pt-3 mb-4 mb-xl-5">
-              <ul className="nav nav-segment nav-pills mb-7" role="tablist">
-                {typePermanences.map((typePermanence, index) => (
-                  <>
-                    <li className="nav-item">
-                      <Link href={`/app/admin/typePermanence/${typePermanence.id}`}>
-                        <a
-                          className={typePermanence.id == id ? "nav-link active" : "nav-link"}
-                          data-bs-toggle="pill"
-                          role="tab"
-                          aria-selected="true"
-                        >
-                          {typePermanence.name} (X)
-                        </a>
-                      </Link>
-                    </li>
-                  </>
-                ))}
-              </ul>
-            </div>
-          </div>
-
+        <div className="container-fluid px-0"> 
           <div className="pb-2 pt-1 mb-2 mb-xl-5 row">
             <div className="col-auto d-flex align-items-center  my-2 my-sm-0">
               <a
@@ -408,7 +330,7 @@ export default function TypePermanenceItem () {
                   <div className="dropdown export-dropdown ms-auto pe-md-2">
                     <div className="w-56 text-right fixed top-16"></div>
 
-                    {/* <a
+                    <a
                       href="#"
                       role="button"
                       id="Sources"
@@ -416,7 +338,7 @@ export default function TypePermanenceItem () {
                       aria-expanded="false"
                       className="btn btn-outline-dark border-gray-700 text-gray-700 px-3"
                     >
-                      <span>Janvier 2022 </span>{" "}
+                      <span>Février 2022 </span>{" "}
                     </a>
                     <ul
                       className="dropdown-menu dropdown-menu-end"
@@ -432,7 +354,7 @@ export default function TypePermanenceItem () {
                           <span className="ms-2">Custom</span>
                         </a>
                       </li>
-                    </ul> */}
+                    </ul> 
                   </div>
                 </div>
                 <div className="table-responsive mb-0">
