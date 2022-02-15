@@ -10,8 +10,10 @@ export default function Users() {
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
   const [users, setUsers] = useState([]);
+  const [usersSearch, setUsersSearch] = useState([]);
   const [optionsRole, setOptionsRole] = useState([]);
   const [optionsBar, setOptionsBar] = useState([]);
+  const [defaultValueSearch, setDefaultValueSearch] = useState("");
   const [defaultValueSelectRole, setDefaultValueSelectRole] = useState(0);
   const [defaultValueSelectBarreau, setDefaultValueSelectBarreau] = useState(0);
   const paginationComponentOptions = {
@@ -24,14 +26,14 @@ export default function Users() {
       name: "Nom",
       selector: (row) => row.lastName,
       sortable: true,
-      reorder: true
+      reorder: true,
     },
     {
       id: 2,
       name: "Prénom",
       selector: (row) => row.firstName,
       sortable: true,
-      reorder: true
+      reorder: true,
     },
     {
       id: 3,
@@ -83,6 +85,7 @@ export default function Users() {
     await axios.get('/api/user') 
     .then(function (response) { 
       setUsers(response.data);
+      setUsersSearch(response.data);
     }) 
     .catch(function (error) { 
       console.log(error); 
@@ -116,6 +119,19 @@ export default function Users() {
         console.log(error); 
       })
   }, [])   
+
+  function searchUsers(event) {
+    let userSearchArray = []
+
+    setUsersSearch([])
+    users.forEach(u => {
+      if (u.lastName.includes(event.target.value) || u.firstName.includes(event.target.value)) {
+          userSearchArray.push(u)
+      }
+    })
+
+    setUsersSearch(userSearchArray)
+  }
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
@@ -324,7 +340,13 @@ export default function Users() {
                             <path id="Combined_Shape" data-name="Combined Shape" d="M13.141,13.895l-.06-.052L9.1,9.859A5.569,5.569,0,1,1,9.859,9.1l3.983,3.983a.539.539,0,0,1-.7.813ZM1.077,5.564A4.487,4.487,0,1,0,5.564,1.077,4.492,4.492,0,0,0,1.077,5.564Z" fill="#6c757d"/>
                           </svg>
                         </button>
-                        <input type="search" className="form-control border-0" placeholder="Rechercher un utilisateur"></input>
+                        <input 
+                          type="search" 
+                          name="search"
+                          className="form-control border-0" 
+                          placeholder="Rechercher un utilisateur" 
+                          onChange={searchUsers} >  
+                        </input>
                       </div>
                     </div>
                   </div>
@@ -334,7 +356,7 @@ export default function Users() {
               <div className="card rounded-12 shadow-dark-80 border border-gray-50 mb-3 mb-xl-5">
                 <DataTable
                   columns={columns}
-                  data={users}
+                  data={usersSearch}
                   defaultSortFieldId={1}
                   pagination
                   noDataComponent="Il n'y a aucun utilisateur"
