@@ -139,7 +139,6 @@ export default function TypePermanenceItem(props) {
     axios
     .get("/api/permanence", { params: { typePermanence_id: id } })
     .then(function (response) {
-      console.log(response.data)
       setPermanences(response.data);      
     })
   }
