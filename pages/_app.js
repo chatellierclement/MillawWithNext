@@ -31,6 +31,7 @@ function MyApp({ Component, pageProps }) {
     { path: "/app/admin/co/create", roles: ["ADMIN"] },
     { path: "/app/admin/permanence", roles: ["ADMIN"] },
     { path: "/app/admin/barreau", roles: ["ADMIN"] },
+    { path: "/app/admin/planning", roles: ["ADMIN"] },
     { path: "/app/admin/typePermanence/:id", roles: ["ADMIN"] },
   ];
 
