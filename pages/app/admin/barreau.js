@@ -11,21 +11,9 @@ export default function Barreau() {
   const [user, setUser] = useState(null);
   const [bar, setBar] = useState(null);
 
-  function getUser() {
+  function getBar() {
     axios
-      .get("/api/user", { params: { id: token.id } })
-      .then(function (response) {
-        setUser(response.data);
-        getBar(response.data.bar_id);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  function getBar(id) {
-    axios
-      .get("/api/bar", { params: { id: id } })
+      .get("/api/bar", { params: { id: token.bar_id } })
       .then(function (response) {
         setBar(response.data);
       })
@@ -35,7 +23,7 @@ export default function Barreau() {
   }
 
   useEffect(() => {
-    getUser();
+    getBar();
   }, [token]);
 
   return (

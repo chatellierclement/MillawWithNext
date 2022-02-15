@@ -46,10 +46,11 @@ model Role {
 }
 
 model Bar {
-  id   Int    @id @default(autoincrement())
-  name String
-  user User[]
-  api  Api?
+  id                Int     @id @default(autoincrement())
+  name              String
+  isApplyAuthorized Boolean @default(true)
+  user              User[]
+  api               Api?
 }
 
 model TypePermanence {
