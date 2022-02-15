@@ -77,7 +77,7 @@ export default function Information() {
                 className="form-check-input"
                 type="checkbox"
                 onChange={handleIsApplyAuthorizedChange}
-                checked={bar && bar.isApplyAuthorized}
+                defaultChecked={bar && bar.isApplyAuthorized}
                 name="isApplyAuthorized"
                 id="isApplyAuthorized"
               />
