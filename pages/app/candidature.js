@@ -174,7 +174,7 @@ export default function Candidature() {
         //Ajout
         const newApply = {
           permanence_id: +modal.item.permanence_id,
-          date: modal.item.date,          
+          date: moment(modal.item.date, "YYYY-MM-DD hh:mm:ss"),       
           user_id: +token.id
         };  
 
