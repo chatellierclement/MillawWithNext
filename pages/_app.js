@@ -45,6 +45,10 @@ function MyApp({ Component, pageProps }) {
     document.getElementById("content").classList.toggle("active");
   }
 
+  function disconnected() {
+    localStorage.removeItem("token")
+  }
+
   async function getUserById() {
     await axios.get("/api/user", { params: { id : token.id } })
       .then(function (response) {
@@ -206,11 +210,12 @@ function MyApp({ Component, pageProps }) {
 
                   <div className="dropdown grid-option">
                     <a
-                      href="#"
+                      href=""
                       className="text-dark ms-4 ms-xxl-5 mb-0 notification-icon"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                       id="notification"
+                      onClick={disconnected}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

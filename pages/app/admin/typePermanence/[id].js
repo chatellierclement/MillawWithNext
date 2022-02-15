@@ -87,6 +87,12 @@ export default function TypePermanenceItem(props) {
   useEffect(() => {
     
     axios
+      .get("/api/user", { params: { role_id: 2 } })
+      .then(function (response) {
+        setAvocats(response.data);
+      });
+
+    axios
       .get("/api/typePermanence")
       .then(function (response) {
         getPermanences();
