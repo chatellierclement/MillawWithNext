@@ -125,7 +125,8 @@ export default function Users() {
 
     setUsersSearch([])
     users.forEach(u => {
-      if (u.lastName.includes(event.target.value) || u.firstName.includes(event.target.value)) {
+      if (u.lastName.toUpperCase().includes(event.target.value.toUpperCase()) 
+      || u.firstName.toUpperCase().includes(event.target.value.toUpperCase())) {
           userSearchArray.push(u)
       }
     })
