@@ -7,6 +7,9 @@ import {
   NotificationManager,
 } from "react-notifications";
 import { nanoid } from "nanoid";
+import DatePicker, { registerLocale } from "react-datepicker";
+import fr from "date-fns/locale/fr"; 
+registerLocale("fr", fr);
 
 export default function TypePermanenceItem(props) {
   const router = useRouter();
@@ -16,6 +19,7 @@ export default function TypePermanenceItem(props) {
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
   const [avocats, setAvocats] = useState([])
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const paginationComponentOptions = {
     rowsPerPageText: "Lignes par page :",
@@ -100,6 +104,10 @@ export default function TypePermanenceItem(props) {
       
   }, [id]);
 
+  function changeDatePicker(date) {
+    setSelectedDate(date)
+  }
+
   function generatePlanning(idPermanence) {
     
     /// Quand il y a moins d'avocat que de date
@@ -131,6 +139,7 @@ export default function TypePermanenceItem(props) {
     axios
     .get("/api/permanence", { params: { typePermanence_id: id } })
     .then(function (response) {
+      console.log(response.data)
       setPermanences(response.data);      
     })
   }
@@ -336,16 +345,15 @@ export default function TypePermanenceItem(props) {
                   <div className="dropdown export-dropdown ms-auto pe-md-2">
                     <div className="w-56 text-right fixed top-16"></div>
 
-                    <a
-                      href="#"
-                      role="button"
-                      id="Sources"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      className="btn btn-outline-dark border-gray-700 text-gray-700 px-3"
-                    >
-                      <span>Février 2022 </span>{" "}
-                    </a>
+                    <DatePicker    
+                        locale="fr"            
+                        selected={selectedDate}
+                        className="form-control"  
+                        onChange={changeDatePicker}                  
+                        showMonthYearPicker
+                        dateFormat="MMMM Y"
+                    />
+
                     <ul
                       className="dropdown-menu dropdown-menu-end"
                       aria-labelledby="Sources"

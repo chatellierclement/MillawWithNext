@@ -93,8 +93,8 @@ export default function Index () {
     await axios
       .get("/api/typePermanence")
       .then(function (response) {
-        setTypePermanences(response.data);
-       // getPermanences();
+        console.log(response.data)
+        setTypePermanences(response.data);        
       });
   }
 
