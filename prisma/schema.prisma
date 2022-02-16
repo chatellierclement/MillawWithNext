@@ -11,16 +11,15 @@ datasource db {
 }
 
 model Event {
-  id            Int         @id @default(autoincrement())
-  title         String?
-  planning_id   String?
-  date          DateTime
-  permanence    Permanence? @relation(fields: [permanence_id], references: [id])
-  permanence_id Int?
-  isDayOff      Boolean?
-  user          User        @relation(fields: [user_id], references: [id])
-  user_id       Int
-  Exchange      Exchange[]
+  id          Int        @id @default(autoincrement())
+  title       String?
+  date        DateTime
+  planning    Planning  @relation(fields: [planning_id], references: [id])
+  planning_id String
+  isDayOff    Boolean?
+  user        User       @relation(fields: [user_id], references: [id])
+  user_id     Int
+  Exchange    Exchange[]
 }
 
 model Exchange {
@@ -66,14 +65,24 @@ model Api {
   bar_id Int    @unique
 }
 
+model Planning {
+  id           String      @id
+  month        Int
+  year         Int
+  event        Event[]
+  createdAt    DateTime
+  Permanence   Permanence? @relation(fields: [permanenceId], references: [id])
+  permanenceId Int?
+}
+
 model Permanence {
   id                Int                @id @default(autoincrement())
   name              String
   typePermanence    TypePermanence     @relation(fields: typePermanence_id, references: [id])
   typePermanence_id Int
-  Event             Event[]
   Apply             Apply[]
   CommissionOffice  CommissionOffice[]
+  planning          Planning[]
 }
 
 model Apply {
