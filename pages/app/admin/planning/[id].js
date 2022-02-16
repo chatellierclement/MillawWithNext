@@ -11,10 +11,11 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import useToken from "../../../pages/useToken";
+import useToken from "../../../useToken";
 import Link from "next/link";
 
 export default function Calendar() {
+  const permanence_id = 7
   const { token, setToken } = useToken();
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
@@ -30,13 +31,14 @@ export default function Calendar() {
     axios
       .get("/api/user", { params: { id: token.id } })
       .then(function (response) {
-        setUser(response.data);
-        getEvents();
+        setUser(response.data);        
       });
   }
 
   useEffect(() => {
     getUser();
+
+    getEvents();
 
     //Gestion des roles utilisateurs
     let type = role === "admin" ? true : false;
@@ -58,9 +60,8 @@ export default function Calendar() {
   //Initialisation des Events
   function getEvents() {
     axios
-      .get("/api/event")
+      .get("/api/event", { params: { date: "30/05/2022", permanence_id: permanence_id } })
       .then(function (response) {
-          console.log(response.data)
         setEvents(response.data);
       });
   }

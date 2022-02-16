@@ -261,7 +261,7 @@ export default function Index () {
                 onClick={typePermanenceEventClick}
                 className="btn btn-lg btn-darner px-3 me-2 me-md-3"
               >
-                <span className="ps-1">Ajouter une categorie</span>
+                <span className="ps-1">Ajouter une catégorie</span>
                 <svg
                   className="ms-4"
                   xmlns="http://www.w3.org/2000/svg"
