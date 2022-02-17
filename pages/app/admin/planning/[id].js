@@ -15,7 +15,7 @@ import useToken from "../../../useToken";
 import Link from "next/link";
 
 export default function Calendar() {
-  const permanence_id = 7
+  const permanence_id = 7;
   const { token, setToken } = useToken();
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
@@ -31,7 +31,7 @@ export default function Calendar() {
     axios
       .get("/api/user", { params: { id: token.id } })
       .then(function (response) {
-        setUser(response.data);        
+        setUser(response.data);
       });
   }
 
@@ -45,22 +45,36 @@ export default function Calendar() {
     setEditableBoolean(type);
 
     //Initialisation des User
-    axios.get('/api/user')
-       .then(function (response) {
-         let data_select = response.data.map(item => {
-           return { value: item.id, label: item.lastName + " " + item.firstName  }
-         })
-         setOptionsUser(data_select);
-       })
-       .catch(function (error) {
+    axios
+      .get("/api/user")
+      .then(function (response) {
+        let data_select = response.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.lastName + " " + item.firstName,
+          };
+        });
+        setOptionsUser(data_select);
+      })
+      .catch(function (error) {
         console.log(error);
-       })
+      });
   }, [token]);
 
-  //Initialisation des Events
+  // //Initialisation des Events
+  // function getEvents() {
+  //   axios
+  //     .get("/api/event", { params: { date: "30/05/2022", permanence_id: permanence_id } })
+  //     .then(function (response) {
+  //       setEvents(response.data);
+  //     });
+  // }
+
   function getEvents() {
+    let planningId = "pN3Bepz2vCvt0N4npIHAp";
+
     axios
-      .get("/api/event", { params: { date: "30/05/2022", permanence_id: permanence_id } })
+      .get("/api/event", { params: { planning_id: planningId } })
       .then(function (response) {
         setEvents(response.data);
       });
@@ -127,7 +141,7 @@ export default function Calendar() {
       //Hydratation de la valeur par défaut du Select
       let valueUser = optionsUser.filter((option) => {
         return m && m.item.user_id === option.value;
-      });      
+      });
       setDefaultValueSelectUser(valueUser[0]);
 
       setModal(m);
@@ -136,7 +150,7 @@ export default function Calendar() {
       setDatePicker(new Date(m.item.date));
 
       openCloseModal(true);
-    }    
+    }
   }
 
   //Drag drop event
@@ -169,60 +183,82 @@ export default function Calendar() {
 
   //CRUD
   function handleSubmit(type) {
-
     if (type === "delete") {
       //Suppression
-      axios.delete('/api/event', { data : modal.item }) 
+      axios
+        .delete("/api/event", { data: modal.item })
         .then(function (response) {
-          NotificationManager.success("success", "L'évènement a été supprimé avec succès.", 3000)
-          getEvents()
-        }) 
-        .catch(function (error) { 
-          NotificationManager.error("warning", "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.", 3000)
+          NotificationManager.success(
+            "success",
+            "L'évènement a été supprimé avec succès.",
+            3000
+          );
+          getEvents();
         })
-
+        .catch(function (error) {
+          NotificationManager.error(
+            "warning",
+            "Une erreur est survenue lors de la suppression. Si le problème persiste, veuillez contacter le support.",
+            3000
+          );
+        });
     } else {
-
       //TODO : Pb de relation
-      delete modal.item.user
-      delete modal.item.permanence
+      delete modal.item.user;
+      delete modal.item.permanence;
 
       //Mise a jour
-      if (modal.item.id) {      
-        axios.put('/api/event', modal.item) 
-        .then(function (response) {
-          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          getEvents()
-        }) 
-        .catch(function (error) { 
-          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-        }) 
-
+      if (modal.item.id) {
+        axios
+          .put("/api/event", modal.item)
+          .then(function (response) {
+            NotificationManager.success(
+              "success",
+              "L'évènement est enregistré avec succès.",
+              3000
+            );
+            getEvents();
+          })
+          .catch(function (error) {
+            NotificationManager.error(
+              "warning",
+              "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.",
+              3000
+            );
+          });
       } else {
         //Ajout
         const newEvent = {
-          title:  modal.item.title,
+          title: modal.item.title,
           permanence_id: null,
           user_id: modal.item.user_id,
           isDayOff: false,
           planning_id: null,
           date: moment(modal.item.date, "YYYY-MM-DD hh:mm:ss"),
-          title: modal.item.title
-        };  
+          title: modal.item.title,
+        };
 
-        axios.post('/api/event', newEvent) 
-        .then(function (response) {
-          NotificationManager.success("success", "L'évènement est enregistré avec succès.", 3000)
-          getEvents()
-        }) 
-        .catch(function (error) { 
-          NotificationManager.error("warning", "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.", 3000)
-        })      
-        
-      }       
+        axios
+          .post("/api/event", newEvent)
+          .then(function (response) {
+            NotificationManager.success(
+              "success",
+              "L'évènement est enregistré avec succès.",
+              3000
+            );
+            getEvents();
+          })
+          .catch(function (error) {
+            NotificationManager.error(
+              "warning",
+              "Une erreur est survenue lors de l'enregistrement. Si le problème persiste, veuillez contacter le support.",
+              3000
+            );
+          });
+      }
     }
 
-    openCloseModal(false)
+    openCloseModal(false);
   }
 
   //Formattage du datePicker pour l'objet Event Modal
@@ -239,51 +275,66 @@ export default function Calendar() {
         <NotificationContainer />
 
         <Modal show={show} onHide={openCloseModal}>
-          <form onSubmit={e => e.preventDefault()}>
-            <Modal.Header closeButton>  
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Modal.Header closeButton>
               <Modal.Title>{modal ? modal.title_modal : ""}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>              
-              <input type='hidden' 
-                    className="form-control"
-                    defaultValue={modal ? modal.item.id : ""} 
-                    disabled={role === 'admin' ? '' : 'disabled'} />
+            <Modal.Body>
+              <input
+                type="hidden"
+                className="form-control"
+                defaultValue={modal ? modal.item.id : ""}
+                disabled={role === "admin" ? "" : "disabled"}
+              />
               <span>Date : </span>
-              <DatePicker                    
-                  className="form-control"
-                  disabled={role === 'admin' ? '' : 'disabled'} 
-                  selected={datePicker}
-                  onChange={changeDatePicker}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={5}
-                  timeCaption="time"
-                  dateFormat="dd/MM/Y HH:mm"
+              <DatePicker
+                className="form-control"
+                disabled={role === "admin" ? "" : "disabled"}
+                selected={datePicker}
+                onChange={changeDatePicker}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="time"
+                dateFormat="dd/MM/Y HH:mm"
               />
               <span>Evenement :</span>
-              <input type='text' 
-                    name="title" 
-                    className="form-control" 
-                    onChange={(e) => changeObjEventModal(e)}
-                    defaultValue={modal ? modal.item.title : ""} 
-                    disabled={role === 'admin' ? '' : 'disabled'}/>              
+              <input
+                type="text"
+                name="title"
+                className="form-control"
+                onChange={(e) => changeObjEventModal(e)}
+                defaultValue={modal ? modal.item.title : ""}
+                disabled={role === "admin" ? "" : "disabled"}
+              />
               <span>Utilisateur</span>
-              <Select name="user_id" 
-                options={optionsUser} 
-                onChange={changeObjEventModal_Select} 
-                defaultValue={defaultValueSelectUser} 
-              />                              
-            </Modal.Body>              
-            <Modal.Footer className={ editable_boolean === true ? '' : 'hidden' }>
-              <Button variant="primary" type="submit" value="save" onClick={() => handleSubmit("save")} >
+              <Select
+                name="user_id"
+                options={optionsUser}
+                onChange={changeObjEventModal_Select}
+                defaultValue={defaultValueSelectUser}
+              />
+            </Modal.Body>
+            <Modal.Footer className={editable_boolean === true ? "" : "hidden"}>
+              <Button
+                variant="primary"
+                type="submit"
+                value="save"
+                onClick={() => handleSubmit("save")}
+              >
                 Enregistrer
               </Button>
-              <Button variant="danger" type="submit" value="delete" onClick={() => handleSubmit("delete")} >
+              <Button
+                variant="danger"
+                type="submit"
+                value="delete"
+                onClick={() => handleSubmit("delete")}
+              >
                 Supprimer
               </Button>
             </Modal.Footer>
           </form>
-        </Modal>         
+        </Modal>
 
         <div className="px-3 px-xxl-5 py-3 py-lg-4 border-bottom border-gray-200 after-header">
           <div className="container-fluid px-0">

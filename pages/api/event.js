@@ -11,7 +11,7 @@ export default async function event(req, res) {
           where: {
             AND: [{ user_id: +req.query.user_id }],
           },
-          include: { permanence: true }
+          include: { permanence: true },
         });
       } else if (req.query.date && req.query.permanence_id) {
         var parts = req.query.date.split("/");
@@ -32,6 +32,13 @@ export default async function event(req, res) {
               },
               { permanence_id: +req.query.permanence_id },
             ],
+          },
+        });
+      } else if (req.query.planning_id) {
+        eventFind = await prisma.event.findMany({
+          include: { user: true },
+          where: {
+            planning_id: req.query.planning_id,
           },
         });
       }
