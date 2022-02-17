@@ -9,7 +9,7 @@ import {
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import DatePicker, { registerLocale } from "react-datepicker";
-import fr from "date-fns/locale/fr"; 
+import fr from "date-fns/locale/fr";
 registerLocale("fr", fr);
 
 export default function TypePermanenceItem(props) {
@@ -19,14 +19,17 @@ export default function TypePermanenceItem(props) {
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
-  const [avocats, setAvocats] = useState([])
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [avocats, setAvocats] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [plannings, setPlannings] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(null);
+  const [currentYear, setCurrentYear] = useState(null);
 
   const paginationComponentOptions = {
     rowsPerPageText: "Lignes par page :",
     rangeSeparatorText: "sur",
   };
-  
+
   const columns = [
     {
       id: 2,
@@ -90,58 +93,75 @@ export default function TypePermanenceItem(props) {
   ];
 
   useEffect(() => {
-    
     axios
       .get("/api/user", { params: { role_id: 2 } })
       .then(function (response) {
         setAvocats(response.data);
       });
 
-    axios
-      .get("/api/typePermanence")
-      .then(function (response) {
-        getPermanences();
-      });
-      
+    axios.get("/api/typePermanence").then(function (response) {
+      getPermanences();
+    });
   }, [id]);
 
   function changeDatePicker(date) {
-    setSelectedDate(date)
+    setCurrentMonth(new Date(date).getMonth());
+    setCurrentYear(new Date(date).getFullYear());
+
+    getPlannings();
+
+    setSelectedDate(date);
   }
 
   function generatePlanning(idPermanence) {
-    
     /// Quand il y a moins d'avocat que de date
     let newEvent;
     let dateEvent = new Date(2022, 5, 1);
 
     for (let index = 0; index < avocats.length; index++) {
-      let avocat_id = avocats[index]["id"]
+      let avocat_id = avocats[index]["id"];
       newEvent = {
-        date: new Date(2022, 5, index++), 
+        date: new Date(2022, 5, index++),
         planning_id: nanoid(),
         user_id: +avocat_id,
-        permanence_id: +idPermanence
+        permanence_id: +idPermanence,
       };
 
-      axios.post('/api/event', newEvent) 
-      .then(function (response) {
-        NotificationManager.success("success", "Le planning a été généré avec succès.", 3000)
-      }) 
-      .catch(function (error) { 
-        NotificationManager.error("warning", "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.", 3000)
-      })
+      axios
+        .post("/api/event", newEvent)
+        .then(function (response) {
+          NotificationManager.success(
+            "success",
+            "Le planning a été généré avec succès.",
+            3000
+          );
+        })
+        .catch(function (error) {
+          NotificationManager.error(
+            "warning",
+            "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
+            3000
+          );
+        });
     }
+  }
 
-
+  function getPlannings() {
+    axios
+      .get("/api/planning", {
+        params: { month: currentMonth, year: currentYear },
+      })
+      .then(function (response) {
+        setPlannings(response.data);
+      });
   }
 
   function getPermanences() {
     axios
-    .get("/api/permanence", { params: { typePermanence_id: id } })
-    .then(function (response) {
-      setPermanences(response.data);      
-    })
+      .get("/api/permanence", { params: { typePermanence_id: id } })
+      .then(function (response) {
+        setPermanences(response.data);
+      });
   }
 
   //Binding de l'objet Event de la modal
@@ -206,7 +226,7 @@ export default function TypePermanenceItem(props) {
             "La permanence est enregistré avec succès.",
             3000
           );
-          getPermanences()
+          getPermanences();
         })
         .catch(function (error) {
           NotificationManager.error(
@@ -219,10 +239,10 @@ export default function TypePermanenceItem(props) {
       //Ajout
       const p = {
         name: modal.item.name,
-        typePermanence_id: +id
+        typePermanence_id: +id,
       };
 
-      console.log(p)
+      console.log(p);
       axios
         .post("/api/permanence", p)
         .then(function (response) {
@@ -231,7 +251,7 @@ export default function TypePermanenceItem(props) {
             "La permanence est enregistré avec succès.",
             3000
           );
-          getPermanences()
+          getPermanences();
         })
         .catch(function (error) {
           NotificationManager.error(
@@ -246,7 +266,6 @@ export default function TypePermanenceItem(props) {
   }
 
   function deletePermanence(idPermanence) {
-
     axios
       .delete("/api/permanence", { data: { idPermanence: idPermanence } })
       .then(function (response) {
@@ -300,10 +319,10 @@ export default function TypePermanenceItem(props) {
             </Button>
           </Modal.Footer>
         </form>
-      </Modal>      
+      </Modal>
 
       <div className="p-3 p-xxl-5">
-        <div className="container-fluid px-0"> 
+        <div className="container-fluid px-0">
           <div className="pb-2 pt-1 mb-2 mb-xl-5 row">
             <div className="col-auto d-flex align-items-center  my-2 my-sm-0">
               <a
@@ -345,13 +364,13 @@ export default function TypePermanenceItem(props) {
                   <div className="dropdown export-dropdown ms-auto pe-md-2">
                     <div className="w-56 text-right fixed top-16"></div>
 
-                    <DatePicker    
-                        locale="fr"            
-                        selected={selectedDate}
-                        className="form-control"  
-                        onChange={changeDatePicker}                  
-                        showMonthYearPicker
-                        dateFormat="MMMM Y"
+                    <DatePicker
+                      locale="fr"
+                      selected={selectedDate}
+                      className="form-control"
+                      onChange={changeDatePicker}
+                      showMonthYearPicker
+                      dateFormat="MMMM Y"
                     />
 
                     <ul
@@ -368,7 +387,7 @@ export default function TypePermanenceItem(props) {
                           <span className="ms-2">Custom</span>
                         </a>
                       </li>
-                    </ul> 
+                    </ul>
                   </div>
                 </div>
                 <div className="table-responsive mb-0">
@@ -382,7 +401,6 @@ export default function TypePermanenceItem(props) {
                       </tr>
                     </thead>
                     <tbody className="list">
-                 
                       {permanences.map((permanence, index) => (
                         <>
                           <tr key={index}>
@@ -397,18 +415,57 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-                              <button onClick={() => generatePlanning(permanence.id)} className="btn btn-dark">Générer le planning</button>
-                              <Link href={`/app/admin/planning/${permanence.id}`}>
-                                <a className="btn btn-dark">                                  
-                                  <span className="ms-2">Afficher le planning</span>
+                              <button
+                                onClick={() => generatePlanning(permanence.id)}
+                                className="btn btn-dark"
+                              >
+                                Générer le planning
+                              </button>
+                              <Link
+                                href={`/app/admin/planning/${permanence.id}`}
+                              >
+                                <a className="btn btn-dark">
+                                  <span className="ms-2">
+                                    Afficher le planning
+                                  </span>
                                 </a>
                               </Link>
                             </td>
                             <td>
-                              <svg onClick={() => eventClick(permanence.id)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                              <svg
+                                onClick={() => eventClick(permanence.id)}
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="feather feather-edit"
+                              >
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                              </svg>
                             </td>
                             <td>
-                              <svg onClick={() => deletePermanence(permanence.id)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                              <svg
+                                onClick={() => deletePermanence(permanence.id)}
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="feather feather-trash"
+                              >
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                              </svg>
                             </td>
                           </tr>
                         </>
@@ -423,4 +480,4 @@ export default function TypePermanenceItem(props) {
       </div>
     </>
   );
-};
+}
