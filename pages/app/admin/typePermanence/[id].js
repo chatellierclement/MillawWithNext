@@ -289,6 +289,40 @@ export default function TypePermanenceItem(props) {
       });
   }
 
+  {
+    /* Appeler un conditionnal.
+                              Récuperer à partir du mois, de l'année et de la permanence
+                              le planning correspondant.
+                                return le bouton afficher planning et passer en paramètre le planning_id
+                              Si pas de planning
+                                return le bouton Générer le planning et passer permanence.id comme paramètre. */
+  }
+  function DisplayButton(props) {
+    axios.get("/api/planning", {params: {month: currentMonth, year: currentYear, permanenceId: props.permanenceId}})
+    .then(function (response) {
+      
+      if (response.data.id) {
+        return (
+          <Link href={`/app/admin/planning/${response.data.id}`}>
+            <a className="btn btn-dark">
+              <span className="ms-2">Afficher le planning</span>
+            </a>
+          </Link>
+        );
+      } else {
+        <button
+          onClick={() => generatePlanning(props.permanenceId)}
+          className="btn btn-dark"
+        >
+          Générer le planning
+        </button>;
+      }
+
+    });
+    
+    
+  }
+
   return (
     <>
       <NotificationContainer />
@@ -415,28 +449,7 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-
-                              {/* Appeler un conditionnal.
-                              Récuperer à partir du mois, de l'année et de la permanence
-                              le planning correspondant.
-                                return le bouton afficher planning et passer en paramètre le planning_id
-                              Si pas de planning
-                                return le bouton Générer le planning et passer permanence.id comme paramètre. */}
-                              <button
-                                onClick={() => generatePlanning(permanence.id)}
-                                className="btn btn-dark"
-                              >
-                                Générer le planning
-                              </button>
-                              <Link
-                                href={`/app/admin/planning/${permanence.id}`}
-                              >
-                                <a className="btn btn-dark">
-                                  <span className="ms-2">
-                                    Afficher le planning
-                                  </span>
-                                </a>
-                              </Link>
+                              <DisplayButton permanenceId={permanence.id} />
                             </td>
                             <td>
                               <svg
