@@ -415,6 +415,13 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
+
+                              {/* Appeler un conditionnal.
+                              Récuperer à partir du mois, de l'année et de la permanence
+                              le planning correspondant.
+                                return le bouton afficher planning et passer en paramètre le planning_id
+                              Si pas de planning
+                                return le bouton Générer le planning et passer permanence.id comme paramètre. */}
                               <button
                                 onClick={() => generatePlanning(permanence.id)}
                                 className="btn btn-dark"
