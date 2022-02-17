@@ -17,11 +17,13 @@ export default function Menu(props) {
   }
 
   function getBar() {
-    axios
+    if (token) {
+      axios
       .get("/api/bar", { params: { bar_id: token.bar_id } })
       .then(function (response) {
         setBar(response.data);
       });
+    }
   }
 
   useEffect(() => {
