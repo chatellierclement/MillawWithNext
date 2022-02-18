@@ -288,38 +288,40 @@ export default function TypePermanenceItem(props) {
         );
       });
   }
-
-  {
-    /* Appeler un conditionnal.
-                              Récuperer à partir du mois, de l'année et de la permanence
-                              le planning correspondant.
-                                return le bouton afficher planning et passer en paramètre le planning_id
-                              Si pas de planning
-                                return le bouton Générer le planning et passer permanence.id comme paramètre. */
-  }
-  function DisplayButton(props) {
-    axios.get("/api/planning", {params: {month: currentMonth, year: currentYear, permanenceId: props.permanenceId}})
+  
+  async function getPlanningForDisplayButton() {
+    let result = null
+    await axios.get("/api/planning", {params: {month: currentMonth, year: currentYear, permanenceId: props.permanenceId}})
     .then(function (response) {
-      
       if (response.data.id) {
-        return (
-          <Link href={`/app/admin/planning/${response.data.id}`}>
-            <a className="btn btn-dark">
-              <span className="ms-2">Afficher le planning</span>
-            </a>
-          </Link>
-        );
-      } else {
-        <button
-          onClick={() => generatePlanning(props.permanenceId)}
-          className="btn btn-dark"
-        >
-          Générer le planning
-        </button>;
-      }
-
+        result = response
+      } 
     });
+
+    return result
+  }
+
+  function DisplayButton(props) {
+    let response = getPlanningForDisplayButton()
+
+    if (response.data) {
+      return (
+        <Link href={`/app/admin/planning/${response.data.id}`}>
+          <a className="btn btn-dark">
+            <span className="ms-2">Afficher le planning</span>
+          </a>
+        </Link>
+      );
+    }
     
+    return (
+      <button
+        onClick={() => generatePlanning(props.permanenceId)}
+        className="btn btn-dark"
+      >
+        Générer le planning
+      </button>
+    );
     
   }
 
