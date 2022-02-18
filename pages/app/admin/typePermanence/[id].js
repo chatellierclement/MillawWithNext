@@ -8,6 +8,7 @@ import {
 } from "react-notifications";
 import { nanoid } from "nanoid";
 import Link from "next/link";
+import moment from 'moment';
 import DatePicker, { registerLocale } from "react-datepicker";
 import fr from "date-fns/locale/fr";
 registerLocale("fr", fr);
@@ -289,7 +290,7 @@ export default function TypePermanenceItem(props) {
       });
   }
   
-  async function getPlanningForDisplayButton() {
+  async function getPlanningForDisplayButton(props) {
     let result = null
     await axios.get("/api/planning", {params: {month: currentMonth, year: currentYear, permanenceId: props.permanenceId}})
     .then(function (response) {
@@ -302,7 +303,7 @@ export default function TypePermanenceItem(props) {
   }
 
   function DisplayButton(props) {
-    let response = getPlanningForDisplayButton()
+    let response = getPlanningForDisplayButton(props)
 
     if (response.data) {
       return (
@@ -322,6 +323,18 @@ export default function TypePermanenceItem(props) {
         Générer le planning
       </button>
     );
+    
+  }
+
+  function DisplayAvancement(props) {
+    //TODO : le '10' est le nombre d'events. je ne suis pas sur de comment le recuperer
+    //Peux etre jouer sur la couleur en fonction du %
+    let result = (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+    return (
+      <span className="badge bg-teal-50 text-teal-500">
+        {result}%
+      </span>
+    )
     
   }
 
@@ -446,9 +459,7 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-                              <span className="badge bg-teal-50 text-teal-500">
-                                100%
-                              </span>
+                              <DisplayAvancement permanenceId={permanence.id} />
                             </td>
                             <td>
                               <DisplayButton permanenceId={permanence.id} />
