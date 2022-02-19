@@ -290,11 +290,12 @@ export default function TypePermanenceItem(props) {
       });
   }
   
-  function getPlanningForDisplayButton(props) {
+  async function getPlanningForDisplayButton(props) {
     let result = null
 
-    axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
+    await axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
     .then(function (response) {
+      console.log(response)
       // if (response.data.id) {
         return response;
       // } 
