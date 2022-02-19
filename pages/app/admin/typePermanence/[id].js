@@ -11,6 +11,7 @@ import Link from "next/link";
 import moment from 'moment';
 import DatePicker, { registerLocale } from "react-datepicker";
 import fr from "date-fns/locale/fr";
+import { createDeflate } from "zlib";
 registerLocale("fr", fr);
 
 export default function TypePermanenceItem(props) {
@@ -119,32 +120,48 @@ export default function TypePermanenceItem(props) {
     let newEvent;
     let dateEvent = new Date(2022, 5, 1);
 
-    for (let index = 0; index < avocats.length; index++) {
-      let avocat_id = avocats[index]["id"];
-      newEvent = {
-        date: new Date(2022, 5, index++),
-        planning_id: nanoid(),
-        user_id: +avocat_id,
-        permanence_id: +idPermanence,
-      };
+    const planningId = nanoid();
 
-      axios
-        .post("/api/event", newEvent)
-        .then(function (response) {
-          NotificationManager.success(
-            "success",
-            "Le planning a été généré avec succès.",
-            3000
-          );
-        })
-        .catch(function (error) {
-          NotificationManager.error(
-            "warning",
-            "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
-            3000
-          );
-        });
+
+    let newPlanning = {
+      month: +currentMonth,
+      year: +currentYear,
+      createdAt: new Date(),
+      permanenceId: +idPermanence,
+      id: planningId,
     }
+
+    axios.post("/api/planning", newPlanning)
+      .then(function(response) {
+        for (let index = 0; index < avocats.length; index++) {
+          let avocat_id = avocats[index]["id"];
+    
+          newEvent = {
+            date: new Date(2022, 5, index++),
+            planning_id: planningId,
+            user_id: +avocat_id
+          };
+    
+          axios
+            .post("/api/event", newEvent)
+            .then(function (response) {
+              NotificationManager.success(
+                "success",
+                "Le planning a été généré avec succès.",
+                3000
+              );
+            })
+            .catch(function (error) {
+              NotificationManager.error(
+                "warning",
+                "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
+                3000
+              );
+            });
+        }
+      })
+
+    
   }
 
   function getPlannings() {
