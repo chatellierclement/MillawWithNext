@@ -290,24 +290,25 @@ export default function TypePermanenceItem(props) {
       });
   }
   
-  async function getPlanningForDisplayButton(props) {
+  function getPlanningForDisplayButton(props) {
     let result = null
-    await axios.get("/api/planning", {params: {month: currentMonth, year: currentYear, permanenceId: props.permanenceId}})
-    .then(function (response) {
-      if (response.data.id) {
-        result = response
-      } 
-    });
 
-    return result
+    axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
+    .then(function (response) {
+      // if (response.data.id) {
+        return response;
+      // } 
+    });
   }
 
   function DisplayButton(props) {
     let response = getPlanningForDisplayButton(props)
 
-    if (response.data) {
+    console.log("kldf : " + response);
+
+    if (response) {
       return (
-        <Link href={`/app/admin/planning/${response.data.id}`}>
+        <Link href={`/app/admin/planning/${response.id}`}>
           <a className="btn btn-dark">
             <span className="ms-2">Afficher le planning</span>
           </a>
