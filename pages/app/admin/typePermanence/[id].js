@@ -306,7 +306,6 @@ export default function TypePermanenceItem(props) {
   function DisplayButton(props) {
     let response = getPlanningForDisplayButton(props)
 
-    console.log(response)
     if (response) {
       return (
         <Link href={`/app/admin/planning/${response.id}`}>
