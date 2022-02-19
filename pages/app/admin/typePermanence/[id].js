@@ -290,23 +290,23 @@ export default function TypePermanenceItem(props) {
       });
   }
   
-  async function getPlanningForDisplayButton(props) {
-    let result = null
+  function getPlanningForDisplayButton(props) {
 
-    await axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
-    .then(function (response) {
-      console.log(response)
-      // if (response.data.id) {
-        return response;
-      // } 
+    let result = null
+    axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
+    .then(function (response) { 
+        if (response.data.length > 0) {         
+          result = response.data
+        }             
     });
+
+    return result
   }
 
   function DisplayButton(props) {
     let response = getPlanningForDisplayButton(props)
 
-    console.log("kldf : " + response);
-
+    console.log(response)
     if (response) {
       return (
         <Link href={`/app/admin/planning/${response.id}`}>
