@@ -11,7 +11,7 @@ export default async function planning(req, res) {
         });
       } 
       else if (req.query.month && req.query.year && req.query.permanenceId) {
-        planningFind = await prisma.planning.findMany({
+        planningFind = await prisma.planning.findFirst({
           where: {
             AND: [{ month: +req.query.month }, { year: +req.query.year }, {permanenceId: +req.query.permanenceId}],
           },
