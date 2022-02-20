@@ -110,7 +110,7 @@ export default function TypePermanenceItem(props) {
     setCurrentMonth(new Date(date).getMonth());
     setCurrentYear(new Date(date).getFullYear());
 
-    getPlannings();
+    // getPlannings();
 
     setSelectedDate(date);
   }
@@ -321,31 +321,65 @@ export default function TypePermanenceItem(props) {
   }
 
   function DisplayButton(props) {
-    let response = getPlanningForDisplayButton(props)
+    let isGenerated = false;
 
-    console.log(response)
-    if (response) {
-      return (
-        <Link href={`/app/admin/planning/${response.id}`}>
-          <a className="btn btn-dark">
-            <span className="ms-2">Afficher le planning</span>
-          </a>
-        </Link>
-      );
-    }
+    axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
+    .then(function (response) { 
+        if (response.data.length > 0) {
+          
+          console.log("response 1 : " + JSON.stringify(response.data[0]));
+
+          return (
+            <Link href={`/app/admin/planning/${response.data[0].id}`}>
+            <a className="btn btn-dark">
+              <span className="ms-2">Afficher le planning</span>
+            </a>
+            </Link>
+          )       
+
+        }
+
+        return (
+          <button
+            onClick={() => generatePlanning(props.permanenceId)}
+            className="btn btn-dark"
+          >
+            Générer le planning
+          </button>
+        );
+
+    });
+
+    return null;
+
+    // let response = getPlanningForDisplayButton(props)
+
+    // console.log(response)
+    // if (response) {
+    //   return (
+    //     <Link href={`/app/admin/planning/${response.id}`}>
+    //       <a className="btn btn-dark">
+    //         <span className="ms-2">Afficher le planning</span>
+    //       </a>
+    //     </Link>
+    //   );
+    // }
     
-    return (
-      <button
-        onClick={() => generatePlanning(props.permanenceId)}
-        className="btn btn-dark"
-      >
-        Générer le planning
-      </button>
-    );
+    // return (
+    //   <button
+    //     onClick={() => generatePlanning(props.permanenceId)}
+    //     className="btn btn-dark"
+    //   >
+    //     Générer le planning
+    //   </button>
+    // );
     
   }
 
   function DisplayAvancement(props) {
+
+
+
     //TODO : le '10' est le nombre d'events. je ne suis pas sur de comment le recuperer
     //Peux etre jouer sur la couleur en fonction du %
     let result = (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)

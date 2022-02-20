@@ -13,7 +13,7 @@ export default async function exchange(req, res) {
           include: {
             event: {
               include: {
-                permanence: true,
+                planning: true,
               },
             },
             userSender: true,
