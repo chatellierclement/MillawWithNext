@@ -16,12 +16,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Calendar() {
-  const permanence_id = 7;
   const { token, setToken } = useToken();
   const [action, setAction] = useState(null);
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
   const [role, setRole] = useState("admin");
+  const [onePermanence, setOnePermanence] = useState(null);
   const [events, setEvents] = useState([]);
   const [modal, setModal] = useState(null);
   const [datePicker, setDatePicker] = useState(null);
@@ -42,8 +42,9 @@ export default function Calendar() {
     getUser();
 
     getEvents();
+    
+    getOnePermanence()      
 
-    //Initialisation des User
     axios
       .get("/api/user")
       .then(function (response) {
@@ -64,10 +65,25 @@ export default function Calendar() {
     axios
       .get("/api/event", { params: { planning_id: planningId } })
       .then(function (response) {
-        console.log(response.data)
-        setEvents(response.data);
+
+        response.data.forEach(e => {
+          e.title = e.user.lastName + " " + e.user.firstName
+        })
+
+        setEvents(response.data);          
+        
       });
   }
+
+  function getOnePermanence() {
+    /*axios
+        .get("/api/permanence", { params: { id: events[0].planning.permanenceId } })
+        .then(function (response) {
+          setOnePermanence(response.data);
+        }); */
+          
+  }
+
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
@@ -149,6 +165,7 @@ export default function Calendar() {
 
     //TODO : Pb de relation
     delete event.user;
+    delete event.planning;
 
     axios
       .put("/api/event", event)
@@ -329,7 +346,7 @@ export default function Calendar() {
           <div className="container-fluid px-0">
             <div className="row align-items-center">
               <div className="col">
-                <h1 className="h2 mb-0">Planning</h1>
+                <h1 className="h2 mb-0">Planning {onePermanence ? onePermanence.name : ""}</h1>
               </div>
             </div>
           </div>
