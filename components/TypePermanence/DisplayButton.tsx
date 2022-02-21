@@ -10,6 +10,7 @@ import {
 export default function Button(props) {
 
     const [planning, setPlanning] = useState();
+    const [avocats, setAvocats] = useState([]);
 
     function generatePlanning(idPermanence) {
         /// Quand il y a moins d'avocat que de date
@@ -20,42 +21,42 @@ export default function Button(props) {
     
     
         let newPlanning = {
-          month: +props.month,
+          month: +props.month + 1,
           year: +props.year,
           createdAt: new Date(),
           permanenceId: +idPermanence,
           id: planningId,
         }
     
-        // axios.post("/api/planning", newPlanning)
-        //   .then(function(response) {
-        //     for (let index = 0; index < avocats.length; index++) {
-        //       let avocat_id = avocats[index]["id"];
+        axios.post("/api/planning", newPlanning)
+           .then(function(response) {
+             for (let index = 0; index < avocats.length; index++) {
+               let avocat_id = avocats[index]["id"];
         
-        //       newEvent = {
-        //         date: new Date(2022, 5, index++),
-        //         planning_id: planningId,
-        //         user_id: +avocat_id
-        //       };
+               newEvent = {
+                 date: new Date(2022, 5, index++),
+                 planning_id: planningId,
+                 user_id: +avocat_id
+               };
         
-        //       axios
-        //         .post("/api/event", newEvent)
-        //         .then(function (response) {
-        //           NotificationManager.success(
-        //             "success",
-        //             "Le planning a été généré avec succès.",
-        //             3000
-        //           );
-        //         })
-        //         .catch(function (error) {
-        //           NotificationManager.error(
-        //             "warning",
-        //             "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
-        //             3000
-        //           );
-        //         });
-        //     }
-        //   })
+               axios
+                 .post("/api/event", newEvent)
+                 .then(function (response) {
+                   NotificationManager.success(
+                     "success",
+                     "Le planning a été généré avec succès.",
+                     3000
+                   );
+                 })
+                 .catch(function (error) {
+                   NotificationManager.error(
+                     "warning",
+                     "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
+                     3000
+                   );
+                 });
+             }
+           })
     
         
       }
@@ -65,6 +66,12 @@ export default function Button(props) {
           .get("/api/planning", {params: {month: props.month + 1, year: props.year, permanenceId: props.permanenceId}})
           .then(function (response) {
             setPlanning(response.data);
+          });
+
+          axios
+          .get("/api/user", { params: { role_id: 2 } })
+          .then(function (response) {
+            setAvocats(response.data);
           });
     
       }, [props.month]);

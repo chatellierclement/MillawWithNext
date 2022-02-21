@@ -24,11 +24,10 @@ export default function TypePermanenceItem(props) {
   const [show, setShow] = useState(false);
   const [modal, setModal] = useState(null);
   const [permanences, setPermanences] = useState([]);
-  const [avocats, setAvocats] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [plannings, setPlannings] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState(null);
-  const [currentYear, setCurrentYear] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   let isGenerated = false;
 
@@ -100,11 +99,6 @@ export default function TypePermanenceItem(props) {
   ];
 
   useEffect(() => {
-    axios
-      .get("/api/user", { params: { role_id: 2 } })
-      .then(function (response) {
-        setAvocats(response.data);
-      });
 
     axios.get("/api/typePermanence").then(function (response) {
       getPermanences();
@@ -118,55 +112,6 @@ export default function TypePermanenceItem(props) {
     // getPlannings();
 
     setSelectedDate(date);
-  }
-
-  function generatePlanning(idPermanence) {
-    /// Quand il y a moins d'avocat que de date
-    let newEvent;
-    let dateEvent = new Date(2022, 5, 1);
-
-    const planningId = nanoid();
-
-
-    let newPlanning = {
-      month: +currentMonth,
-      year: +currentYear,
-      createdAt: new Date(),
-      permanenceId: +idPermanence,
-      id: planningId,
-    }
-
-    axios.post("/api/planning", newPlanning)
-      .then(function(response) {
-        for (let index = 0; index < avocats.length; index++) {
-          let avocat_id = avocats[index]["id"];
-    
-          newEvent = {
-            date: new Date(2022, 5, index++),
-            planning_id: planningId,
-            user_id: +avocat_id
-          };
-    
-          axios
-            .post("/api/event", newEvent)
-            .then(function (response) {
-              NotificationManager.success(
-                "success",
-                "Le planning a été généré avec succès.",
-                3000
-              );
-            })
-            .catch(function (error) {
-              NotificationManager.error(
-                "warning",
-                "Une erreur est survenue lors de la génération du planning. Si le problème persiste, veuillez contacter le support.",
-                3000
-              );
-            });
-        }
-      })
-
-    
   }
 
   function getPlannings() {
@@ -312,97 +257,6 @@ export default function TypePermanenceItem(props) {
       });
   }
 
-  function getPlanningForDisplayButton(props) {
-        // create a promise for the axios request
-        const promise = axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
-
-        // using .then, create a new promise which extracts the data
-        const dataPromise = promise.then((response) => response.data)
-    
-        // return it
-        return dataPromise
-    }
-
-  
-  // function getPlanningForDisplayButton(props) {
-
-  //   let result = null
-  //   axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
-  //   .then(function (response) { 
-  //       if (response.data.length > 0) {         
-  //         result = response.data
-  //       }             
-  //   });
-
-  //   return result
-  // }
-
-  // function DisplayButton(props) {
-  //   let state = {
-  //     plannings: []
-  //   }
-  
-  //   let id;
-
-  //   axios.get("/api/planning", {params: {month: currentMonth + 1, year: currentYear, permanenceId: props.permanenceId}})
-  //   .then(res => {
-  //     const plannings = res.data;
-  //     setState({ plannings });
-  //   })
-
-
-  //   // getPlanningForDisplayButton(props)
-  //   // .then(data => {
-  //   //     if(data.length > 0) {
-  //   //       this.setState({ data });
-
-  //   //       console.log("response 1 : " + JSON.stringify(data[0]));
-  //   //       isGenerated = true;
-  //   //     }
-  //   // })
-  //   // .catch(err => console.log(err))
-
-  //   this.state.plannings.forEach(element => {
-  //     console.log("element : " + element.id)
-  //   });
-
-  //   if(isGenerated) {
-  //     console.log("isGenerated ID : " + id);
-
-  //     return (
-  //       <Link href={`/app/admin/planning/${id}`}>
-  //       <a className="btn btn-dark">
-  //         <span className="ms-2">Afficher le planning</span>
-  //       </a>
-  //       </Link>
-  //     )       
-  //   }
-
-  //   return (
-  //     <button
-  //       onClick={() => generatePlanning(props.permanenceId)}
-  //       className="btn btn-dark"
-  //     >
-  //       Générer le planning
-  //     </button>
-  //   );
-  // }
-
-  // function DisplayAvancement(props) {
-
-
-
-  //   //TODO : le '10' est le nombre d'events. je ne suis pas sur de comment le recuperer
-  //   //Peux etre jouer sur la couleur en fonction du %
-  //   let result = (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)
-  //   return (
-  //     <span className="badge bg-teal-50 text-teal-500">
-  //       {result}%
-  //     </span>
-  //   )
-    
-  // }
-
   return (
     <>
       <NotificationContainer />
@@ -524,7 +378,7 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-                              <DisplayAvancement year={currentYear} month={currentMonth} permanenceId={permanence.id} />
+                              <DisplayAvancement selectedDate={selectedDate} year={currentYear} month={currentMonth} permanenceId={permanence.id} />
                             </td>
                             <td>
                               <DisplayButton year={currentYear} month={currentMonth} permanenceId={permanence.id} />

@@ -6,11 +6,14 @@ import {
 } from "react-notifications";
 import { nanoid } from "nanoid";
 import Link from "next/link";
+import moment from 'moment';
 
 export default function DisplayAvancement(props) {
   const [planning, setPlanning] = useState();
 
-  let [result, setResult] = useState(0);
+  const { selectedDate } = props;
+
+  let [result, setResult] = useState("0");
 
   useEffect(() => {
     axios
@@ -23,7 +26,8 @@ export default function DisplayAvancement(props) {
       })
       .then(function (response) {
         setPlanning(response.data);
-        // (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+        let value = (response.data.length/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+        setResult(value)
       });
 
   }, [props.month]);
@@ -31,7 +35,7 @@ export default function DisplayAvancement(props) {
   return (
     <>
    
-  <span className="badge bg-teal-50 text-teal-500">{result}%</span>;
+  <span className="badge bg-teal-50 text-teal-500">{result}%</span>
     </>
   ) 
   
