@@ -13,6 +13,7 @@ import {
 } from "react-notifications";
 import useToken from "../../../useToken";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Calendar() {
   const permanence_id = 7;
@@ -26,6 +27,8 @@ export default function Calendar() {
   const [datePicker, setDatePicker] = useState(null);
   const [optionsUser, setOptionsUser] = useState([]);
   const [defaultValueSelectUser, setDefaultValueSelectUser] = useState(null);
+  const router = useRouter(); 
+  const planningId = router.query.id
 
   function getUser() {
     axios
@@ -61,21 +64,11 @@ export default function Calendar() {
       });
   }, [token]);
 
-  // //Initialisation des Events
-  // function getEvents() {
-  //   axios
-  //     .get("/api/event", { params: { date: "30/05/2022", permanence_id: permanence_id } })
-  //     .then(function (response) {
-  //       setEvents(response.data);
-  //     });
-  // }
-
   function getEvents() {
-    let planningId = "pN3Bepz2vCvt0N4npIHAp";
-
     axios
       .get("/api/event", { params: { planning_id: planningId } })
       .then(function (response) {
+        console.log(response.data)
         setEvents(response.data);
       });
   }
