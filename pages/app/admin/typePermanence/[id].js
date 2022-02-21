@@ -13,6 +13,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import fr from "date-fns/locale/fr";
 import { createDeflate } from "zlib";
 import DisplayButton from "../../../../components/TypePermanence/DisplayButton"
+import DisplayAvancement from "../../../../components/TypePermanence/DisplayAvancement"
 
 registerLocale("fr", fr);
 
@@ -387,20 +388,20 @@ export default function TypePermanenceItem(props) {
   //   );
   // }
 
-  function DisplayAvancement(props) {
+  // function DisplayAvancement(props) {
 
 
 
-    //TODO : le '10' est le nombre d'events. je ne suis pas sur de comment le recuperer
-    //Peux etre jouer sur la couleur en fonction du %
-    let result = (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)
-    return (
-      <span className="badge bg-teal-50 text-teal-500">
-        {result}%
-      </span>
-    )
+  //   //TODO : le '10' est le nombre d'events. je ne suis pas sur de comment le recuperer
+  //   //Peux etre jouer sur la couleur en fonction du %
+  //   let result = (10/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+  //   return (
+  //     <span className="badge bg-teal-50 text-teal-500">
+  //       {result}%
+  //     </span>
+  //   )
     
-  }
+  // }
 
   return (
     <>
@@ -523,7 +524,7 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-                              <DisplayAvancement permanenceId={permanence.id} />
+                              <DisplayAvancement year={currentYear} month={currentMonth} permanenceId={permanence.id} />
                             </td>
                             <td>
                               <DisplayButton year={currentYear} month={currentMonth} permanenceId={permanence.id} />

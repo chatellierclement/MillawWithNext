@@ -15,6 +15,9 @@ export default async function planning(req, res) {
           where: {
             AND: [{ month: +req.query.month }, { year: +req.query.year }, {permanenceId: +req.query.permanenceId}],
           },
+          include: {
+            event: true
+          }
         });
       }  
       // else if (req.query.month && req.query.year) {
