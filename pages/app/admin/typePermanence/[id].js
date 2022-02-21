@@ -99,7 +99,6 @@ export default function TypePermanenceItem(props) {
   ];
 
   useEffect(() => {
-
     axios.get("/api/typePermanence").then(function (response) {
       getPermanences();
     });
@@ -378,10 +377,10 @@ export default function TypePermanenceItem(props) {
                               </span>
                             </td>
                             <td>
-                              <DisplayAvancement selectedDate={selectedDate} year={currentYear} month={currentMonth} permanenceId={permanence.id} />
+                              <DisplayAvancement id={id} permanences={permanences} selectedDate={selectedDate} year={currentYear} month={currentMonth} permanenceId={permanence.id} />
                             </td>
                             <td>
-                              <DisplayButton year={currentYear} month={currentMonth} permanenceId={permanence.id} />
+                              <DisplayButton id={id} setPermanences={setPermanences} year={currentYear} month={currentMonth} permanenceId={permanence.id} />
                             </td>
                             <td>
                               <svg

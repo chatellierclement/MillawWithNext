@@ -12,6 +12,8 @@ export default function Button(props) {
     const [planning, setPlanning] = useState();
     const [avocats, setAvocats] = useState([]);
 
+    const { setPermanences, id } = props;
+
     function generatePlanning(idPermanence) {
         /// Quand il y a moins d'avocat que de date
         let newEvent;
@@ -47,6 +49,17 @@ export default function Button(props) {
                      "Le planning a été généré avec succès.",
                      3000
                    );
+                   axios
+                    .get("/api/planning", {params: {month: props.month + 1, year: props.year, permanenceId: props.permanenceId}})
+                    .then(function (response) {
+                      setPlanning(response.data);
+                    });
+                   axios
+                    .get("/api/permanence", { params: { typePermanence_id: id } })
+                    .then(function (response) {
+                      setPermanences(response.data);
+                    });
+
                  })
                  .catch(function (error) {
                    NotificationManager.error(
@@ -82,7 +95,7 @@ export default function Button(props) {
 
         <>{planning ? <Link href={`/app/admin/planning/${planning.id}`}>
                <a className="btn btn-dark">
-                 <span className="ms-2">Afficher le planning</span>
+                 Afficher le planning
                </a>
                </Link> : <button
                    onClick={() => generatePlanning(props.permanenceId)}

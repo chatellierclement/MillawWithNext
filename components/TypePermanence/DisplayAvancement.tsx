@@ -12,6 +12,8 @@ export default function DisplayAvancement(props) {
   const [planning, setPlanning] = useState();
 
   const { selectedDate } = props;
+  
+  const { setPermanences, permanences, id } = props;
 
   let [result, setResult] = useState("0");
 
@@ -26,11 +28,14 @@ export default function DisplayAvancement(props) {
       })
       .then(function (response) {
         setPlanning(response.data);
-        let value = (response.data.length/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+        let value = "0"
+        if (response.data !== "") {
+           value = (response.data.event.length/moment(selectedDate).daysInMonth() * 100).toFixed(2)
+        }         
         setResult(value)
       });
 
-  }, [props.month]);
+  }, [props.month, permanences]);
 
   return (
     <>
