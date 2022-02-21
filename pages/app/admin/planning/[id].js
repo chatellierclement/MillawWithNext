@@ -18,11 +18,11 @@ import { useRouter } from "next/router";
 export default function Calendar() {
   const permanence_id = 7;
   const { token, setToken } = useToken();
+  const [action, setAction] = useState(null);
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
   const [role, setRole] = useState("admin");
   const [events, setEvents] = useState([]);
-  const [editable_boolean, setEditableBoolean] = useState(true);
   const [modal, setModal] = useState(null);
   const [datePicker, setDatePicker] = useState(null);
   const [optionsUser, setOptionsUser] = useState([]);
@@ -42,10 +42,6 @@ export default function Calendar() {
     getUser();
 
     getEvents();
-
-    //Gestion des roles utilisateurs
-    let type = role === "admin" ? true : false;
-    setEditableBoolean(type);
 
     //Initialisation des User
     axios
@@ -103,7 +99,6 @@ export default function Calendar() {
 
   //Clic sur le jour du calendrier
   function dayClick(arg) {
-    //if (!editable_boolean) { return false }
 
     let m = {
       ...modal,
@@ -115,6 +110,8 @@ export default function Calendar() {
 
     setDatePicker(new Date(arg.date));
 
+    setAction("add")
+
     openCloseModal(true);
   }
 
@@ -122,10 +119,6 @@ export default function Calendar() {
   function eventClick(info) {
     if (info.event._def.title !== "Congé") {
       let m = { title_modal: "Evènement" };
-
-      /*if (editable_boolean) {
-        m = { title_modal: "Que voulez vous faire ?" };
-      }*/
 
       //Hydratation de l'objet Event dans formulaire de la Modal
       let event = events.find((item) => item.id == info.event._def.publicId);
@@ -140,7 +133,9 @@ export default function Calendar() {
       setModal(m);
 
       //Cas particulier de la date qui doit etre setter
-      setDatePicker(new Date(m.item.date));
+      setDatePicker(new Date(m.item.date));     
+
+      setAction("update")
 
       openCloseModal(true);
     }
@@ -150,7 +145,7 @@ export default function Calendar() {
   function eventDrop(info) {
     let event = events.find((item) => item.id == info.event._def.publicId);
 
-    event.date = moment(info.event.start).format("YYYY-MM-DD");
+    event.date = moment(info.event.start, "YYYY-MM-DD hh:mm:ss")
 
     //TODO : Pb de relation
     delete event.user;
@@ -223,14 +218,14 @@ export default function Calendar() {
         //Ajout
         const newEvent = {
           title: modal.item.title,
-          permanence_id: null,
           user_id: modal.item.user_id,
           isDayOff: false,
-          planning_id: null,
+          planning_id: planningId,
           date: moment(modal.item.date, "YYYY-MM-DD hh:mm:ss"),
           title: modal.item.title,
         };
 
+        console.log(newEvent)
         axios
           .post("/api/event", newEvent)
           .then(function (response) {
@@ -308,7 +303,7 @@ export default function Calendar() {
                 defaultValue={defaultValueSelectUser}
               />
             </Modal.Body>
-            <Modal.Footer className={editable_boolean === true ? "" : "hidden"}>
+            <Modal.Footer>
               <Button
                 variant="primary"
                 type="submit"
@@ -321,6 +316,7 @@ export default function Calendar() {
                 variant="danger"
                 type="submit"
                 value="delete"
+                className={action === "add" ? "hidden" : ""}
                 onClick={() => handleSubmit("delete")}
               >
                 Supprimer
@@ -360,7 +356,7 @@ export default function Calendar() {
                   week: "Semaine",
                   dayGrid: "Jour",
                 }}
-                editable={editable_boolean}
+                editable={true}
                 eventDrop={eventDrop}
                 events={events}
               />
