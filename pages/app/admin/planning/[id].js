@@ -365,9 +365,9 @@ export default function Calendar() {
                 eventClick={eventClick}
                 initialView="dayGridMonth"
                 headerToolbar={{
-                  left: "prev,today,next",
+                  left: "",
                   center: "title",
-                  right: "dayGridMonth,dayGridWeek,dayGrid",
+                  right: "",
                 }}
                 buttonText={{
                   today: "Aujourd'hui",
