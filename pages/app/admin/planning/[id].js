@@ -21,7 +21,7 @@ export default function Calendar() {
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
   const [role, setRole] = useState("admin");
-  const [initDate, setInitDate] = useState(null);
+  const [date, setDate] = useState(null);
   const [onePermanence, setOnePermanence] = useState(null);
   const [events, setEvents] = useState([]);
   const [modal, setModal] = useState(null);
@@ -66,7 +66,7 @@ export default function Calendar() {
     axios.get("/api/event", { params: { planning_id: planningId } })
       .then(function (response) {
 
-        setInitDate(response.data[0].planning.year + "-0" + response.data[0].planning.month + "-01")
+        setDate(response.data[0].planning.year + "-0" + response.data[0].planning.month + "-01")
 
         response.data.forEach(e => {
           e.title = e.user.lastName + " " + e.user.firstName
@@ -378,7 +378,7 @@ export default function Calendar() {
                 editable={true}
                 eventDrop={eventDrop}
                 events={events}
-                initialDate={initDate}
+                initialDate={date ? date : "2000-01-01"}
               />
             </div>
           </div>
