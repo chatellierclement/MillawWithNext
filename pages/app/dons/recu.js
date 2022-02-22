@@ -22,7 +22,7 @@ export default function Dons() {
 
   function onUpdateEvent(exchange) {
     delete exchange.event.permanence;
-
+    delete exchange.event.planning;
     exchange.event.user_id = exchange.user_id_recipient;
 
     axios
@@ -180,7 +180,7 @@ export default function Dons() {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.event.permanence.name}
+                                {exchange.event.planning.Permanence.name}
                               </span>
                             </td>
                             <td>

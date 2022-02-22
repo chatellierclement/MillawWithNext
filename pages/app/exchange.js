@@ -38,14 +38,14 @@ export default function Exchange() {
       .then(function (response) {
         NotificationManager.success(
           "success",
-          "Le nouveau token a été généré avec succès.",
+          "La demande de don a bien été enregistrer",
           3000
         );
       })
       .catch(function (error) {
         NotificationManager.error(
           "warning",
-          "Une erreur est survenue lors de la génération du token. Si le problème persiste, veuillez contacter le support.",
+          "Une erreur est survenue lors de la demande de don. Si le problème persiste, veuillez contacter le support.",
           3000
         );
       });
