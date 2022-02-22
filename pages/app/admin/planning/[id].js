@@ -42,9 +42,7 @@ export default function Calendar() {
   useEffect(() => {
     getUser();
 
-    getEvents();
-    
-    getOnePermanence()      
+    getEvents();   
 
     axios
       .get("/api/user")
@@ -78,16 +76,6 @@ export default function Calendar() {
         setOnePermanence(response.data[0].planning.Permanence.name);
       });
   }
-
-  function getOnePermanence() {
-    /*axios
-        .get("/api/permanence", { params: { id: events[0].planning.permanenceId } })
-        .then(function (response) {
-          setOnePermanence(response.data);
-        }); */
-          
-  }
-
 
   //Binding de l'objet Event de la modal
   function changeObjEventModal(event) {
