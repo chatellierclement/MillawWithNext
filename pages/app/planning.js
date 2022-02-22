@@ -61,6 +61,11 @@ export default function Calendar() {
     axios
       .get("/api/event", { params: { user_id: token.id } })
       .then(function (response) {
+
+        response.data.forEach(e => {
+          e.title = e.planning.Permanence.name
+        })
+
         setEvents(response.data);
       });
   }

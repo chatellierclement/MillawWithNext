@@ -11,7 +11,13 @@ export default async function event(req, res) {
           where: {
             AND: [{ user_id: +req.query.user_id }],
           },
-          include: { planning: true },
+          include: {
+            planning: {
+              include: {
+                Permanence: true,
+              },
+            }
+          }
         });
       } else if (req.query.date && req.query.permanence_id) {
         var parts = req.query.date.split("/");
