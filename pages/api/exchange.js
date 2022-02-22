@@ -13,7 +13,11 @@ export default async function exchange(req, res) {
           include: {
             event: {
               include: {
-                planning: true,
+                planning: {
+                  include: {
+                    Permanence: true,
+                  },
+                }
               },
             },
             userSender: true,
@@ -27,8 +31,13 @@ export default async function exchange(req, res) {
           include: {
             event: {
               include: {
-                permanence: true,
-              },
+                planning: {
+                  include: {
+                    Permanence: true,
+                  },
+                }
+              }
+              
             },
             userSender: true,
           },

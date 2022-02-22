@@ -11,6 +11,7 @@ export default function Dons() {
     axios
       .get("/api/exchange", { params: { user_id_sender: +token.id } })
       .then(function (response) {
+        console.log(JSON.stringify(response.data))
         setExchanges(response.data);
       })
       .catch(function (error) {
@@ -97,7 +98,7 @@ export default function Dons() {
                             </td>
                             <td>
                               <span className="ps-2 font-weight-semibold text-gray-700">
-                                {exchange.event.permanence.name}
+                                {exchange.event.planning.Permanence.name}
                               </span>
                             </td>
                             <td>
