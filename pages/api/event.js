@@ -42,7 +42,7 @@ export default async function event(req, res) {
         });
       } else if (req.query.planning_id) {
         eventFind = await prisma.event.findMany({
-          include: { user: true, planning: true },
+          include: { user: true, planning: { include: { Permanence: true}} },
           where: {
             planning_id: req.query.planning_id,
           },
