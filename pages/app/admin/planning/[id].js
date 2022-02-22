@@ -21,6 +21,7 @@ export default function Calendar() {
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
   const [role, setRole] = useState("admin");
+  const [initDate, setInitDate] = useState(null);
   const [onePermanence, setOnePermanence] = useState(null);
   const [events, setEvents] = useState([]);
   const [modal, setModal] = useState(null);
@@ -62,15 +63,16 @@ export default function Calendar() {
   }, [token]);
 
   function getEvents() {
-    axios
-      .get("/api/event", { params: { planning_id: planningId } })
+    axios.get("/api/event", { params: { planning_id: planningId } })
       .then(function (response) {
+
+        setInitDate(response.data[0].planning.year + "-0" + response.data[0].planning.month + "-01")
 
         response.data.forEach(e => {
           e.title = e.user.lastName + " " + e.user.firstName
         })
 
-        setEvents(response.data);          
+        setEvents(response.data);  
         
       });
   }
@@ -351,11 +353,11 @@ export default function Calendar() {
             </div>
           </div>
         </div>
-
+        
         <div className="p-3 p-xxl-5">
           <div className="container-fluid px-0 pb-4">
             <div className="bg-white border-top border-4 border-yellow-400 p-3">
-              <FullCalendar
+              <FullCalendar              
                 locale="fr"
                 firstDay="1"
                 plugins={[dayGridPlugin, interactionPlugin]}
@@ -368,7 +370,7 @@ export default function Calendar() {
                   right: "dayGridMonth,dayGridWeek,dayGrid",
                 }}
                 buttonText={{
-                  today: "Aujoud'hui",
+                  today: "Aujourd'hui",
                   month: "Mois",
                   week: "Semaine",
                   dayGrid: "Jour",
@@ -376,6 +378,7 @@ export default function Calendar() {
                 editable={true}
                 eventDrop={eventDrop}
                 events={events}
+                initialDate={initDate}
               />
             </div>
           </div>
