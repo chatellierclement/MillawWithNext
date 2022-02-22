@@ -181,10 +181,11 @@ export default function Menu(props) {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/app/admin/co/all">
+                  <Link href="#">
                     <a className="nav-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
                       <span className="ms-2">Commissions d&apos;office</span>
+                      <span className="badge bg-info text-dark">Bientôt</span>
                     </a>
                   </Link>
                 </li>
@@ -214,32 +215,6 @@ export default function Menu(props) {
                 </li>                
               </>
             )}
-            <li className="nav-item">
-              {/* <Link href={`/app/admin/typePermanence/${JSON.parse(JSON.stringify(typePermanences[0])).id}`}>
-                <a className="nav-link">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="feather feather-list"
-                  >
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                  </svg>
-                  <span className="ms-2">Permanences</span>
-                </a>
-              </Link> */}
-            </li>
           </ul>
 
           <div className="navbar-vertical-footer border-top border-gray-50">
