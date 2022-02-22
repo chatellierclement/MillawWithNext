@@ -13,6 +13,7 @@ import {
 } from "react-notifications";
 import useToken from "../../pages/useToken";
 import Link from "next/link";
+import { nanoid } from "nanoid";
 
 export default function Calendar() {
   const { token, setToken } = useToken();
@@ -63,7 +64,11 @@ export default function Calendar() {
       .then(function (response) {
 
         response.data.forEach(e => {
-          e.title = e.planning.Permanence.name
+          if(e.planning.Permanence != null) {
+            e.title = e.planning.Permanence.name
+          } else {
+            e.title = "Congés"
+          }
         })
 
         setEvents(response.data);
@@ -183,16 +188,29 @@ export default function Calendar() {
   function handleSubmit(type) {
     switch (type) {
       case "conge":
-        let newEvent = {
-          title: "Congé",
-          permanence_id: null,
-          user_id: 1,
-          isDayOff: true,
-          planning_id: null,
-          date: moment(modal.item.date, "YYYY-MM-DD 00:00:00"),
-        };
 
-        axios
+        let planningId = nanoid();
+
+        let newPlanning = {
+          month: 2,
+          year: 2022,
+          createdAt: new Date(),
+          permanenceId: null,
+          id: planningId,
+        }
+
+        axios.post("/api/planning", newPlanning).then(function (response) {
+
+          let newEvent = {
+            title: "Congé",
+            user_id: 1,
+            isDayOff: true,
+            planning_id: planningId,
+            date: moment(modal.item.date, "YYYY-MM-DD 00:00:00"),
+          };
+  
+
+          axios
           .post("/api/event", newEvent)
           .then(function (response) {
             NotificationManager.success(
@@ -209,6 +227,11 @@ export default function Calendar() {
               3000
             );
           });
+
+        })
+
+        
+        
 
         openCloseModalDay(false);
         break;
