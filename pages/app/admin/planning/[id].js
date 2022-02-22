@@ -75,6 +75,7 @@ export default function Calendar() {
 
         setEvents(response.data);  
         
+        setOnePermanence(response.data[0].planning.Permanence.name);
       });
   }
 
@@ -349,7 +350,7 @@ export default function Calendar() {
           <div className="container-fluid px-0">
             <div className="row align-items-center">
               <div className="col">
-                <h1 className="h2 mb-0">Planning {onePermanence ? onePermanence.name : ""}</h1>
+                <h1 className="h2 mb-0">Planning {onePermanence ? onePermanence : ""}</h1>
               </div>
             </div>
           </div>
